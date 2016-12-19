@@ -1,5 +1,12 @@
 {
   "name": "development",
   "description": "environment settings",
-  "pad": []
+  "default_pad": {
+    "path": "pad",
+    "name": "",
+    "width": 400,
+    "height": 400,
+    "frame": true,
+    "backgroundColor": "#f5f1de"
+  }
 }

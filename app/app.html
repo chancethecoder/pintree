@@ -136,6 +136,7 @@
     </div> <!-- /container -->
 
     <script>
+        // Renderer process part for ipc
         $('#new-pad').on('click', function() {
             const {ipcRenderer} = require('electron');
             ipcRenderer.send('asynchronous-message', 'new-pad');

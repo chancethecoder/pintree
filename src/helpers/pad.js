@@ -1,13 +1,25 @@
-// This helper remembers the size and position of your windows (and restores
-// them in that place after app relaunch).
+// This helper remembers configurations of pad.
 // Can be used for more than one window, just construct many
 // instances of it and give each different name.
 
 import { app, BrowserWindow, screen } from 'electron';
 import jetpack from 'fs-jetpack';
+import moment from 'moment';
 
-export default function (name, options) {
-    var userDataDir = jetpack.cwd(app.getPath('userData'));
+export default function (options) {
+    // Resolve to saved pad directory
+    var path = app.getPath('userData') + '/' + options.path;
+    var name = options.name;
+
+    if(name == "") {
+        // By default, if name is blank,
+        // This pad is new created.
+        name = moment().format('YYYYMMDDHHmmss');
+        console.log(name);
+    }
+    path += "/" + name;
+
+    var padDir = jetpack.cwd(path);
     var stateStoreFile = 'window-state-' + name +'.json';
     var defaultSize = {
         width: options.width,
@@ -19,7 +31,7 @@ export default function (name, options) {
     var restore = function () {
         var restoredState = {};
         try {
-            restoredState = userDataDir.read(stateStoreFile, 'json');
+            restoredState = padDir.read(stateStoreFile, 'json');
         } catch (err) {
             // For some reason json can't be read (might be corrupted).
             // No worries, we have defaults.
@@ -71,7 +83,7 @@ export default function (name, options) {
             Object.assign(state, getCurrentPosition());
         }
         // Write a files to current window's directory
-        userDataDir.write(stateStoreFile, state, { atomic: true });
+        padDir.write(stateStoreFile, state, { atomic: true });
     };
 
     state = ensureVisibleOnSomeDisplay(restore());
