@@ -45,9 +45,9 @@
                 <div class="navbar-header">
                     <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
                         <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar"><i class="fa"></i></span>
-                        <span class="icon-bar"><i class="fa"></i></span>
-                        <span class="icon-bar"><i class="fa"></i></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
                     </button>
                     <a class="navbar-brand" href="#"><i class="fa fa-globe"></i></a>
                 </div>
@@ -76,7 +76,7 @@
         <div id="nav-home" class="jumbotron">
             <h1>Hello!</h1>
             <p class="lead">Make your daily memo with me. </p>
-            <p><a class="btn btn-lg btn-success" href="#" role="button">New pad</a></p>
+            <p><a id="new-pad" class="btn btn-lg btn-success" role="button">New pad</a></p>
         </div>
 
         <div id="nav-feature" class="row marketing">
@@ -135,5 +135,11 @@
 
     </div> <!-- /container -->
 
+    <script>
+        $('#new-pad').on('click', function() {
+            const {ipcRenderer} = require('electron');
+            ipcRenderer.send('asynchronous-message', 'new-pad');
+        });
+    </script>
 </body>
 </html>

@@ -12,6 +12,8 @@ import createWindow from './helpers/window';
 // in config/env_xxx.json file.
 import env from './env';
 
+const {ipcMain} = require('electron');
+
 var mainWindow;
 
 var setApplicationMenu = function () {
@@ -47,4 +49,14 @@ app.on('ready', function () {
 
 app.on('window-all-closed', function () {
     app.quit();
+});
+
+ipcMain.on('asynchronous-message', (event, arg) => {
+
+    var padWindow = createWindow('pad', {
+        width: 400,
+        height: 400
+    });
+
+    padWindow.loadURL('file://' + __dirname + '/pad.html');
 });
