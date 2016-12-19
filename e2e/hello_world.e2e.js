@@ -7,8 +7,6 @@ describe('application launch', function () {
     afterEach(testUtils.afterEach);
 
     it('shows hello world text on screen after launch', function () {
-        return this.app.client.getText('#greet').then(function (text) {
-            expect(text).to.equal('Hello World!');
-        });
+        // end to end test code here
     });
 });

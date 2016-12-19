@@ -14,7 +14,6 @@ describe("hello world", function () {
 
     it("should load test environment variables", function () {
         expect(env.name).to.equal('test');
-        expect(env.description).to.equal('Add here any environment specific stuff you like.');
     });
 
 });
