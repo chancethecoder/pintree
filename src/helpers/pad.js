@@ -5,6 +5,7 @@
 import { app, BrowserWindow, screen } from 'electron';
 import jetpack from 'fs-jetpack';
 import moment from 'moment';
+import env from '../env';
 
 export default function (options) {
     // Resolve to saved pad directory
@@ -21,10 +22,7 @@ export default function (options) {
 
     var padDir = jetpack.cwd(path);
     var stateStoreFile = 'window-state-' + name +'.json';
-    var defaultSize = {
-        width: options.width,
-        height: options.height
-    };
+    var defaultState = env.default_pad;
     var state = {};
     var win;
 
@@ -36,7 +34,7 @@ export default function (options) {
             // For some reason json can't be read (might be corrupted).
             // No worries, we have defaults.
         }
-        return Object.assign({}, defaultSize, restoredState);
+        return Object.assign({}, defaultState, restoredState);
     };
 
     var getCurrentPosition = function () {
@@ -59,9 +57,9 @@ export default function (options) {
 
     var resetToDefaults = function (windowState) {
         var bounds = screen.getPrimaryDisplay().bounds;
-        return Object.assign({}, defaultSize, {
-            x: (bounds.width - defaultSize.width) / 2,
-            y: (bounds.height - defaultSize.height) / 2
+        return Object.assign({}, defaultState, {
+            x: (bounds.width - defaultState.width) / 2,
+            y: (bounds.height - defaultState.height) / 2
         });
     };
 
@@ -72,6 +70,7 @@ export default function (options) {
         if (!visible) {
             // Window is partially or fully not visible now.
             // Reset it to safe defaults.
+            console.log("reset to default pad");
             return resetToDefaults(windowState);
         }
         return windowState;
@@ -83,7 +82,15 @@ export default function (options) {
             Object.assign(state, getCurrentPosition());
         }
         // Write a files to current window's directory
-        padDir.write(stateStoreFile, state, { atomic: true });
+
+        // Need to save file name to .json file
+        state.name = name;
+
+        padDir.write(
+            path + "/" + stateStoreFile,
+            state,
+            { atomic: true }
+        );
     };
 
     state = ensureVisibleOnSomeDisplay(restore());

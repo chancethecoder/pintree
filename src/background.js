@@ -32,7 +32,7 @@ var setApplicationMenu = function () {
 // on same machine like those are two separate apps.
 if (env.name !== 'production') {
     var userDataPath = app.getPath('userData');
-    app.setPath('userData', userDataPath + ' (' + env.name + ')');
+    app.setPath('userData', userDataPath + '(' + env.name + ')');
 }
 
 // Restore pad instances
@@ -54,7 +54,7 @@ var restoreInstances = function () {
         var file = dir.find({ matching: ['*.json'] });
         if(file == null) {
             console.log("json file is not exist!");
-            return;
+            continue;
         }
         var restoredState = dir.read(file[0], 'json');
         if(restoredState == null) {

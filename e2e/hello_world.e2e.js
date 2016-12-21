@@ -8,5 +8,6 @@ describe('application launch', function () {
 
     it('shows hello world text on screen after launch', function () {
         // end to end test code here
+        return true;
     });
 });
