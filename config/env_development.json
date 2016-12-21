@@ -1,6 +1,10 @@
 {
   "name": "development",
   "description": "environment settings",
+  "default_main": {
+    "width": 1000,
+    "height": 600
+  },
   "default_pad": {
     "path": "pad",
     "name": "",
