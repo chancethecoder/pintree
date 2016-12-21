@@ -9,7 +9,7 @@ describe('application launch', function () {
     it('shows hello world text on screen after launch', function () {
         // end to end test code here
         return this.app.client.getText('#greet').then(function (text) {
- -            expect(text).to.equal('Dashboard');
- -        });
+            expect(text).to.equal('Dashboard');
+        });
     });
 });
