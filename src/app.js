@@ -25,6 +25,14 @@ document.addEventListener('DOMContentLoaded', function () {
     $("#menu-toggle").click(function(e) {
         e.preventDefault();
         $("#wrapper").toggleClass("toggled");
+
+        if($(this).hasClass("fa-arrow-left")) {
+            $(this).removeClass("fa-arrow-left");
+            $(this).addClass("fa-arrow-right");
+        } else {
+            $(this).removeClass("fa-arrow-right");
+            $(this).addClass("fa-arrow-left");
+        }
     });
 
     // Renderer process part for ipc

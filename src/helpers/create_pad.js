@@ -79,7 +79,9 @@ export default function (options) {
     // Save when this window closed
     var saveState = function () {
         if (!win.isMinimized() && !win.isMaximized()) {
+            console.log('x:' + state.x + ' / y:' + state.y);
             Object.assign(state, getCurrentPosition());
+            console.log('x:' + state.x + ' / y:' + state.y);
         }
         // Write a files to current window's directory
 
@@ -93,7 +95,8 @@ export default function (options) {
         );
     };
 
-    state = ensureVisibleOnSomeDisplay(restore());
+    // state = ensureVisibleOnSomeDisplay(restore());
+    state = restore();
 
     win = new BrowserWindow(Object.assign({}, options, state));
 

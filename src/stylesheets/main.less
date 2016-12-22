@@ -38,23 +38,17 @@ body {
     width: 250px;
 }
 
-#wrapper.toggled .navbar-fixed-top {
-    margin-left: 0;
-    -webkit-transition: all 0.5s ease;
-    -moz-transition: all 0.5s ease;
-    -o-transition: all 0.5s ease;
-    transition: all 0.5s ease;
-}
-
 #page-content-wrapper {
     width: 100%;
     position: absolute;
     padding: 15px;
+    overflow-y: auto;
 }
 
 #wrapper.toggled #page-content-wrapper {
     position: absolute;
     margin-right: -250px;
+    overflow-y: auto;
 }
 
 /* Sidebar Styles */
@@ -103,12 +97,6 @@ body {
 .sidebar-nav > .sidebar-brand a:hover {
     color: #e2e2e2;
     background: none;
-}
-
-/* Fixed top Styles */
-
-.navbar-fixed-top {
-    margin-left: 250px;
 }
 
 /* Container Styles */
@@ -171,21 +159,21 @@ body {
 
 /* Responsive: Portrait tablets and up */
 @media screen and (min-width: 768px) {
-	  /* Remove the padding we set earlier */
-	  .header,
-      .marketing,
-      .footer {
-          padding-right: 0;
-          padding-left: 0;
-      }
-      /* Space out the masthead */
-      .header {
-          margin-bottom: 30px;
-      }
-      /* Remove the bottom border on the jumbotron for visual effect */
-      .jumbotron {
-          border-bottom: 0;
-      }
+    /* Remove the padding we set earlier */
+    .header,
+    .marketing,
+    .footer {
+        padding-right: 0;
+        padding-left: 0;
+    }
+    /* Space out the masthead */
+    .header {
+        margin-bottom: 30px;
+    }
+    /* Remove the bottom border on the jumbotron for visual effect */
+    .jumbotron {
+        border-bottom: 0;
+    }
 }
 
 @media(min-width:768px) {
