@@ -21,6 +21,12 @@ document.addEventListener('DOMContentLoaded', function () {
         menu.popup(remote.getCurrentWindow())
     }, false)
 
+    // Init sidenav toggle
+    $("#menu-toggle").click(function(e) {
+        e.preventDefault();
+        $("#wrapper").toggleClass("toggled");
+    });
+
     // Renderer process part for ipc
     $('#new-pad').on('click', function() {
         app.newPad();

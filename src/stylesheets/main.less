@@ -1,45 +1,143 @@
-/* Space out content a bit */
+// This is overall custom css styles.
+// apply to all of the main page
+
 body {
-	  padding-top: 20px;
-	    padding-bottom: 20px;
+    overflow-x: hidden;
 }
+
+/* Toggle Styles */
+
+#wrapper {
+    padding-left: 0;
+    -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+}
+
+#wrapper.toggled {
+    padding-left: 250px;
+}
+
+#sidebar-wrapper {
+    z-index: 1000;
+    position: fixed;
+    left: 250px;
+    width: 0;
+    height: 100%;
+    margin-left: -250px;
+    overflow-y: auto;
+    background-color: #2d2f39;
+    -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+}
+
+#wrapper.toggled #sidebar-wrapper {
+    width: 250px;
+}
+
+#wrapper.toggled .navbar-fixed-top {
+    margin-left: 0;
+    -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+}
+
+#page-content-wrapper {
+    width: 100%;
+    position: absolute;
+    padding: 15px;
+}
+
+#wrapper.toggled #page-content-wrapper {
+    position: absolute;
+    margin-right: -250px;
+}
+
+/* Sidebar Styles */
+
+.sidebar-nav {
+    position: absolute;
+    top: 0;
+    width: 250px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.sidebar-nav li {
+    text-indent: 20px;
+    line-height: 40px;
+}
+
+.sidebar-nav li a {
+    display: block;
+    text-decoration: none;
+    color: #ddd;
+}
+
+.sidebar-nav li a:hover {
+    text-decoration: none;
+    color: #fa6cab;
+    background: rgba(255,255,255,0.2);
+}
+
+.sidebar-nav li a:active,
+.sidebar-nav li a:focus {
+    text-decoration: none;
+}
+
+.sidebar-nav > .sidebar-brand {
+    height: 65px;
+    font-size: 18px;
+    line-height: 60px;
+}
+
+.sidebar-nav > .sidebar-brand a {
+    color: #e2e2e2;
+}
+
+.sidebar-nav > .sidebar-brand a:hover {
+    color: #e2e2e2;
+    background: none;
+}
+
+/* Fixed top Styles */
+
+.navbar-fixed-top {
+    margin-left: 250px;
+}
+
+/* Container Styles */
 
 /* Everything but the jumbotron gets side spacing for mobile first views */
 .header,
-	.marketing,
-	.footer {
-		  padding-right: 15px;
-		    padding-left: 15px;
-	}
+.marketing,
+.footer {
+    padding-right: 15px;
+    padding-left: 15px;
+}
 
 /* Custom page header */
 .header {
-	  padding-bottom: 20px;
-	    border-bottom: 1px solid #e5e5e5;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #e5e5e5;
 }
 /* Make the masthead heading the same height as the navigation */
 .header h3 {
-	  margin-top: 0;
-	    margin-bottom: 0;
-		  line-height: 40px;
+    margin-top: 0;
+    margin-bottom: 0;
+    line-height: 40px;
 }
 
-/* Custom page footer */
-.footer {
-	  padding-top: 19px;
-	    color: #777;
-			     border-top: 1px solid #e5e5e5;
-}
-
-/* Customize container */
-@media (min-width: 768px) {
-
-}
 .container-narrow > hr {
-	  margin: 30px 0;
+    margin: 30px 0;
 }
 
-.container .fixed-area {
+.container-fluid .fixed-area {
     position: fixed;
     right: 30px;
     bottom: 30px;
@@ -48,37 +146,67 @@ body {
 
 /* Main marketing message and sign up button */
 .jumbotron {
-	  text-align: center;
-	    border-bottom: 1px solid #e5e5e5;
+    text-align: center;
+    border-bottom: 1px solid #e5e5e5;
 }
 .jumbotron .btn {
-	  padding: 14px 24px;
-			     font-size: 21px;
+    padding: 14px 24px;
+    font-size: 21px;
 }
 
 /* Supporting marketing content */
 .marketing {
-	  margin: 40px 0;
+    margin: 40px 0;
 }
 .marketing p + h4 {
-	  margin-top: 28px;
+    margin-top: 28px;
+}
+
+/* Custom page footer */
+.footer {
+    padding-top: 19px;
+    color: #777;
+    border-top: 1px solid #e5e5e5;
 }
 
 /* Responsive: Portrait tablets and up */
 @media screen and (min-width: 768px) {
 	  /* Remove the padding we set earlier */
 	  .header,
-		    .marketing,
-			  .footer {
-				      padding-right: 0;
-					      padding-left: 0;
-						    }
-	    /* Space out the masthead */
-	    .header {
-			    margin-bottom: 30px;
-				  }
-		  /* Remove the bottom border on the jumbotron for visual effect */
-		  .jumbotron {
-			      border-bottom: 0;
-				    }
+      .marketing,
+      .footer {
+          padding-right: 0;
+          padding-left: 0;
+      }
+      /* Space out the masthead */
+      .header {
+          margin-bottom: 30px;
+      }
+      /* Remove the bottom border on the jumbotron for visual effect */
+      .jumbotron {
+          border-bottom: 0;
+      }
+}
+
+@media(min-width:768px) {
+    #wrapper {
+        padding-left: 250px;
+    }
+    #wrapper.toggled {
+        padding-left: 0;
+    }
+    #sidebar-wrapper {
+        width: 250px;
+    }
+    #wrapper.toggled #sidebar-wrapper {
+        width: 0;
+    }
+    #page-content-wrapper {
+        padding: 20px;
+        position: relative;
+    }
+    #wrapper.toggled #page-content-wrapper {
+        position: relative;
+        margin-right: 0;
+    }
 }

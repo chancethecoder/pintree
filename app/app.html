@@ -22,118 +22,158 @@
 </head>
 <body>
 
-    <div class="container">
-        <div class="header clearfix">
-            <nav>
-                <ul class="nav nav-pills pull-right">
-                    <li role="presentation" class="active"><a href="#">Home</a></li>
-                    <li role="presentation"><a href="#">Setting</a></li>
-                    <li role="presentation"><a href="#">Hide</a></li>
-                </ul>
-            </nav>
-            <h3 class="text-muted">Dashboard</h3>
-        </div>
+    <div id="wrapper">
 
-        <!-- Fixed top button -->
-        <div class="fixed-area">
-            <a href="#" class="btn btn-primary"><i class="fa fa-arrow-up"></i></a>
-        </div>
+        <div class="overlay"></div>
 
-        <!-- Static navbar -->
-        <nav class="navbar navbar-default">
-            <div class="container-fluid">
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    <a class="navbar-brand" href="#"><i class="fa fa-globe"></i></a>
+        <!-- Sidebar -->
+        <div id="sidebar-wrapper">
+            <ul class="sidebar-nav">
+                <li class="sidebar-brand">
+                    <a href="#">
+                        <i class="fa fa-comments" area-hidden="true"></i>
+                        My Pads
+                    </a>
+                </li>
+                <li>
+                    <a href="#"><i class="fa fa-sticky-note"></i>&nbsp;pad1</a>
+                </li>
+                <li>
+                    <a href="#"><i class="fa fa-sticky-note"></i>&nbsp;pad2</a>
+                </li>
+                <li>
+                    <a href="#"><i class="fa fa-sticky-note"></i>&nbsp;pad3</a>
+                </li>
+            </ul>
+        </div>
+        <!-- /#sidebar-wrapper -->
+
+        <div id="fixed-top-wrapper">
+            <!-- Fixed navbar -->
+            <nav class="navbar navbar-default navbar-fixed-top">
+                <div class="container-fluid">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        <a id="menu-toggle" class="navbar-brand" href="#menu-toggle"><i class="fa fa-globe"></i></a>
+                    </div>
+                    <div id="navbar" class="navbar-collapse collapse">
+                        <ul class="nav navbar-nav">
+                            <li class="active"><a href="#nav-home">Home</a></li>
+                            <li><a href="#nav-feature">Feature</a></li>
+                            <li><a href="#nav-usage">Usage</a></li>
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="#">Action</a></li>
+                                    <li><a href="#">Another action</a></li>
+                                    <li><a href="#">Something else here</a></li>
+                                    <li role="separator" class="divider"></li>
+                                    <li class="dropdown-header">Nav header</li>
+                                    <li><a href="#">Separated link</a></li>
+                                    <li><a href="#">One more separated link</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
-                <div id="navbar" class="navbar-collapse collapse">
-                    <ul class="nav navbar-nav">
-                        <li class="active"><a href="#nav-home">Home</a></li>
-                        <li><a href="#nav-feature">Feature</a></li>
-                        <li><a href="#nav-usage">Usage</a></li>
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
-                            <ul class="dropdown-menu">
-                                <li><a href="#">Action</a></li>
-                                <li><a href="#">Another action</a></li>
-                                <li><a href="#">Something else here</a></li>
-                                <li role="separator" class="divider"></li>
-                                <li class="dropdown-header">Nav header</li>
-                                <li><a href="#">Separated link</a></li>
-                                <li><a href="#">One more separated link</a></li>
+            </nav>
+        </div>
+
+        <!-- Page Content -->
+        <div id="page-content-wrapper">
+
+            <div class="container-fluid">
+                <div class="row">
+
+                    <div class="header clearfix">
+                        <nav>
+                            <ul class="nav nav-pills pull-right">
+                                <li role="presentation" class="active"><a href="#">Home</a></li>
+                                <li role="presentation"><a href="#">Setting</a></li>
+                                <li role="presentation"><a href="#">Hide</a></li>
                             </ul>
-                        </li>
-                    </ul>
-                </div><!--/.nav-collapse -->
-            </div><!--/.container-fluid -->
-        </nav>
+                        </nav>
+                        <h3 class="text-muted">Dashboard</h3>
+                    </div>
 
-        <div id="nav-home" class="jumbotron">
-            <h1>Hello!</h1>
-            <p class="lead">Make your daily memo with me. </p>
-            <p><a id="new-pad" class="btn btn-lg btn-success" role="button">New pad</a></p>
+                    <!-- Fixed top button -->
+                    <div class="fixed-area">
+                        <a href="#" class="btn btn-primary"><i class="fa fa-arrow-up"></i></a>
+                    </div>
+
+                    <div id="nav-home" class="jumbotron">
+                        <h1>Hello!</h1>
+                        <p class="lead">Make your daily memo with me. </p>
+                        <p><a id="new-pad" class="btn btn-lg btn-success" role="button">New pad</a></p>
+                    </div>
+
+                    <div id="nav-feature" class="row marketing">
+                        <h2>Feature</h2>
+                        <div class="col-md-6 col-sm-12">
+                            <h4>Subheading</h4>
+                            <p>Donec id elit non mi porta gravida at eget metus. Maecenas faucibus mollis interdum.</p>
+
+                            <h4>Subheading</h4>
+                            <p>Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Cras mattis consectetur purus sit amet fermentum.</p>
+
+                            <h4>Subheading</h4>
+                            <p>Maecenas sed diam eget risus varius blandit sit amet non magna.</p>
+                        </div>
+
+                        <div class="col-md-6 col-sm-12">
+                            <h4>Subheading</h4>
+                            <p>Donec id elit non mi porta gravida at eget metus. Maecenas faucibus mollis interdum.</p>
+
+                            <h4>Subheading</h4>
+                            <p>Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Cras mattis consectetur purus sit amet fermentum.</p>
+
+                            <h4>Subheading</h4>
+                            <p>Maecenas sed diam eget risus varius blandit sit amet non magna.</p>
+                        </div>
+                    </div>
+
+                    <div id="nav-usage" class="row marketing">
+                        <h2>Usage</h2>
+                        <div class="col-md-6 col-sm-12">
+                            <h4>Subheading</h4>
+                            <p>Donec id elit non mi porta gravida at eget metus. Maecenas faucibus mollis interdum.</p>
+
+                            <h4>Subheading</h4>
+                            <p>Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Cras mattis consectetur purus sit amet fermentum.</p>
+
+                            <h4>Subheading</h4>
+                            <p>Maecenas sed diam eget risus varius blandit sit amet non magna.</p>
+                        </div>
+
+                        <div class="col-md-6 col-sm-12">
+                            <h4>Subheading</h4>
+                            <p>Donec id elit non mi porta gravida at eget metus. Maecenas faucibus mollis interdum.</p>
+
+                            <h4>Subheading</h4>
+                            <p>Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Cras mattis consectetur purus sit amet fermentum.</p>
+
+                            <h4>Subheading</h4>
+                            <p>Maecenas sed diam eget risus varius blandit sit amet non magna.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
+        <!-- /#page-content-wrapper -->
 
-        <div id="nav-feature" class="row marketing">
-            <h2>Feature</h2>
-            <div class="col-md-6 col-sm-12">
-                <h4>Subheading</h4>
-                <p>Donec id elit non mi porta gravida at eget metus. Maecenas faucibus mollis interdum.</p>
-
-                <h4>Subheading</h4>
-                <p>Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Cras mattis consectetur purus sit amet fermentum.</p>
-
-                <h4>Subheading</h4>
-                <p>Maecenas sed diam eget risus varius blandit sit amet non magna.</p>
-            </div>
-
-            <div class="col-md-6 col-sm-12">
-                <h4>Subheading</h4>
-                <p>Donec id elit non mi porta gravida at eget metus. Maecenas faucibus mollis interdum.</p>
-
-                <h4>Subheading</h4>
-                <p>Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Cras mattis consectetur purus sit amet fermentum.</p>
-
-                <h4>Subheading</h4>
-                <p>Maecenas sed diam eget risus varius blandit sit amet non magna.</p>
-            </div>
-        </div>
-
-        <div id="nav-usage" class="row marketing">
-            <h2>Usage</h2>
-            <div class="col-md-6 col-sm-12">
-                <h4>Subheading</h4>
-                <p>Donec id elit non mi porta gravida at eget metus. Maecenas faucibus mollis interdum.</p>
-
-                <h4>Subheading</h4>
-                <p>Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Cras mattis consectetur purus sit amet fermentum.</p>
-
-                <h4>Subheading</h4>
-                <p>Maecenas sed diam eget risus varius blandit sit amet non magna.</p>
-            </div>
-
-            <div class="col-md-6 col-sm-12">
-                <h4>Subheading</h4>
-                <p>Donec id elit non mi porta gravida at eget metus. Maecenas faucibus mollis interdum.</p>
-
-                <h4>Subheading</h4>
-                <p>Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Cras mattis consectetur purus sit amet fermentum.</p>
-
-                <h4>Subheading</h4>
-                <p>Maecenas sed diam eget risus varius blandit sit amet non magna.</p>
-            </div>
-        </div>
-
+        <!-- footer -->
         <footer class="footer">
             <p>&copy; MIT License.</p>
         </footer>
 
-    </div> <!-- /container -->
+    </div>
+    <!-- /#wrapper -->
 
 </body>
 </html>
