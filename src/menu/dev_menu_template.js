@@ -4,7 +4,7 @@ export var devMenuTemplate = {
     label: 'Development',
     submenu: [{
         label: 'Reload',
-        accelerator: 'CmdOrCtrl+R',
+        accelerator: 'F5',
         click: function () { BrowserWindow.getFocusedWindow().webContents.reloadIgnoringCache() }
     },{
         label: 'Toggle DevTools',

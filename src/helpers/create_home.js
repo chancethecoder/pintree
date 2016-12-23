@@ -69,9 +69,12 @@ export default function (name, options) {
     var saveState = function () {
         if (!win.isMinimized() && !win.isMaximized()) {
             Object.assign(state, getCurrentPosition());
+            // Bug : why window get down 28px for y-axis on save?
+            state.y -= 28;
         }
         // Write a files to current window's directory
         userDataDir.write(stateStoreFile, state, { atomic: true });
+        win = null;
     };
 
     state = ensureVisibleOnSomeDisplay(restore());

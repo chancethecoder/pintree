@@ -1,6 +1,6 @@
 import { app, BrowserWindow } from 'electron';
 
-export var viewMenuTemplate = {
+export var fileMenuTemplate = {
     label: 'File',
     submenu: [{
         label: "New pad",
@@ -9,8 +9,8 @@ export var viewMenuTemplate = {
     },{
         type: "separator"
     },{
-        label: "Quit",
-        accelerator: "CmdOrCtrl+Q",
-        click: function () { app.toggleHome() }
+        label: "All Quit",
+        accelerator: "CmdOrCtrl+Shift+Q",
+        click: function () { app.quit() }
     }]
 };

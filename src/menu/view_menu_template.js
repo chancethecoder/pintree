@@ -18,12 +18,12 @@ export var viewMenuTemplate = {
         accelerator: "F11",
         click: function () { BrowserWindow.getFocusedWindow().maximize() }
     },{
-        label: "Toggle Visibility",
-        accelerator: "CmdOrCtrl+T",
+        label: "Toggle This window's Visibility",
+        accelerator: "CmdOrCtrl+Shift+T",
         click: function () { BrowserWindow.getFocusedWindow().hide() }
     },{
         label: "Toggle Home Visibility",
-        accelerator: "CmdOrCtrl+H",
+        accelerator: "CmdOrCtrl+Shift+H",
         click: function () { app.toggleHome() }
     }]
 };
