@@ -73,7 +73,7 @@ body {
 
 .sidebar-nav li a:hover {
     text-decoration: none;
-    color: #fa6cab;
+    color: #fff;
     background: rgba(255,255,255,0.2);
 }
 
@@ -84,7 +84,7 @@ body {
 
 .sidebar-nav > .sidebar-brand {
     height: 65px;
-    font-size: 18px;
+    font-size: 15px;
     line-height: 60px;
 }
 
@@ -93,13 +93,12 @@ body {
 }
 
 .sidebar-nav > .sidebar-brand a:hover {
-    color: #e2e2e2;
+    color: #fff;
     background: none;
 }
 
 /* Container Styles */
 
-/* Everything but the jumbotron gets side spacing for mobile first views */
 .header,
 .marketing,
 .footer {
@@ -107,12 +106,11 @@ body {
     padding-left: 15px;
 }
 
-/* Custom page header */
 .header {
     padding-bottom: 20px;
     border-bottom: 1px solid #e5e5e5;
 }
-/* Make the masthead heading the same height as the navigation */
+
 .header h3 {
     margin-top: 0;
     margin-bottom: 0;
@@ -130,7 +128,6 @@ body {
     z-index: 99999;
 }
 
-/* Main marketing message and sign up button */
 .jumbotron {
     text-align: center;
     border-bottom: 1px solid #e5e5e5;
@@ -140,7 +137,6 @@ body {
     font-size: 21px;
 }
 
-/* Supporting marketing content */
 .marketing {
     margin: 40px 0;
 }
@@ -148,27 +144,90 @@ body {
     margin-top: 28px;
 }
 
-/* Custom page footer */
 .footer {
     padding-top: 19px;
     color: #777;
     border-top: 1px solid #e5e5e5;
 }
 
+/* Editor Style */
+
+#target {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+}
+
+#wrapper.toggled #target {
+    position: absolute;
+    margin-bottom: -50px;
+}
+
+.PadEditor-root {
+    background: #fff;
+    font-family: 'Georgia', serif;
+    font-size: 14px;
+    padding: 15px;
+}
+
+.PadEditor-editor {
+    cursor: text;
+    font-size: 16px;
+}
+
+.PadEditor-editor .public-DraftEditor-content {
+    margin: 0 -15px -15px;
+    padding: 0 15px 0 15px;
+    min-height: 200px;
+}
+
+.PadEditor-editor .PadEditor-blockquote {
+    border-left: 5px solid #eee;
+    color: #666;
+    font-family: 'Hoefler Text', 'Georgia', serif;
+    font-style: italic;
+    margin: 16px 0;
+    padding: 10px 20px;
+}
+
+.PadEditor-editor .public-DraftStyleDefault-pre {
+    background-color: rgba(0, 0, 0, 0.05);
+    font-family: 'Inconsolata', 'Menlo', 'Consolas', monospace;
+    font-size: 16px;
+    padding: 20px;
+}
+
+.PadEditor-controls {
+    font-family: 'Helvetica', sans-serif;
+    font-size: 14px;
+    margin-bottom: 5px;
+    user-select: none;
+}
+
+.PadEditor-styleButton {
+    color: #999;
+    cursor: pointer;
+    margin-right: 16px;
+    padding: 2px 0;
+    display: inline-block;
+}
+
+.PadEditor-activeButton {
+    color: #5890ff;
+}
+
 /* Responsive: Portrait tablets and up */
+
 @media screen and (min-width: 768px) {
-    /* Remove the padding we set earlier */
     .header,
     .marketing,
     .footer {
         padding-right: 0;
         padding-left: 0;
     }
-    /* Space out the masthead */
     .header {
         margin-bottom: 30px;
     }
-    /* Remove the bottom border on the jumbotron for visual effect */
     .jumbotron {
         border-bottom: 0;
     }

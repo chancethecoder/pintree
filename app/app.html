@@ -30,20 +30,11 @@
         <div id="sidebar-wrapper">
             <ul class="sidebar-nav">
                 <li class="sidebar-brand">
-                    <a href="#">
-                        <i class="fa fa-comments" area-hidden="true"></i>
-                        My Pads
+                    <a href="#" data-target="new-pad">
+                        PADS&nbsp;<i class="fa fa-plus-circle" area-hidden="true"></i>
                     </a>
                 </li>
-                <li>
-                    <a href="#"><i class="fa fa-sticky-note"></i>&nbsp;pad1</a>
-                </li>
-                <li>
-                    <a href="#"><i class="fa fa-sticky-note"></i>&nbsp;pad2</a>
-                </li>
-                <li>
-                    <a href="#"><i class="fa fa-sticky-note"></i>&nbsp;pad3</a>
-                </li>
+                <div id="sidebar-pad-instances"></div>
             </ul>
         </div>
         <!-- /#sidebar-wrapper -->
@@ -109,7 +100,7 @@
                     <div id="nav-home" class="jumbotron">
                         <h1>Hello!</h1>
                         <p class="lead">Make your daily memo with me. </p>
-                        <p><a id="new-pad" class="btn btn-lg btn-success" role="button">New pad</a></p>
+                        <p><a data-target="new-pad" class="btn btn-lg btn-success" role="button">New pad</a></p>
                     </div>
 
                     <div id="nav-feature" class="row marketing">

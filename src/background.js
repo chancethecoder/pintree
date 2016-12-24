@@ -45,6 +45,20 @@ var newPad = function() {
     padWindow.push(pad);
 }
 
+// Return array of pad windows
+var getPad = function() {
+    return padWindow;
+}
+
+// Focus window from id
+var focusPad = function(id) {
+    for(let pad of padWindow) {
+        if(pad.id === id) {
+            pad.focus();
+        }
+    }
+}
+
 // Toggle Main window's visibility
 var toggleHome = function() {
 
@@ -70,6 +84,8 @@ app.on('ready', function () {
     // Bind methods
     this.setApplicationMenu = setApplicationMenu;
     this.newPad = newPad;
+    this.getPad = getPad;
+    this.focusPad = focusPad;
     this.toggleHome = toggleHome;
 
     // Call initial settins methods
