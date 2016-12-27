@@ -9,9 +9,9 @@ var renderSidebar = function() {
     $("#sidebar-pad-instances").empty().append(() => {
         var html = "";
         var pad = app.getPad();
-        for(let win of pad) {
+        for(let instance of pad) {
             html += '<li>';
-            html += '<a href="#" data-id="' + win.id + '" data-target="focus-pad">pad-instance</a>';
+            html += '<a href="#" data-id="' + instance.win.id + '" data-target="focus-pad">pad-instance</a>';
             html += '</li>';
         }
         return html;
