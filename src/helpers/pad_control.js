@@ -31,6 +31,7 @@ Controller.prototype.init = function() {
 // Create new instance
 Controller.prototype.create = function() {
     this.instances.push(new Instance(env.pad));
+    console.log(this.instances.length);
 }
 
 // Return instance array
@@ -53,8 +54,19 @@ Controller.prototype.focus = function(id) {
 }
 
 // Delete instance
-Controller.prototype.remove = function(instance) {
+Controller.prototype.remove = function(id) {
+    for(let ins of this.instances) {
+        if(ins.id == id) {
+            ins.win.close();
+            jetpack.remove(ins.fullpath);
 
+            var idx = this.instances.indexOf(ins);
+            if(idx != -1) {
+                this.instances.splice(idx, 1);
+                console.log(this.instances.length);
+            }
+        }
+    }
 }
 
 // Pad Instance Class

@@ -10,7 +10,11 @@ var renderSidebar = function() {
         var instances = app.PadController.getAll();
         for(let instance of instances) {
             html += '<li>';
-            html += '<a href="#" data-id="' + instance.id + '" data-target="focus-pad">pad-instance</a>';
+            html += '<div data-id="' + instance.id + '">';
+            html += '<a href="#">pad-instance</a>';
+            html += '<a href="#" data-target="focus-pad"><i class="fa fa-eye" area-hidden="true"></i></a>';
+            html += '<a href="#" data-target="delete-pad"><i class="fa fa-trash-o" area-hidden="true"></i></a>';
+            html += '</div>';
             html += '</li>';
         }
         return html;
@@ -18,7 +22,19 @@ var renderSidebar = function() {
 
     // Add event for focus pad
     $('[data-target="focus-pad"]').on('click', function() {
-        app.PadController.focus($(this).data('id'));
+        app.PadController.focus($(this).parent().data('id'));
+    });
+
+    // Add event for creating new pad
+    $('[data-target="delete-pad"]').on('click', function() {
+        app.PadController.remove($(this).parent().data('id'));
+        renderSidebar();
+    });
+
+    // Add event for creating new pad
+    $('[data-target="new-pad"]').on('click', function() {
+        app.PadController.create();
+        renderSidebar();
     });
 }
 
@@ -31,20 +47,6 @@ document.addEventListener('DOMContentLoaded', function () {
         $("#pad-wrapper").toggleClass("toggled");
     });
 
-    // Add event for creating new pad
-    $('[data-target="delete-pad"]').on('click', function() {
-        var instance = app.PadController.get($(this).data('id'));
-        app.PadController.remove(instance);
-        renderSidebar();
-    });
-
-    // Add event for creating new pad
-    $('[data-target="new-pad"]').on('click', function() {
-        app.PadController.create();
-        renderSidebar();
-    });
-
     // Render sidebar
     renderSidebar();
-
 });

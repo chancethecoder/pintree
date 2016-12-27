@@ -66,7 +66,6 @@ body {
 }
 
 .sidebar-nav li a {
-    display: block;
     text-decoration: none;
     color: #ddd;
 }
@@ -74,12 +73,19 @@ body {
 .sidebar-nav li a:hover {
     text-decoration: none;
     color: #fff;
-    background: rgba(255,255,255,0.2);
 }
 
 .sidebar-nav li a:active,
 .sidebar-nav li a:focus {
     text-decoration: none;
+}
+
+.sidebar-nav li div {
+    display: block;
+}
+
+.sidebar-nav li div:hover {
+    background: rgba(255,255,255,0.2);
 }
 
 .sidebar-nav > .sidebar-brand {

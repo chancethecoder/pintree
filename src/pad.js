@@ -3,6 +3,15 @@ import { remote } from "electron";
 
 var app = remote.app;
 
+var instance = () => {
+    var instances = app.PadController.getAll();
+    for(let ins of instances) {
+        if(ins.win.id == BrowserWindow().getFocusedWindow().id) {
+            return ins;
+        }
+    }
+};
+
 var toolbarOptions = [
     ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
     ['blockquote', 'code-block'],
@@ -40,7 +49,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Add event for creating new pad
     $('[data-target="delete-pad"]').on('click', function() {
-        // delete pad
-        app.deletePad();
+        app.PadController.remove(instance.id);
     });
 });
