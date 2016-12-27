@@ -2,6 +2,7 @@
 // app starts. This script is running through entire life of your application.
 // It doesn't have any windows which you can see on screen, but we can open
 // window from here.
+
 import { app, Menu } from 'electron';
 import jetpack from 'fs-jetpack';
 import { devMenuTemplate } from './menu/dev_menu_template';

@@ -17,11 +17,13 @@ gulp.task('bundle', function () {
     return Promise.all([
         bundle(srcDir.path('background.js'), destDir.path('background.js')),
         bundle(srcDir.path('app.js'), destDir.path('app.js')),
+        bundle(srcDir.path('main.js'), destDir.path('main.js')),
+        bundle(srcDir.path('pad.js'), destDir.path('pad.js')),
     ]);
 });
 
 gulp.task('less', function () {
-    return gulp.src(srcDir.path('stylesheets/main.less'))
+    return gulp.src(srcDir.path('stylesheets/app.less'))
         .pipe(plumber())
         .pipe(less())
         .pipe(gulp.dest(destDir.path('stylesheets')));

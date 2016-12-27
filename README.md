@@ -17,14 +17,10 @@ npm start
 
 based on [electron-boilerplate](https://github.com/szwacz/electron-boilerplate), used javascript libraries.
 
-* draft.js
-* react
-* react-dom
+* quill
 * jquery
 * bootstrap
 * font-awesome
-* babel-core
-* es6-shim
 
 # Contribution
 

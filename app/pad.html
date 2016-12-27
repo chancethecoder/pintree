@@ -4,23 +4,26 @@
     <meta charset="utf-8">
     <title>multipad</title>
 
-    <link href="stylesheets/main.css" rel="stylesheet" type="text/css">
-    <!-- import draft.js -->
-    <link href="../node_modules/draft-js/dist/Draft.min.js" rel="stylesheet" type="text/css">
+    <link href="stylesheets/app.css" rel="stylesheet" type="text/css">
     <!-- import bootstrap -->
     <link href="../node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" type="text/css">
     <!-- import font-awesome -->
     <link href="../node_modules/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <!-- import Quill theme -->
+    <link href="../node_modules/quill/dist/quill.snow.css" rel="stylesheet" type="text/css">
 
     <!-- import jQuery -->
     <script>window.$=window.jQuery=require('../node_modules/jquery/dist/jquery.min.js')</script>
     <!-- import bootstrap -->
     <script src="../node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+    <!-- import Quill -->
+    <script src="../node_modules/quill/dist/quill.min.js"></script>
 
     <script src="helpers/context_menu.js"></script>
     <script src="helpers/external_links.js"></script>
 
     <script src="app.js"></script>
+    <script src="pad.js"></script>
 </head>
 <body>
 
@@ -52,17 +55,14 @@
             </div>
         </nav>
     </div>
-    <div id="target"></div>
 
-    <!-- text editor module -->
-    <script src="../node_modules/react/dist/react.js"></script>
-    <script src="../node_modules/react-dom/dist/react-dom.js"></script>
-    <script src="../node_modules/immutable/dist/immutable.js"></script>
-    <script src="../node_modules/es6-shim/es6-shim.js"></script>
-    <script src="../node_modules/babel-core/browser.js"></script>
-    <script src="../node_modules/draft-js/dist/Draft.js"></script>
-    <script src="./helpers/pad_editor.js" type="text/babel">
-        'use strict';
+    <!-- Create the editor container -->
+    <div id="editor"></div>
+
+    <!-- Initialize Quill editor -->
+    <script>
+
     </script>
+
 </body>
 </html>
