@@ -40,16 +40,9 @@ app.on('ready', function () {
     MainController.init();
     PadController.init();
 
-    // Bind methods
-    this.toggleHome = () => MainController.toggle();
-
-    this.newPad = () => PadController.create();
-    this.getPad = () => PadController.get();
-    this.focusPad = () => PadController.focus();
-    this.deletePad = () => PadController.delete();
-
-    // etc
-    this.setApplicationMenu = setApplicationMenu;
+    // Bind controller
+    this.MainController = MainController;
+    this.PadController = PadController;
 
     // Call initial settins methods
     setApplicationMenu();

@@ -5,13 +5,12 @@ import { remote } from 'electron';
 var app = remote.app;
 
 var renderSidebar = function() {
-    // Add pad instances to sidebar navigation
     $("#sidebar-pad-instances").empty().append(() => {
         var html = "";
-        var pad = app.getPad();
-        for(let instance of pad) {
+        var instances = app.PadController.getAll();
+        for(let instance of instances) {
             html += '<li>';
-            html += '<a href="#" data-id="' + instance.win.id + '" data-target="focus-pad">pad-instance</a>';
+            html += '<a href="#" data-id="' + instance.id + '" data-target="focus-pad">pad-instance</a>';
             html += '</li>';
         }
         return html;
@@ -19,8 +18,7 @@ var renderSidebar = function() {
 
     // Add event for focus pad
     $('[data-target="focus-pad"]').on('click', function() {
-        // focus pad
-        app.focusPad($(this).data('id'));
+        app.PadController.focus($(this).data('id'));
     });
 }
 
@@ -35,17 +33,14 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Add event for creating new pad
     $('[data-target="delete-pad"]').on('click', function() {
-        // create pad
-        app.deletePad();
-        // refresh sidebar
+        var instance = app.PadController.get($(this).data('id'));
+        app.PadController.remove(instance);
         renderSidebar();
     });
 
     // Add event for creating new pad
     $('[data-target="new-pad"]').on('click', function() {
-        // create pad
-        app.newPad();
-        // refresh sidebar
+        app.PadController.create();
         renderSidebar();
     });
 

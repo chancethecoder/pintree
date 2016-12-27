@@ -33,14 +33,23 @@ Controller.prototype.create = function() {
     this.instances.push(new Instance(env.pad));
 }
 
-// Create new instance
-Controller.prototype.get = function() {
+// Return instance array
+Controller.prototype.getAll = function() {
     return this.instances;
 }
 
+// Return instance
+Controller.prototype.get = function(id) {
+    for(let ins of this.instances) {
+        if(ins.id == id) return ins;
+    }
+}
+
 // Focus instance
-Controller.prototype.focus = function(instance) {
-    instance.win.focus();
+Controller.prototype.focus = function(id) {
+    for(let ins of this.instances) {
+        if(ins.id == id) ins.win.focus();
+    }
 }
 
 // Delete instance
@@ -48,30 +57,23 @@ Controller.prototype.remove = function(instance) {
 
 }
 
-// Test
-Controller.prototype.test = function() {
-    console.log('it work!');
-}
-
-
 // Pad Instance Class
 function Instance(settings) {
-    console.log(settings);
-
-    this.fullpath   = app.getPath('userData') + '/' + settings.path + "/" + settings.dir;
-    this.statefile  = '/window-state-' + settings.dir +'.json'
-    this.path       = settings.path;
-    this.name       = settings.name;
-    this.dir        = settings.dir;
-    this.state      = settings.state;
 
     // Check whether this instance is new
-    if(this.dir == "") {
+    if(settings.id == "") {
         // By default, dir is blank
-        this.dir = moment().format('YYYYMMDDHHmmss');
-        settings.dir = this.dir;
-        console.log('create:' + settings.dir);
+        this.id = moment().format('YYYYMMDDHHmmss');
+        settings.id = this.id;
+        console.log('create:' + settings.id);
     }
+
+    this.fullpath   = app.getPath('userData') + '/' + settings.path + "/" + settings.id;
+    this.statefile  = 'window-state-' + settings.id +'.json'
+    this.path       = settings.path;
+    this.name       = settings.name;
+    this.id         = settings.id;
+    this.state      = settings.state;
 
     // Create window
     this.win = new BrowserWindow(this.state);
@@ -100,12 +102,12 @@ Instance.prototype.saveState = function() {
     this.state.y -= 28; // Bug : why window get 28px for y-axis?
 
     // Write instance's information to JSON file
-    jetpack.cwd(this.path).write(
-        this.fullpath + "/" + this.statefile,
+    jetpack.cwd(this.fullpath).write(
+        this.statefile,
         {
             'path'  : this.path,
             'name'  : this.name,
-            'dir'   : this.dir,
+            'id'    : this.id,
             'state' : this.state
         },
         { atomic: true }

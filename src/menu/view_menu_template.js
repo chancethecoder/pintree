@@ -7,9 +7,7 @@ export var viewMenuTemplate = {
         accelerator: "CmdOrCtrl+Shift+A",
         click: function () {
             var wins = BrowserWindow.getAllWindows()
-            for (var i = 0, len = wins.length; i < len; i++) {
-                wins[i].show();
-            }
+            for (let win of wins) win.show();
         }
     },{
         type: "separator"
@@ -24,6 +22,6 @@ export var viewMenuTemplate = {
     },{
         label: "Toggle Home Visibility",
         accelerator: "CmdOrCtrl+Shift+H",
-        click: function () { app.toggleHome() }
+        click: function () { app.MainController.toggle() }
     }]
 };

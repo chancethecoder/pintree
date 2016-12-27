@@ -5,7 +5,7 @@ export var fileMenuTemplate = {
     submenu: [{
         label: "New pad",
         accelerator: "CmdOrCtrl+N",
-        click: function () { app.newPad() }
+        click: function () { app.PadController.create() }
     },{
         type: "separator"
     },{
