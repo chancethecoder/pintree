@@ -52,6 +52,14 @@ document.addEventListener('DOMContentLoaded', function () {
     $('[data-toggle="tooltip"]').tooltip();
 
     // Add event for creating new pad
+    $('[data-target="delete-pad"]').on('click', function() {
+        // create pad
+        app.deletePad();
+        // refresh sidebar
+        renderSidebar();
+    });
+
+    // Add event for creating new pad
     $('[data-target="new-pad"]').on('click', function() {
         // create pad
         app.newPad();

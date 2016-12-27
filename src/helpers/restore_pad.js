@@ -6,7 +6,7 @@ import createPad from './create_pad';
 import env from '../env';
 
 export default function () {
-    var padWindow = [];
+    var pads = [];
     var path = app.getPath('userData') + "/" + env.default_pad.path;
 
     // there is no pad instances
@@ -29,11 +29,11 @@ export default function () {
             pad.once('ready-to-show', () => {
                 pad.show()
             });
-            padWindow.push(pad);
+            pads.push(pad);
             console.log('open:' + subdir);
         } catch (e) {
             console.log('fail:' + subdir);
         };
     }
-    return padWindow;
+    return pads;
 }

@@ -54,34 +54,74 @@ class PadEditor extends React.Component {
         var contentState = editorState.getCurrentContent();
 
         return (
-            <div className="PadEditor-root">
-                <BlockStyleControls
-                    editorState={editorState}
-                    onToggle={this.toggleBlockType}
-                />
-                <InlineStyleControls
-                    editorState={editorState}
-                    onToggle={this.toggleInlineStyle}
-                />
-                <hr />
-                <div className={className} onClick={this.focus}>
-                    <Editor
-                        blockStyleFn={getBlockStyle}
-                        customStyleMap={styleMap}
+            <div className="col-md-12">
+                <div className="PadEditor-root">
+                    {/*<ToolBar />*/}
+                    <BlockStyleControls
                         editorState={editorState}
-                        handleKeyCommand={this.handleKeyCommand}
-                        onChange={this.onChange}
-                        onTab={this.onTab}
-                        ref="editor"
-                        spellCheck={true}
+                        onToggle={this.toggleBlockType}
                     />
+                    <InlineStyleControls
+                        editorState={editorState}
+                        onToggle={this.toggleInlineStyle}
+                    />
+                    <hr />
+                    <div className={className} onClick={this.focus}>
+                        <Editor
+                            blockStyleFn={getBlockStyle}
+                            customStyleMap={styleMap}
+                            editorState={editorState}
+                            handleKeyCommand={this.handleKeyCommand}
+                            onChange={this.onChange}
+                            onTab={this.onTab}
+                            ref="editor"
+                            spellCheck={true}
+                        />
+                    </div>
                 </div>
             </div>
         );
     }
 }
 
-// Custom overrides for "code" style.
+
+// Toolbar controls
+
+const ToolBar = () => {
+    return (
+        <div className="PadEditor-controls">
+            <nav className="navbar navbar-default">
+                <div className="navbar-header">
+                    <button type="button" className="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                        <span className="sr-only">Toggle navigation</span>
+                        <span className="icon-bar"></span>
+                        <span className="icon-bar"></span>
+                        <span className="icon-bar"></span>
+                    </button>
+                </div>
+                <div id="navbar" className="navbar-collapse collapse">
+                    <ul className="nav navbar-nav">
+                        <li><a href="#nav-home">Save</a></li>
+                        <li><a href="#nav-feature">Hide</a></li>
+
+                        <li className="dropdown">
+                            <a href="#" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                <i className="fa fa-ellipsis-v"></i>
+                            </a>
+                            <ul className="dropdown-menu">
+                                <li><a href="#" data-target="delete-pad">Delete</a></li>
+                                <li><a href="#">Quit</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+    );
+};
+
+// Stylebutton controls
+
 const styleMap = {
     CODE: {
         backgroundColor: 'rgba(0, 0, 0, 0.05)',
@@ -115,7 +155,7 @@ class StyleButton extends React.Component {
 
         return (
             <span className={className} onMouseDown={this.onToggle}>
-            {this.props.label}
+                {this.props.label}
             </span>
         );
     }
@@ -144,15 +184,15 @@ const BlockStyleControls = (props) => {
 
     return (
         <div className="PadEditor-controls">
-        {BLOCK_TYPES.map((type) =>
-            <StyleButton
-            key={type.label}
-            active={type.style === blockType}
-            label={type.label}
-            onToggle={props.onToggle}
-            style={type.style}
-            />
-        )}
+            {BLOCK_TYPES.map((type) =>
+                <StyleButton
+                    key={type.label}
+                    active={type.style === blockType}
+                    label={type.label}
+                    onToggle={props.onToggle}
+                    style={type.style}
+                />
+            )}
         </div>
     );
 };
@@ -168,15 +208,15 @@ const InlineStyleControls = (props) => {
     var currentStyle = props.editorState.getCurrentInlineStyle();
     return (
         <div className="PadEditor-controls">
-        {INLINE_STYLES.map(type =>
-            <StyleButton
-            key={type.label}
-            active={currentStyle.has(type.style)}
-            label={type.label}
-            onToggle={props.onToggle}
-            style={type.style}
-            />
-        )}
+            {INLINE_STYLES.map(type =>
+                <StyleButton
+                    key={type.label}
+                    active={currentStyle.has(type.style)}
+                    label={type.label}
+                    onToggle={props.onToggle}
+                    style={type.style}
+                />
+            )}
         </div>
     );
 };

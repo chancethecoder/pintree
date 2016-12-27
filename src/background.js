@@ -41,6 +41,7 @@ var newPad = function() {
     pad.loadURL('file://' + __dirname + '/pad.html');
     pad.once('ready-to-show', () => {
         pad.show();
+        pad.center();
     });
     padWindow.push(pad);
 }
@@ -59,7 +60,12 @@ var focusPad = function(id) {
     }
 }
 
-// Toggle Main window's visibility
+// Delete pad instance
+var deletePad = function() {
+    console.log("test");
+}
+
+// Toggle main window's visibility
 var toggleHome = function() {
 
     // Create main window if destroyed before
@@ -86,6 +92,7 @@ app.on('ready', function () {
     this.newPad = newPad;
     this.getPad = getPad;
     this.focusPad = focusPad;
+    this.deletePad = deletePad;
     this.toggleHome = toggleHome;
 
     // Call initial settins methods
