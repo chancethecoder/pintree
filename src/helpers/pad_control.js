@@ -72,20 +72,21 @@ Controller.prototype.remove = function(id) {
 // Pad Instance Class
 function Instance(settings) {
 
+    this.id         = settings.id;
+
     // Check whether this instance is new
     if(settings.id == "") {
         // By default, dir is blank
         this.id = moment().format('YYYYMMDDHHmmss');
-        settings.id = this.id;
-        console.log('create:' + settings.id);
+        // settings.id = this.id;
+        console.log('create:' + this.id);
     }
 
-    this.fullpath   = app.getPath('userData') + '/' + settings.path + "/" + settings.id;
-    this.statefile  = 'window-state-' + settings.id +'.json'
     this.path       = settings.path;
     this.name       = settings.name;
-    this.id         = settings.id;
     this.state      = settings.state;
+    this.fullpath   = app.getPath('userData') + '/' + this.path + "/" + this.id;
+    this.statefile  = 'window-state-' + this.id +'.json'
 
     // Create window
     this.win = new BrowserWindow(this.state);

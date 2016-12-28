@@ -20,22 +20,6 @@ var renderSidebar = function() {
         return html;
     });
 
-    // Add event for focus pad
-    $('[data-target="focus-pad"]').on('click', function() {
-        app.PadController.focus($(this).parent().data('id'));
-    });
-
-    // Add event for creating new pad
-    $('[data-target="delete-pad"]').on('click', function() {
-        app.PadController.remove($(this).parent().data('id'));
-        renderSidebar();
-    });
-
-    // Add event for creating new pad
-    $('[data-target="new-pad"]').on('click', function() {
-        app.PadController.create();
-        renderSidebar();
-    });
 }
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -45,6 +29,23 @@ document.addEventListener('DOMContentLoaded', function () {
         e.preventDefault();
         $("#wrapper").toggleClass("toggled");
         $("#pad-wrapper").toggleClass("toggled");
+    });
+
+    // Add event for focus pad
+    $(document).on('click', '[data-target="focus-pad"]', function() {
+        app.PadController.focus($(this).parent().data('id'));
+    });
+
+    // Add event for creating new pad
+    $(document).on('click', '[data-target="delete-pad"]', function() {
+        app.PadController.remove($(this).parent().data('id'));
+        renderSidebar();
+    });
+
+    // Add event for creating new pad
+    $(document).on('click', '[data-target="new-pad"]', function() {
+        app.PadController.create();
+        renderSidebar();
     });
 
     // Render sidebar
