@@ -49,7 +49,16 @@ Controller.prototype.get = function(id) {
 // Focus instance
 Controller.prototype.focus = function(id) {
     for(let ins of this.instances) {
-        if(ins.id == id) ins.win.focus();
+        if(ins.id == id) {
+            if(ins.win.isDestroyed()) {
+                // Create window
+                ins.win = new BrowserWindow(ins.state);
+                ins.win.loadURL('file://' + __dirname + '/pad.html');
+                ins.win.once('ready-to-show', () => { ins.win.show() });
+                ins.win.on('close', () => { ins.saveState() });
+            }
+            else ins.win.focus();
+        }
     }
 }
 
@@ -57,12 +66,14 @@ Controller.prototype.focus = function(id) {
 Controller.prototype.remove = function(id) {
     for(let ins of this.instances) {
         if(ins.id == id) {
+            console.log("delete:" + ins.id);
             ins.win.close();
             jetpack.remove(ins.fullpath);
 
             var idx = this.instances.indexOf(ins);
             if(idx != -1) {
                 this.instances.splice(idx, 1);
+                ins = null;
                 console.log(this.instances.length);
             }
         }

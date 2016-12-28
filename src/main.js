@@ -11,7 +11,7 @@ var renderSidebar = function() {
         for(let instance of instances) {
             html += '<li>';
             html += '<div data-id="' + instance.id + '">';
-            html += '<a href="#">pad-instance</a>';
+            html += '<a href="#">' + instance.name + '</a>';
             html += '<a href="#" data-target="focus-pad"><i class="fa fa-eye" area-hidden="true"></i></a>';
             html += '<a href="#" data-target="delete-pad"><i class="fa fa-trash-o" area-hidden="true"></i></a>';
             html += '</div>';
@@ -19,7 +19,6 @@ var renderSidebar = function() {
         }
         return html;
     });
-
 }
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -36,7 +35,7 @@ document.addEventListener('DOMContentLoaded', function () {
         app.PadController.focus($(this).parent().data('id'));
     });
 
-    // Add event for creating new pad
+    // Add event for delete pad
     $(document).on('click', '[data-target="delete-pad"]', function() {
         app.PadController.remove($(this).parent().data('id'));
         renderSidebar();
@@ -46,6 +45,10 @@ document.addEventListener('DOMContentLoaded', function () {
     $(document).on('click', '[data-target="new-pad"]', function() {
         app.PadController.create();
         renderSidebar();
+    });
+
+    // Add event for rename pad
+    $(document).on('click', '[data-target="rename-pad"]', function() {
     });
 
     // Render sidebar
