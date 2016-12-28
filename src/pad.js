@@ -1,11 +1,11 @@
 // This is pad.html custom javascript.
-import { remote } from "electron";
+import { remote } from "electron"
+
+require('electron-window').parseArgs()
 
 var app = remote.app;
 
-var id = () => {
-
-}
+var id = window.__args__
 
 var toolbarOptions = [
     ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
@@ -40,21 +40,22 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         },
         theme: 'snow'
-    });
+    })
 
     // Add event for editor actions
-    $(document).on('click', '[data-action="backward"]', () => { editor.history.undo() });
-    $(document).on('click', '[data-action="forward"]', () => { editor.history.redo() });
-    $(document).on('click', '[data-action="erase"]', () => { editor.setText('') });
+    $(document).on('click', '[data-action="backward"]', () => { editor.history.undo() })
+    $(document).on('click', '[data-action="forward"]', () => { editor.history.redo() })
+    $(document).on('click', '[data-action="erase"]', () => { editor.setText('') })
 
     // Add event for creating new pad
     $(document).on('click', '[data-remoteAction="save"]', function() {
         var delta = editor.getContents();
         console.log();
         // app.PadController.save(id, delta);
-    });
+    })
 
     // Add event for creating new pad
     $(document).on('click', '[data-remoteAction="remove"]', function() {
-    });
-});
+    })
+
+})

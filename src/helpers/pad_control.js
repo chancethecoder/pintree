@@ -3,6 +3,8 @@ import jetpack from 'fs-jetpack';
 import moment from 'moment';
 import env from '../env';
 
+const window = require('electron-window')
+
 // Controller Class
 function Controller() {
     this.instances = [];
@@ -67,7 +69,8 @@ Controller.prototype.remove = function(id) {
     for(let ins of this.instances) {
         if(ins.id == id) {
             console.log("delete:" + ins.id);
-            ins.win.close();
+            if(!ins.win.isDestroyed())
+                ins.win.close();
             jetpack.remove(ins.fullpath);
 
             var idx = this.instances.indexOf(ins);
@@ -100,9 +103,10 @@ function Instance(settings) {
     this.statefile  = 'window-state-' + this.id +'.json'
 
     // Create window
-    this.win = new BrowserWindow(this.state);
-    this.win.loadURL('file://' + __dirname + '/pad.html', this.state);
-    this.win.once('ready-to-show', () => { this.win.show() });
+    this.win = window.createWindow(this.state);
+    this.win.showURL(__dirname + '/pad.html', { id: this.id }, () => {
+        this.win.show()
+    });
     this.win.on('close', () => { this.saveState() });
 }
 
