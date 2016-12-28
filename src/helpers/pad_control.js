@@ -101,7 +101,7 @@ function Instance(settings) {
 
     // Create window
     this.win = new BrowserWindow(this.state);
-    this.win.loadURL('file://' + __dirname + '/pad.html');
+    this.win.loadURL('file://' + __dirname + '/pad.html', this.state);
     this.win.once('ready-to-show', () => { this.win.show() });
     this.win.on('close', () => { this.saveState() });
 }

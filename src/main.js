@@ -12,8 +12,8 @@ var renderSidebar = function() {
             html += '<li>';
             html += '<div data-id="' + instance.id + '">';
             html += '<a href="#">' + instance.name + '</a>';
-            html += '<a href="#" data-target="focus-pad"><i class="fa fa-eye" area-hidden="true"></i></a>';
-            html += '<a href="#" data-target="delete-pad"><i class="fa fa-trash-o" area-hidden="true"></i></a>';
+            html += '<a href="#" data-remoteAction="focus"><i class="fa fa-eye" area-hidden="true"></i></a>';
+            html += '<a href="#" data-remoteAction="remove"><i class="fa fa-trash-o" area-hidden="true"></i></a>';
             html += '</div>';
             html += '</li>';
         }
@@ -31,24 +31,24 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     // Add event for focus pad
-    $(document).on('click', '[data-target="focus-pad"]', function() {
+    $(document).on('click', '[data-remoteAction="focus"]', function() {
         app.PadController.focus($(this).parent().data('id'));
     });
 
     // Add event for delete pad
-    $(document).on('click', '[data-target="delete-pad"]', function() {
+    $(document).on('click', '[data-remoteAction="remove"]', function() {
         app.PadController.remove($(this).parent().data('id'));
         renderSidebar();
     });
 
     // Add event for creating new pad
-    $(document).on('click', '[data-target="new-pad"]', function() {
+    $(document).on('click', '[data-remoteAction="create"]', function() {
         app.PadController.create();
         renderSidebar();
     });
 
     // Add event for rename pad
-    $(document).on('click', '[data-target="rename-pad"]', function() {
+    $(document).on('click', '[data-remoteAction="rename"]', function() {
     });
 
     // Render sidebar

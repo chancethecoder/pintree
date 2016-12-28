@@ -39,16 +39,19 @@
             </div>
             <div id="navbar" class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li><a href="#">Save</a></li>
-                    <li><a href="#">Hide</a></li>
+                    <li><a href="#" data-remoteAction="save"><i class="fa fa-floppy-o"></i></a></li>
+                    <li><a href="#" data-action="backward"><i class="fa fa-arrow-left"></i></a></li>
+                    <li><a href="#" data-action="forward"><i class="fa fa-arrow-right"></i></a></li>
+                    <li><a href="#" data-action="erase"><i class="fa fa-eraser"></i></a></li>
 
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                             <i class="fa fa-ellipsis-v"></i>
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a href="#" data-target="delete-pad">Delete</a></li>
-                            <li><a href="#" data-target="quit-pad">Quit</a></li>
+                            <li><a href="#" data-remoteAction="hide">Hide</a></li>
+                            <li><a href="#" data-remoteAction="remove">Delete</a></li>
+                            <li><a href="#" data-remoteAction="clone">Clone</a></li>
                         </ul>
                     </li>
                 </ul>

@@ -3,14 +3,9 @@ import { remote } from "electron";
 
 var app = remote.app;
 
-var instance = () => {
-    var instances = app.PadController.getAll();
-    for(let ins of instances) {
-        if(ins.win.id == BrowserWindow().getFocusedWindow().id) {
-            return ins;
-        }
-    }
-};
+var id = () => {
+
+}
 
 var toolbarOptions = [
     ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
@@ -47,8 +42,19 @@ document.addEventListener('DOMContentLoaded', function () {
         theme: 'snow'
     });
 
+    // Add event for editor actions
+    $(document).on('click', '[data-action="backward"]', () => { editor.history.undo() });
+    $(document).on('click', '[data-action="forward"]', () => { editor.history.redo() });
+    $(document).on('click', '[data-action="erase"]', () => { editor.setText('') });
+
     // Add event for creating new pad
-    $('[data-target="delete-pad"]').on('click', function() {
-        app.PadController.remove(instance.id);
+    $(document).on('click', '[data-remoteAction="save"]', function() {
+        var delta = editor.getContents();
+        console.log();
+        // app.PadController.save(id, delta);
+    });
+
+    // Add event for creating new pad
+    $(document).on('click', '[data-remoteAction="remove"]', function() {
     });
 });
