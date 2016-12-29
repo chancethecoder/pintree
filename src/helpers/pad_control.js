@@ -53,6 +53,8 @@ Controller.prototype.focus = function(id) {
     for(let ins of this.instances) {
         if(ins.id == id) {
             if(ins.win.isDestroyed()) {
+                ins.state.frame = false;
+                ins.state.titleBarStyle = 'hidden-inset';
                 // Create window
                 ins.win = new BrowserWindow(ins.state);
                 ins.win.loadURL('file://' + __dirname + '/pad.html');
