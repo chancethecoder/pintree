@@ -214,13 +214,16 @@ body {
 
     .navbar-toggle {
         display: block;
-        margin-top: 0px;
-        margin-right: 10px;
+        margin: 0px 20px;
+        padding: 5px;
         background-color: white;
 
         i {
             transition: opacity 0.3s;
-            opacity: 0.1;
+            opacity: 0.05;
+        }
+        i.fa-floppy-o {
+            opacity: 0.5;
         }
         &:hover > i {
             opacity: 1;
@@ -266,9 +269,9 @@ body {
     display: none;
     position: fixed;
     top: 0;
-    width: 90%;
-    height: 90%;
-    margin: 5%;
+    width: 60%;
+    height: 60%;
+    margin: 20%;
 
     cursor: move;
     -webkit-app-region: drag;

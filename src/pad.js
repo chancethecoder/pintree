@@ -80,21 +80,38 @@ document.addEventListener('DOMContentLoaded', function () {
         win.setSize(width, Math.round(win.getSize()[1] + easing*15))
         if( t > 0 ) setTimeout(() => resize(type, t-0.05), 13)
     }
-
-    $toolbar.addClass('collapse in')
-    // Move mode
-    $toolbar.first().on('hide.bs.collapse', function () {
-        resize('hide')
-        $icon.addClass('fa-pencil-square').removeClass('fa-floppy-o')
-        editor.disable()
-        $moveLayer.show()
-    })
-    // Edit mode
-    .on('show.bs.collapse', function () {
-        resize('show')
-        $icon.removeClass('fa-pencil-square').addClass('fa-floppy-o')
+    var editMode = function(){
+        $icon.removeClass('fa-pencil-square')
+          .addClass('fa-floppy-o')
+          .attr('data-remoteAction', 'save')
         editor.enable()
         $moveLayer.hide()
+    }
+    var moveMode = function(){
+        $icon.removeClass('fa-floppy-o')
+          .addClass('fa-pencil-square')
+          .attr('data-remoteAction', null)
+        editor.disable()
+        $moveLayer.show()
+    }
+
+    $toolbar.first().on('hide.bs.collapse', function () {
+        moveMode()
+        resize('hide')
     })
+    .on('show.bs.collapse', function () {
+        editMode()
+        resize('show')
+    })
+
+    // Set editor mode
+    if( args['init'] ){
+        $toolbar.addClass('collapse in')
+        editMode()
+    }
+    else{
+        $toolbar.addClass('collapse')
+        moveMode()
+    }
 
 })

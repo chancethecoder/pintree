@@ -53,8 +53,6 @@ Controller.prototype.focus = function(id) {
     for(let ins of this.instances) {
         if(ins.id == id) {
             if(ins.win.isDestroyed()) {
-                ins.state.frame = false;
-                ins.state.titleBarStyle = 'hidden-inset';
                 ins.renderWindow();
             }
             else ins.win.focus();
@@ -119,11 +117,11 @@ function Instance(settings) {
     this.statefile  = 'window-state-' + this.id +'.json'
     this.savefile   = settings.savefile;
 
-    this.renderWindow();
+    this.renderWindow(true);
 }
 
 // Render window view
-Instance.prototype.renderWindow = function() {
+Instance.prototype.renderWindow = function(init) {
 
     // Get args to pass pad.html
     try{
@@ -134,6 +132,7 @@ Instance.prototype.renderWindow = function() {
 
     var args = {
         id: this.id,
+        init,
         content: content
     }
 
