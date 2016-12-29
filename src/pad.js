@@ -4,6 +4,7 @@ import { remote } from "electron"
 require('electron-window').parseArgs()
 
 var app = remote.app;
+var win = remote.getCurrentWindow()
 
 var id = window.__args__
 
@@ -59,9 +60,11 @@ document.addEventListener('DOMContentLoaded', function () {
     })
 
 
-    var win = remote.getCurrentWindow()
+    // init
     var $toolbar = $('.ql-toolbar')
     var $editor = $('#editor')
+    var $icon = $('.collapse-button-wrapper i')
+    var $moveLayer = $('#move-layer')
 
     // Resize event handler
     $editor.css('height', win.getSize()[1])
@@ -72,17 +75,25 @@ document.addEventListener('DOMContentLoaded', function () {
     // Press collapse button
     var resize = function( type, t = 1 ){
         var [ width, height ] = win.getSize()
-        var easing = (type == 'expand') ? t*t : -(t*t)
+        var easing = (type == 'show') ? t*t : -(t*t)
         win.setSize(width, Math.round(win.getSize()[1] + easing*15))
         if( t > 0 ) setTimeout(() => resize(type, t-0.05), 13)
     }
 
-    $toolbar.addClass('collapse')
+    $toolbar.addClass('collapse in')
+    // Move mode
     $toolbar.first().on('hide.bs.collapse', function () {
-        resize('contract')
+        resize('hide')
+        $icon.addClass('fa-pencil-square').removeClass('fa-floppy-o')
+        editor.disable()
+        $moveLayer.show()
     })
+    // Edit mode
     .on('show.bs.collapse', function () {
-        resize('expand')
+        resize('show')
+        $icon.removeClass('fa-pencil-square').addClass('fa-floppy-o')
+        editor.enable()
+        $moveLayer.hide()
     })
 
 })
