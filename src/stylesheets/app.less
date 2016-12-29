@@ -1,7 +1,10 @@
 // This is overall custom css styles.
 // apply to all of html pages
 
-html, body {
+html {
+    height: 100%;
+}
+body {
     overflow-x: hidden;
     overflow-y: hidden;
     height: 100%;
@@ -217,7 +220,7 @@ html, body {
 
         i {
             transition: opacity 0.3s;
-            opacity: 0.1;
+            opacity: 0.05;
         }
         i.fa-floppy-o {
             opacity: 0.5;
@@ -262,12 +265,13 @@ html, body {
     cursor: default;
 }
 
-.move-layer{
+#move-layer{
     display: none;
     position: fixed;
-    bottom: 10px;
-    right: 10px;
-    opacity: 0.1;
+    top: 0;
+    width: 60%;
+    height: 60%;
+    margin: 20%;
 
     cursor: move;
     -webkit-app-region: drag;

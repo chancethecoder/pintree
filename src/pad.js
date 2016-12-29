@@ -65,7 +65,7 @@ document.addEventListener('DOMContentLoaded', function () {
     var $toolbar = $('.ql-toolbar')
     var $editor = $('#editor')
     var $icon = $('.collapse-button-wrapper i')
-    var $moveLayer = $('.move-layer')
+    var $moveLayer = $('#move-layer')
 
     // Resize event handler
     $editor.css('height', win.getSize()[1])
