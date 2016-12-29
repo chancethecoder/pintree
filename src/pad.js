@@ -58,4 +58,31 @@ document.addEventListener('DOMContentLoaded', function () {
     $(document).on('click', '[data-remoteAction="remove"]', function() {
     })
 
+
+    var win = remote.getCurrentWindow()
+    var $toolbar = $('.ql-toolbar')
+    var $editor = $('#editor')
+
+    // Resize event handler
+    $editor.css('height', win.getSize()[1])
+    $(window).on('resize', function() {
+        $editor.css('height', win.getSize()[1])
+    })
+
+    // Press collapse button
+    var resize = function( type, t = 1 ){
+        var [ width, height ] = win.getSize()
+        var easing = (type == 'expand') ? t*t : -(t*t)
+        win.setSize(width, Math.round(win.getSize()[1] + easing*15))
+        if( t > 0 ) setTimeout(() => resize(type, t-0.05), 13)
+    }
+
+    $toolbar.addClass('collapse')
+    $toolbar.first().on('hide.bs.collapse', function () {
+        resize('contract')
+    })
+    .on('show.bs.collapse', function () {
+        resize('expand')
+    })
+
 })

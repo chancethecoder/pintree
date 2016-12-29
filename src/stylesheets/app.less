@@ -1,8 +1,13 @@
 // This is overall custom css styles.
 // apply to all of html pages
 
+html {
+    height: 100%;
+}
 body {
     overflow-x: hidden;
+    overflow-y: hidden;
+    height: 100%;
 }
 
 /* Toggle Styles */
@@ -194,4 +199,40 @@ body {
         position: relative;
         margin-right: 0;
     }
+}
+
+
+
+/* Pad navbar */
+
+.collapse-button-wrapper{
+    position: fixed;
+    right: 0px;
+    z-index: 999;
+
+    .navbar-toggle {
+        display: block;
+        margin-right: 20px;
+        background-color: white;
+    }
+}
+
+#navbar {
+    // Overiding bootstrap
+    .navbar-nav {
+        margin: 7.5px 0px;
+    }
+    .nav > li {
+        display: inline;
+    }
+    .nav > li > a {
+        color: #333;
+        display: inline;
+        padding: 10px 15px;
+    }
+}
+
+#editor {
+  height: auto;
+  overflow-y: hidden;
 }
