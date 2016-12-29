@@ -125,9 +125,6 @@ function Instance(settings) {
 // Render window view
 Instance.prototype.renderWindow = function() {
 
-    this.state.frame = false;
-    this.state.titleBarStyle = 'hidden-inset';
-
     // Get args to pass pad.html
     try{
         console.log('fullpath:' + this.fullpath);

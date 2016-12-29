@@ -9,7 +9,7 @@
     "state": {
       "width": 400,
       "height": 400,
-      "frame": true,
+      "frame": false,
       "backgroundColor": "#fff"
     }
   }
