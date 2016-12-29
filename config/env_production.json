@@ -1,4 +1,16 @@
 {
   "name": "production",
-  "description": "Add here any environment specific stuff you like."
+  "description": "environment settings",
+  "pad": {
+    "path": "pad",
+    "name": "noname",
+    "id": "",
+    "savefile": "savefile.json",
+    "state": {
+      "width": 400,
+      "height": 400,
+      "frame": true,
+      "backgroundColor": "#fff"
+    }
+  }
 }

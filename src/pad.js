@@ -5,7 +5,7 @@ require('electron-window').parseArgs()
 
 var app = remote.app;
 
-var id = window.__args__
+var args = window.__args__
 
 var toolbarOptions = [
     ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
@@ -42,6 +42,8 @@ document.addEventListener('DOMContentLoaded', function () {
         theme: 'snow'
     })
 
+    editor.setContents(args['content']);
+
     // Add event for editor actions
     $(document).on('click', '[data-action="backward"]', () => { editor.history.undo() })
     $(document).on('click', '[data-action="forward"]', () => { editor.history.redo() })
@@ -50,8 +52,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // Add event for creating new pad
     $(document).on('click', '[data-remoteAction="save"]', function() {
         var delta = editor.getContents();
-        console.log();
-        // app.PadController.save(id, delta);
+        app.PadController.save(args['id'], delta);
     })
 
     // Add event for creating new pad

@@ -5,6 +5,7 @@
     "path": "pad",
     "name": "noname",
     "id": "",
+    "savefile": "savefile.json",
     "state": {
       "width": 400,
       "height": 400,

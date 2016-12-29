@@ -21,7 +21,7 @@ Controller.prototype.init = function() {
     for (let subdir of subdirs) {
         try {
             var dir = jetpack.cwd(path + "/" + subdir);
-            var file = dir.find({ matching: ['*.json'] });
+            var file = dir.find({ matching: ['window-state-*'] });
             var state = dir.read(file[0], 'json');
             this.instances.push(new Instance(state));
         } catch (e) {
@@ -83,8 +83,26 @@ Controller.prototype.remove = function(id) {
     }
 }
 
+Controller.prototype.save = function(id, content) {
+    for(let ins of this.instances) {
+        if(ins.id == id) {
+            console.log("save:" + ins.id);
+            console.log("fullpath:" + ins.fullpath);
+            console.log("savefile:" + ins.savefile);
+            console.log("content:" + content);
+
+            jetpack.cwd(ins.fullpath).write(
+                ins.savefile,
+                content,
+                { atomic: true }
+            );
+        }
+    }
+}
+
 // Pad Instance Class
 function Instance(settings) {
+    console.log(settings);
 
     this.id         = settings.id;
 
@@ -101,10 +119,23 @@ function Instance(settings) {
     this.state      = settings.state;
     this.fullpath   = app.getPath('userData') + '/' + this.path + "/" + this.id;
     this.statefile  = 'window-state-' + this.id +'.json'
+    this.savefile   = settings.savefile;
+
+    // Get args to pass pad.html
+    try{
+        console.log('fullpath:' + this.fullpath);
+        console.log('savefile:' + this.savefile);
+        var content = jetpack.cwd(this.fullpath).read(this.savefile, 'json');
+    } catch(e) { console.log('savefile is not exist.'); }
+
+    var args = {
+        id: this.id,
+        content: content
+    }
 
     // Create window
     this.win = window.createWindow(this.state);
-    this.win.showURL(__dirname + '/pad.html', { id: this.id }, () => {
+    this.win.showURL(__dirname + '/pad.html', args, () => {
         this.win.show()
     });
     this.win.on('close', () => { this.saveState() });
@@ -133,10 +164,11 @@ Instance.prototype.saveState = function() {
     jetpack.cwd(this.fullpath).write(
         this.statefile,
         {
-            'path'  : this.path,
-            'name'  : this.name,
-            'id'    : this.id,
-            'state' : this.state
+            'path'      : this.path,
+            'name'      : this.name,
+            'id'        : this.id,
+            "savefile"  : this.savefile,
+            'state'     : this.state
         },
         { atomic: true }
     );
