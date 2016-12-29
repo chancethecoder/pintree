@@ -55,11 +55,7 @@ Controller.prototype.focus = function(id) {
             if(ins.win.isDestroyed()) {
                 ins.state.frame = false;
                 ins.state.titleBarStyle = 'hidden-inset';
-                // Create window
-                ins.win = new BrowserWindow(ins.state);
-                ins.win.loadURL('file://' + __dirname + '/pad.html');
-                ins.win.once('ready-to-show', () => { ins.win.show() });
-                ins.win.on('close', () => { ins.saveState() });
+                ins.renderWindow();
             }
             else ins.win.focus();
         }
@@ -122,6 +118,12 @@ function Instance(settings) {
     this.fullpath   = app.getPath('userData') + '/' + this.path + "/" + this.id;
     this.statefile  = 'window-state-' + this.id +'.json'
     this.savefile   = settings.savefile;
+
+    this.renderWindow();
+}
+
+// Render window view
+Instance.prototype.renderWindow = function() {
 
     // Get args to pass pad.html
     try{
