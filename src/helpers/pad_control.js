@@ -104,6 +104,7 @@ function Instance(settings) {
 
     // Check whether this instance is new
     if(settings.id == "") {
+        var create = true;
         // By default, dir is blank
         this.id = moment().format('YYYYMMDDHHmmss');
         // settings.id = this.id;
@@ -117,11 +118,11 @@ function Instance(settings) {
     this.statefile  = 'window-state-' + this.id +'.json'
     this.savefile   = settings.savefile;
 
-    this.renderWindow(true);
+    this.renderWindow(create);
 }
 
 // Render window view
-Instance.prototype.renderWindow = function(init) {
+Instance.prototype.renderWindow = function(create) {
 
     // Get args to pass pad.html
     try{
@@ -132,7 +133,7 @@ Instance.prototype.renderWindow = function(init) {
 
     var args = {
         id: this.id,
-        init,
+        create,
         content: content
     }
 
