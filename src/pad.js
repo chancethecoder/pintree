@@ -105,7 +105,7 @@ document.addEventListener('DOMContentLoaded', function () {
     })
 
     // Set editor mode
-    if( args['init'] ){
+    if( args['create'] ){
         $toolbar.addClass('collapse in')
         editMode()
     }
