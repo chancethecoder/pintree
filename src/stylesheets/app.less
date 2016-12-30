@@ -62,34 +62,14 @@ body {
     top: 0;
     width: 250px;
     margin: 0;
-    padding: 0;
-    list-style: none;
-    li {
-        text-indent: 20px;
-        line-height: 40px;
-        a {
-            text-decoration: none;
-            color: #ddd;
-        }
-        a:hover {
-            text-decoration: none;
-            color: #fff;
-        }
-        a:active, a:focus {
-            text-decoration: none;
-        }
-        div {
-            display: block;
-        }
-        div:hover {
-            background: rgba(255,255,255,0.2);
-        }
-    }
+    padding: 10px;
     .sidebar-brand {
+        padding-left: 5px;
         height: 65px;
-        font-size: 15px;
+        font-size: 17px;
         line-height: 60px;
         a {
+            text-decoration: none;
             color: #e2e2e2;
         }
         a:hover {
@@ -99,9 +79,35 @@ body {
     }
     .sidebar-label {
         min-height: 40px;
-        padding-left: 10px;
-        padding-right: 10px;
         margin-bottom: 5px;
+    }
+    .sidebar-body {
+        list-style: none;
+        padding: 10px;
+        border-radius: 5px 15px;
+        background-color: #382f39;
+        li {
+            text-indent: 20px;
+            line-height: 40px;
+            a {
+                text-decoration: none;
+                color: #ddd;
+            }
+            a:hover {
+                text-decoration: none;
+                color: #fff;
+            }
+            a:active, a:focus {
+                text-decoration: none;
+            }
+            div {
+                border-radius: 5px 5px;
+                display: block;
+            }
+            div:hover {
+                background: rgba(255,255,255,0.1);
+            }
+        }
     }
 }
 
