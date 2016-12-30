@@ -1,6 +1,7 @@
 import { app, BrowserWindow, screen } from 'electron';
 import jetpack from 'fs-jetpack';
 import moment from 'moment';
+import path from 'path';
 import env from '../env';
 
 const window = require('electron-window')
@@ -12,7 +13,7 @@ function Controller() {
 
 // Initialize
 Controller.prototype.init = function() {
-    var path = app.getPath('userData') + "/" + env.pad.path;
+    var path = app.getPath('userData') + "/" + env.settings.path;
     if(!jetpack.exists(path)) {
         console.log(path + ": there is no pad instances!");
         return;
@@ -32,7 +33,7 @@ Controller.prototype.init = function() {
 
 // Create new instance
 Controller.prototype.create = function() {
-    this.instances.push(new Instance(env.pad));
+    this.instances.push(new Instance(env.settings));
     console.log(this.instances.length);
 }
 
@@ -44,101 +45,100 @@ Controller.prototype.getAll = function() {
 // Return instance
 Controller.prototype.get = function(id) {
     for(let ins of this.instances) {
-        if(ins.id == id) return ins;
+        if(ins.settings.id == id) return ins;
     }
 }
 
 // Focus instance
 Controller.prototype.focus = function(id) {
-    for(let ins of this.instances) {
-        if(ins.id == id) {
-            if(ins.win.isDestroyed()) {
-                ins.renderWindow();
-            }
-            else ins.win.focus();
-        }
-    }
+    let ins = this.get(id);
+    if(ins.win.isDestroyed())
+        ins.renderWindow();
+    else
+        ins.win.focus();
 }
 
 // Delete instance
 Controller.prototype.remove = function(id) {
-    for(let ins of this.instances) {
-        if(ins.id == id) {
-            console.log("delete:" + ins.id);
-            if(!ins.win.isDestroyed())
-                ins.win.close();
-            jetpack.remove(ins.fullpath);
+    let ins = this.get(id);
+    if(!ins.win.isDestroyed())
+        ins.win.close();
+    jetpack.remove(ins.fullpath);
 
-            var idx = this.instances.indexOf(ins);
-            if(idx != -1) {
-                this.instances.splice(idx, 1);
-                ins = null;
-                console.log(this.instances.length);
-            }
-        }
+    var idx = this.instances.indexOf(ins);
+    if(idx != -1) {
+        this.instances.splice(idx, 1);
+        ins = null;
+        console.log(this.instances.length);
     }
 }
 
+// Save content
 Controller.prototype.save = function(id, content) {
-    for(let ins of this.instances) {
-        if(ins.id == id) {
-            console.log("save:" + ins.id);
-            console.log("fullpath:" + ins.fullpath);
-            console.log("savefile:" + ins.savefile);
-            console.log("content:" + content);
+    let ins = this.get(id);
+    console.log("save:" + ins.settings.id);
+    console.log("fullpath:" + ins.fullpath);
+    console.log("savefile:" + ins.settings.savefile);
+    console.log("content:" + content);
 
-            jetpack.cwd(ins.fullpath).write(
-                ins.savefile,
-                content,
-                { atomic: true }
-            );
-        }
-    }
+    jetpack.cwd(ins.fullpath).write(
+        ins.settings.savefile,
+        content,
+        { atomic: true }
+    );
+}
+
+// Update instance
+Controller.prototype.update = function(id, settings) {
+    let ins = this.get(id);
+    ins.setSettings(settings);
 }
 
 // Pad Instance Class
 function Instance(settings) {
-    console.log(settings);
+    this.settings   = {}
+    this.isFirst    = false;
+    this.win        = null;
+    this.fullpath   = null;
+    this.statefile  = null;
+    this.setSettings(settings);
+    this.renderWindow(this.isFirst);
+}
 
-    this.id         = settings.id;
+// Set instance's settings
+Instance.prototype.setSettings = function(settings) {
 
-    // Check whether this instance is new
+    Object.assign(this.settings, settings);
+
+    // This is first initialization of instance.
+    // TO DO: change this to database's PK
     if(settings.id == "") {
-        var create = true;
-        // By default, dir is blank
-        this.id = moment().format('YYYYMMDDHHmmss');
-        // settings.id = this.id;
-        console.log('create:' + this.id);
+        this.settings.id = moment().format('YYYYMMDDHHmmss');
+        this.isFirst = true;
     }
 
-    this.path       = settings.path;
-    this.name       = settings.name;
-    this.state      = settings.state;
-    this.fullpath   = app.getPath('userData') + '/' + this.path + "/" + this.id;
-    this.statefile  = 'window-state-' + this.id +'.json'
-    this.savefile   = settings.savefile;
-
-    this.renderWindow(create);
+    this.fullpath   = path.resolve(app.getPath('userData'), this.settings.path, this.settings.id);
+    this.statefile  = 'window-state-' + this.settings.id +'.json';
+    console.log(this.fullpath);
+    console.log(this.settings);
 }
 
 // Render window view
-Instance.prototype.renderWindow = function(create) {
+Instance.prototype.renderWindow = function(isFirst) {
 
     // Get args to pass pad.html
-    try{
-        console.log('fullpath:' + this.fullpath);
-        console.log('savefile:' + this.savefile);
-        var content = jetpack.cwd(this.fullpath).read(this.savefile, 'json');
+    try {
+        var content = jetpack.cwd(fullpath).read(this.settings.savefile, 'json');
     } catch(e) { console.log('savefile is not exist.'); }
 
     var args = {
-        id: this.id,
-        create,
+        id: this.settings.id,
+        isFirst: isFirst,
         content: content
     }
 
     // Create window
-    this.win = window.createWindow(this.state);
+    this.win = window.createWindow(this.settings.state);
     this.win.showURL(__dirname + '/pad.html', args, () => {
         this.win.show()
     });
@@ -161,19 +161,16 @@ Instance.prototype.getWindowPosition = function() {
 Instance.prototype.saveState = function() {
 
     // Update current instance's window position
-    Object.assign(this.state, this.getWindowPosition());
-    this.state.y -= 28; // Bug : why window get 28px for y-axis?
+    Object.assign(this.settings.state, this.getWindowPosition());
+    this.settings.state.y -= 28; // Bug : why window get 28px for y-axis?
+
+    console.log(this.fullpath);
+    console.log(this.settings);
 
     // Write instance's information to JSON file
     jetpack.cwd(this.fullpath).write(
         this.statefile,
-        {
-            'path'      : this.path,
-            'name'      : this.name,
-            'id'        : this.id,
-            "savefile"  : this.savefile,
-            'state'     : this.state
-        },
+        this.settings,
         { atomic: true }
     );
 }

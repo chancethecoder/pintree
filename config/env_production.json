@@ -1,7 +1,7 @@
 {
   "name": "production",
   "description": "environment settings",
-  "pad": {
+  "settings": {
     "path": "pad",
     "name": "noname",
     "id": "",

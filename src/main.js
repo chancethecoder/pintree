@@ -4,14 +4,16 @@ import { remote } from 'electron';
 
 var app = remote.app;
 
+var id = null;
+
 var renderSidebar = function() {
     $("#sidebar-pad-instances").empty().append(() => {
         var html = "";
         var instances = app.PadController.getAll();
         for(let instance of instances) {
             html += '<li>';
-            html += '<div data-id="' + instance.id + '">';
-            html += '<a href="#">' + instance.name + '</a>';
+            html += '<div data-id="' + instance.settings.id + '">';
+            html += '<a href="#" data-action="getId" data-toggle="modal" data-target="#rename-modal">' + instance.settings.name + '</a>';
             html += '<a href="#" data-remoteAction="focus"><i class="fa fa-eye" area-hidden="true"></i></a>';
             html += '<a href="#" data-remoteAction="remove"><i class="fa fa-trash-o" area-hidden="true"></i></a>';
             html += '</div>';
@@ -28,6 +30,11 @@ document.addEventListener('DOMContentLoaded', function () {
         e.preventDefault();
         $("#wrapper").toggleClass("toggled");
         $("#pad-wrapper").toggleClass("toggled");
+    });
+
+    // Get id
+    $(document).on('click', '[data-action="getId"]', function() {
+        id = $(this).parent().data('id');
     });
 
     // Add event for focus pad
@@ -49,6 +56,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Add event for rename pad
     $(document).on('click', '[data-remoteAction="rename"]', function() {
+        var name = $('#rename-modal').find('#name').val();
+        if(name == "") return;
+        app.PadController.update(id, { name: name });
+        renderSidebar();
     });
 
     // Render sidebar

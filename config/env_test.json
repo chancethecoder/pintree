@@ -1,7 +1,7 @@
 {
   "name": "test",
   "description": "environment settings",
-  "pad": {
+  "settings": {
     "path": "pad",
     "name": "noname",
     "id": "",
