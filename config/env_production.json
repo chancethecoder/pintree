@@ -1,7 +1,7 @@
 {
   "name": "production",
   "description": "environment settings",
-  "pad": {
+  "settings": {
     "path": "pad",
     "name": "noname",
     "id": "",
@@ -10,7 +10,6 @@
       "width": 400,
       "height": 400,
       "frame": false,
-      "titleBarStyle": "hidden-inset",
       "backgroundColor": "#fff"
     }
   }

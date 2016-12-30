@@ -27,7 +27,26 @@
 
         <div class="overlay"></div>
 
-        <!-- Sidebar -->
+        <div id="rename-modal" class="modal fade" role="dialog">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">이름변경</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="your name" id="name">
+                        </div>
+                        <div class="actionBar">
+                            <button type="button" class="btn btn-primary" data-dismiss="modal" data-remoteAction="rename">확인</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- #rename-modal -->
+
         <div id="sidebar-wrapper">
             <ul class="sidebar-nav">
                 <li class="sidebar-brand">
@@ -35,6 +54,12 @@
                         PADS&nbsp;<i class="fa fa-plus-circle" area-hidden="true"></i>
                     </a>
                 </li>
+                <div class="sidebar-label">
+                    <div id="sidebar-label" class="btn-group" role="listbox">
+                        <button type="button" class="btn btn-info active">Label</button>
+                    </div>
+                    <button id="sidebar-label-add" type="button" class="btn btn-info"><i class="fa fa-plus"></i></button>
+                </div>
                 <div id="sidebar-pad-instances"></div>
             </ul>
         </div>
@@ -80,80 +105,9 @@
         <!-- /#static-top-wrapper -->
 
         <div id="page-content-wrapper">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="header clearfix">
-                        <nav>
-                            <ul class="nav nav-pills pull-right">
-                                <li role="presentation" class="active"><a href="#">Home</a></li>
-                                <li role="presentation"><a href="#">Setting</a></li>
-                                <li role="presentation"><a href="#">Hide</a></li>
-                            </ul>
-                        </nav>
-                        <h3 class="text-muted">Dashboard</h3>
-                    </div>
 
-                    <!-- Fixed top button -->
-                    <div class="fixed-area">
-                        <a href="#" class="btn btn-primary"><i class="fa fa-arrow-up"></i></a>
-                    </div>
-
-                    <div id="nav-home" class="jumbotron">
-                        <h1>Hello!</h1>
-                        <p class="lead">Make your daily memo with me. </p>
-                        <p><a data-remoteAction="create" class="btn btn-lg btn-success" role="button">New pad</a></p>
-                    </div>
-
-                    <div id="nav-feature" class="row marketing">
-                        <h2>Feature</h2>
-                        <div class="col-md-6 col-sm-12">
-                            <h4>Subheading</h4>
-                            <p>Donec id elit non mi porta gravida at eget metus. Maecenas faucibus mollis interdum.</p>
-
-                            <h4>Subheading</h4>
-                            <p>Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Cras mattis consectetur purus sit amet fermentum.</p>
-
-                            <h4>Subheading</h4>
-                            <p>Maecenas sed diam eget risus varius blandit sit amet non magna.</p>
-                        </div>
-
-                        <div class="col-md-6 col-sm-12">
-                            <h4>Subheading</h4>
-                            <p>Donec id elit non mi porta gravida at eget metus. Maecenas faucibus mollis interdum.</p>
-
-                            <h4>Subheading</h4>
-                            <p>Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Cras mattis consectetur purus sit amet fermentum.</p>
-
-                            <h4>Subheading</h4>
-                            <p>Maecenas sed diam eget risus varius blandit sit amet non magna.</p>
-                        </div>
-                    </div>
-
-                    <div id="nav-usage" class="row marketing">
-                        <h2>Usage</h2>
-                        <div class="col-md-6 col-sm-12">
-                            <h4>Subheading</h4>
-                            <p>Donec id elit non mi porta gravida at eget metus. Maecenas faucibus mollis interdum.</p>
-
-                            <h4>Subheading</h4>
-                            <p>Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Cras mattis consectetur purus sit amet fermentum.</p>
-
-                            <h4>Subheading</h4>
-                            <p>Maecenas sed diam eget risus varius blandit sit amet non magna.</p>
-                        </div>
-
-                        <div class="col-md-6 col-sm-12">
-                            <h4>Subheading</h4>
-                            <p>Donec id elit non mi porta gravida at eget metus. Maecenas faucibus mollis interdum.</p>
-
-                            <h4>Subheading</h4>
-                            <p>Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Cras mattis consectetur purus sit amet fermentum.</p>
-
-                            <h4>Subheading</h4>
-                            <p>Maecenas sed diam eget risus varius blandit sit amet non magna.</p>
-                        </div>
-                    </div>
-                </div>
+            <div class="container">
+                here is timeline
             </div>
 
             <footer class="footer">
