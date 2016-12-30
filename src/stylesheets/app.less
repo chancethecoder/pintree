@@ -1,10 +1,7 @@
 // This is overall custom css styles.
 // apply to all of html pages
 
-html {
-    height: 100%;
-}
-body {
+html, body {
     overflow-x: hidden;
     overflow-y: hidden;
     height: 100%;
@@ -214,13 +211,16 @@ body {
 
     .navbar-toggle {
         display: block;
-        margin-top: 0px;
-        margin-right: 10px;
+        margin: 0px 20px;
+        padding: 5px;
         background-color: white;
 
         i {
             transition: opacity 0.3s;
             opacity: 0.1;
+        }
+        i.fa-floppy-o {
+            opacity: 0.5;
         }
         &:hover > i {
             opacity: 1;
@@ -262,13 +262,12 @@ body {
     cursor: default;
 }
 
-#move-layer{
+.move-layer{
     display: none;
     position: fixed;
-    top: 0;
-    width: 90%;
-    height: 90%;
-    margin: 5%;
+    bottom: 10px;
+    right: 10px;
+    opacity: 0.1;
 
     cursor: move;
     -webkit-app-region: drag;

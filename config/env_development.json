@@ -8,7 +8,7 @@
     "savefile": "savefile.json",
     "state": {
       "width": 400,
-      "height": 400,
+      "height": 500,
       "frame": false,
       "backgroundColor": "#fff"
     }

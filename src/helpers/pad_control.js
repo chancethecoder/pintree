@@ -53,8 +53,6 @@ Controller.prototype.focus = function(id) {
     for(let ins of this.instances) {
         if(ins.id == id) {
             if(ins.win.isDestroyed()) {
-                ins.state.frame = false;
-                ins.state.titleBarStyle = 'hidden-inset';
                 ins.renderWindow();
             }
             else ins.win.focus();
@@ -106,6 +104,7 @@ function Instance(settings) {
 
     // Check whether this instance is new
     if(settings.id == "") {
+        var create = true;
         // By default, dir is blank
         this.id = moment().format('YYYYMMDDHHmmss');
         // settings.id = this.id;
@@ -119,11 +118,11 @@ function Instance(settings) {
     this.statefile  = 'window-state-' + this.id +'.json'
     this.savefile   = settings.savefile;
 
-    this.renderWindow();
+    this.renderWindow(create);
 }
 
 // Render window view
-Instance.prototype.renderWindow = function() {
+Instance.prototype.renderWindow = function(create) {
 
     // Get args to pass pad.html
     try{
@@ -134,6 +133,7 @@ Instance.prototype.renderWindow = function() {
 
     var args = {
         id: this.id,
+        create,
         content: content
     }
 
