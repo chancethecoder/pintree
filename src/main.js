@@ -57,6 +57,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // Add event for rename pad
     $(document).on('click', '[data-remoteAction="rename"]', function() {
         var name = $('#rename-modal').find('#name').val();
+        if(name == "") return;
         app.PadController.update(id, { name: name });
         renderSidebar();
     });
