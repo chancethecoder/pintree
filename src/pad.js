@@ -9,23 +9,11 @@ var win = remote.getCurrentWindow()
 var args = window.__args__
 
 var toolbarOptions = [
-    ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
-    ['blockquote', 'code-block'],
-
-    [{ 'header': 1 }, { 'header': 2 }],               // custom button values
-    [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-    [{ 'script': 'sub'}, { 'script': 'super' }],      // superscript/subscript
-    [{ 'indent': '-1'}, { 'indent': '+1' }],          // outdent/indent
-    [{ 'direction': 'rtl' }],                         // text direction
-
-    [{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
-    [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
-
-    [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
-    [{ 'font': [] }],
-    [{ 'align': [] }],
-
-    ['clean']                                         // remove formatting button
+    [{ 'font': [] }, { 'size': [] }],
+    [{ 'color': [] }, { 'background': [] }],
+    [ 'bold', 'italic', 'underline', 'strike' ],
+    [{ 'align': [] }, 'code-block'],
+    [ 'link', 'image' ],
 ];
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -48,7 +36,6 @@ document.addEventListener('DOMContentLoaded', function () {
     // Add event for editor actions
     $(document).on('click', '[data-action="backward"]', () => { editor.history.undo() })
     $(document).on('click', '[data-action="forward"]', () => { editor.history.redo() })
-    $(document).on('click', '[data-action="erase"]', () => { editor.setText('') })
 
     // Add event for creating new pad
     $(document).on('click', '[data-remoteAction="save"]', function() {
@@ -56,8 +43,15 @@ document.addEventListener('DOMContentLoaded', function () {
         app.PadController.save(args['id'], delta);
     })
 
-    // Add event for creating new pad
+    // Add event for closing new pad
+    $(document).on('click', '[data-remoteAction="hide"]', function() {
+        $('[data-remoteAction="save"]').trigger('click')
+        close();
+    })
+
+    // Add event for deleting new pad
     $(document).on('click', '[data-remoteAction="remove"]', function() {
+        app.PadController.remove(args['id']);
     })
 
 
@@ -89,7 +83,7 @@ document.addEventListener('DOMContentLoaded', function () {
           .addClass('fa-floppy-o')
           .attr('data-remoteAction', 'save')
         editor.enable()
-        $moveLayer.hide()
+        //$moveLayer.hide()
     }
     var moveMode = function(){
         $icon.removeClass('fa-floppy-o')
