@@ -128,7 +128,7 @@ Instance.prototype.renderWindow = function(isFirst) {
 
     // Get args to pass pad.html
     try {
-        var content = jetpack.cwd(fullpath).read(this.settings.savefile, 'json');
+        var content = jetpack.cwd(this.fullpath).read(this.settings.savefile, 'json');
     } catch(e) { console.log('savefile is not exist.'); }
 
     var args = {
