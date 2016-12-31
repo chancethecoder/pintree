@@ -74,11 +74,15 @@ document.addEventListener('DOMContentLoaded', function () {
     })
 
     // Press collapse button
-    var resize = function( type, t = 1 ){
+    var resize = function( type ){
         var [ width, height ] = win.getSize()
+        var dh = (type == 'show') ? 100 : -100
+        win.setSize(width, height + dh)
+        /*
         var easing = (type == 'show') ? t*t : -(t*t)
         win.setSize(width, Math.round(win.getSize()[1] + easing*15))
-        if( t > 0 ) setTimeout(() => resize(type, t-0.05), 13)
+        if( t > 0 ) setTimeout(() => resize(type, t-0.05), 30)
+        */
     }
     var editMode = function(){
         $icon.removeClass('fa-pencil-square')
