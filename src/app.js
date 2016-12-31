@@ -19,4 +19,5 @@ document.addEventListener('DOMContentLoaded', function () {
         menu.popup(remote.getCurrentWindow())
     }, false)
 
+    $('[data-toggle="tooltip"]').tooltip();
 });

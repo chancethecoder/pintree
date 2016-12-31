@@ -162,7 +162,6 @@ Instance.prototype.saveState = function() {
 
     // Update current instance's window position
     Object.assign(this.settings.state, this.getWindowPosition());
-    this.settings.state.y -= 28; // Bug : why window get 28px for y-axis?
 
     console.log(this.fullpath);
     console.log(this.settings);
