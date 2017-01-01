@@ -8,6 +8,22 @@ html, body {
     -webkit-app-region: drag;
 }
 
+::-webkit-scrollbar {
+    width: 7px;
+}
+::-webkit-scrollbar-track {
+    background-color: #eaeaea;
+    border-left: 1px solid #ccc;
+    border-radius: 8px;
+}
+::-webkit-scrollbar-thumb {
+    background-color: #ccc;
+    border-radius: 8px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background-color: #aaa;
+}
+
 /* Toggle Styles */
 
 #wrapper {
@@ -29,7 +45,7 @@ html, body {
     width: 0;
     height: 100%;
     margin-left: -250px;
-    overflow-y: auto;
+    overflow-y: hidden;
     background-color: #2d2f39;
     -webkit-transition: all 0.5s ease;
     -moz-transition: all 0.5s ease;
@@ -63,46 +79,52 @@ html, body {
     .sidebar-brand {
         padding-left: 5px;
         height: 65px;
-        font-size: 17px;
         line-height: 60px;
+        color: #e2e2e2;
+        span {
+            font-size: 23px;
+            margin-right: 20px;
+        }
         a {
             text-decoration: none;
             color: #e2e2e2;
+            &:hover {
+                color: #fff;
+                background: none;
+            }
         }
-        a:hover {
-            color: #fff;
-            background: none;
-        }
-    }
-    .sidebar-label {
-        min-height: 40px;
-        margin-bottom: 5px;
     }
     .sidebar-body {
+        min-height: 60px;
+        max-height: 400px;
+        overflow: hidden;
         list-style: none;
         padding: 10px;
         border-radius: 5px 15px;
         background-color: #382f39;
-        li {
-            text-indent: 20px;
-            line-height: 40px;
-            a {
-                text-decoration: none;
-                color: #ddd;
-            }
-            a:hover {
-                text-decoration: none;
-                color: #fff;
-            }
-            a:active, a:focus {
-                text-decoration: none;
-            }
-            div {
+        &:hover {
+            overflow: auto;
+        }
+        .sidebar-body-list {
+            li {
+                text-indent: 20px;
+                line-height: 40px;
                 border-radius: 5px 5px;
                 display: block;
-            }
-            div:hover {
-                background: rgba(255,255,255,0.1);
+                &:hover {
+                    background: rgba(0, 0, 0, 0.1);
+                }
+                a {
+                    text-decoration: none;
+                    color: #ddd;
+                    &:hover {
+                        text-decoration: none;
+                        color: #fff;
+                    }
+                    &:active, &:focus {
+                        text-decoration: none;
+                    }
+                }
             }
         }
     }
@@ -149,7 +171,7 @@ ul.social li {
         position: relative;
         font-size: 16px;
         margin: 0;
-        :before {
+        &:before {
             content: "";
             position: absolute;
             left: -23px;
@@ -177,7 +199,7 @@ ul.social li {
     line-height: 1;
     background: #1ABB9C;
     color: #fff !important;
-    :after {
+    &:after {
         content: " ";
         height: 30px;
         width: 0;
@@ -242,14 +264,13 @@ ul.social li {
         display: block;
         margin: 0px 20px;
         padding: 5px;
-        background-color: white;
 
         i {
             transition: opacity 0.3s;
             opacity: 0.1;
         }
         i.fa-floppy-o {
-            opacity: 0.5;
+            opacity: 0.7;
         }
         &:hover > i {
             opacity: 1;
@@ -292,7 +313,6 @@ ul.social li {
 }
 
 .move-layer{
-    display: none;
     position: fixed;
     bottom: 10px;
     right: 10px;

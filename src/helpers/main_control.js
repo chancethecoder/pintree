@@ -46,7 +46,6 @@ Instance.prototype.getWindowPosition = function() {
 // Save when this instance's window closed
 Instance.prototype.saveState = function() {
     Object.assign(this.state, this.getWindowPosition());
-    this.state.y -= 28; // Bug : why window get 28px for y-axis?
     this.dir.write(this.statefile, this.state, { atomic: true });
 }
 

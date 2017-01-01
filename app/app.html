@@ -50,18 +50,13 @@
         <div id="sidebar-wrapper">
             <ul class="sidebar-nav">
                 <div class="sidebar-brand">
-                    <a href="#" data-remoteAction="create">
-                        PADS&nbsp;<i class="fa fa-plus-circle" area-hidden="true"></i>
+                    <span>Board</span>
+                    <a href="#" data-remoteAction="create" data-toggle="tooltip" data-placement="right" title="Create pad">
+                        <i class="fa fa-plus-circle" area-hidden="true"></i>
                     </a>
                 </div>
-                <div class="sidebar-label">
-                    <div id="sidebar-label" class="btn-group" role="listbox">
-                        <button type="button" class="btn btn-info active">Label</button>
-                    </div>
-                    <button id="sidebar-label-add" type="button" class="btn btn-info"><i class="fa fa-plus"></i></button>
-                </div>
                 <div class="sidebar-body">
-                    <div id="sidebar-pad-instances"></div>
+                    <div class="sidebar-body-list"></div>
                 </div>
             </ul>
         </div>

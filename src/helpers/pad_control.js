@@ -128,7 +128,7 @@ Instance.prototype.renderWindow = function(isFirst) {
 
     // Get args to pass pad.html
     try {
-        var content = jetpack.cwd(fullpath).read(this.settings.savefile, 'json');
+        var content = jetpack.cwd(this.fullpath).read(this.settings.savefile, 'json');
     } catch(e) { console.log('savefile is not exist.'); }
 
     var args = {
@@ -162,7 +162,6 @@ Instance.prototype.saveState = function() {
 
     // Update current instance's window position
     Object.assign(this.settings.state, this.getWindowPosition());
-    this.settings.state.y -= 28; // Bug : why window get 28px for y-axis?
 
     console.log(this.fullpath);
     console.log(this.settings);
