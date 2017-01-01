@@ -1,5 +1,4 @@
-import { app, BrowserWindow, screen } from 'electron';
-import jetpack from 'fs-jetpack';
+import { BrowserWindow } from 'electron';
 
 // Main Instance Class
 function Instance() {
@@ -8,31 +7,13 @@ function Instance() {
 
 // Initialize
 Instance.prototype.init = function () {
-    this.fullpath = app.getPath('userData');
-    this.statefile = 'window-state-main.json';
-    this.dir = jetpack.cwd(this.fullpath);
-    this.state = this.restore();
-
-    this.win = new BrowserWindow(this.state);
+    this.win = new BrowserWindow( { show: false } );
     this.win.loadURL('file://' + __dirname + '/app.html');
-    this.win.once('ready-to-show', () => { this.win.show() });
-    this.win.on('close', () => { this.saveState() });
+    this.win.on('close', () => {});
 }
 
-// Restore window state
-Instance.prototype.restore = function() {
-    var restoredState = {};
-    try {
-        restoredState = this.dir.read(this.statefile, 'json');
-    } catch (err) {
-        // For some reason json can't be read (might be corrupted).
-        // No worries, we have defaults.
-    }
-    return Object.assign({}, { width: 800, height: 600 }, restoredState);
-}
-
-// Get current window's position and size
-Instance.prototype.getWindowPosition = function() {
+// Getter
+Instance.prototype.getState = function () {
     var position = this.win.getPosition();
     var size = this.win.getSize();
     return {
@@ -43,12 +24,20 @@ Instance.prototype.getWindowPosition = function() {
     };
 }
 
-// Save when this instance's window closed
-Instance.prototype.saveState = function() {
-    Object.assign(this.state, this.getWindowPosition());
-    this.dir.write(this.statefile, this.state, { atomic: true });
+// Setter
+Instance.prototype.setState = function (state) {
+    console.log(state);
+    this.win.setSize(state.width, state.height);
+    this.win.setPosition(state.x, state.y);
+    this.win.show();
 }
 
+// Destroy window
+Instance.prototype.destroy = function () {
+    this.win = null;
+}
+
+// Toggle window's visibility
 Instance.prototype.toggle = function() {
     if(this.win.isDestroyed()) {
         this.init();

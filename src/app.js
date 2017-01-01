@@ -11,8 +11,8 @@ document.addEventListener('DOMContentLoaded', function () {
     const { Menu, MenuItem } = remote
     const menu = new Menu()
 
-    menu.append(new MenuItem({label: 'New pad', click() { app.newPad() }}))
-    menu.append(new MenuItem({label: 'Hide home', click() { app.toggleHome() }}))
+    menu.append(new MenuItem({label: 'New pad', click() { app.PadController.create() }}))
+    menu.append(new MenuItem({label: 'Hide home', click() { app.MainController.toggle() }}))
 
     window.addEventListener('contextmenu', (e) => {
         e.preventDefault()

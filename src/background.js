@@ -4,7 +4,6 @@
 // window from here.
 
 import { app, Menu } from 'electron';
-import jetpack from 'fs-jetpack';
 import { devMenuTemplate } from './menu/dev_menu_template';
 import { editMenuTemplate } from './menu/edit_menu_template';
 import { fileMenuTemplate } from './menu/file_menu_template';
@@ -13,9 +12,6 @@ import MainController from './helpers/main_control';
 import PadController from './helpers/pad_control';
 import env from './env';
 
-// Save userData in separate folders for each environment.
-// Thanks to this you can use production and development versions of the app
-// on same machine like those are two separate apps.
 if (env.name !== 'production') {
     var userDataPath = app.getPath('userData');
     app.setPath('userData', userDataPath + '(' + env.name + ')');
@@ -31,18 +27,12 @@ var setApplicationMenu = function () {
 };
 
 // Application start point.
-// 1. bind the method in the main process
-// 2. call the method to basic settings
-// 3. create the main renderer process
 app.on('ready', function () {
-
-    // Initialize controller
-    MainController.init();
-    PadController.init();
 
     // Bind controller
     this.MainController = MainController;
     this.PadController = PadController;
+    this.MainController.init();
 
     // Call initial settins methods
     setApplicationMenu();
