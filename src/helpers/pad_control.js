@@ -3,6 +3,7 @@ import jetpack from 'fs-jetpack';
 import moment from 'moment';
 import path from 'path';
 import env from '../env';
+import db from './db'
 
 const window = require('electron-window')
 
@@ -13,22 +14,13 @@ function Controller() {
 
 // Initialize
 Controller.prototype.init = function() {
-    var path = app.getPath('userData') + "/" + env.settings.path;
-    if(!jetpack.exists(path)) {
-        console.log(path + ": there is no pad instances!");
-        return;
-    }
-    var subdirs = jetpack.list(path);
-    for (let subdir of subdirs) {
-        try {
-            var dir = jetpack.cwd(path + "/" + subdir);
-            var file = dir.find({ matching: ['window-state-*'] });
-            var state = dir.read(file[0], 'json');
-            this.instances.push(new Instance(state));
-        } catch (e) {
-
-        };
-    }
+    db.getUser('test')
+    .then( user => {
+        user.pads.map( pad => {
+            this.instances.push(new Instance(pad));
+        })
+    })
+    .catch( err => console.log(err) )
 }
 
 // Create new instance
@@ -96,45 +88,20 @@ Controller.prototype.update = function(id, settings) {
 
 // Pad Instance Class
 function Instance(settings) {
-    this.settings   = {}
-    this.isFirst    = false;
-    this.win        = null;
-    this.fullpath   = null;
-    this.statefile  = null;
-    this.setSettings(settings);
-    this.renderWindow(this.isFirst);
-}
-
-// Set instance's settings
-Instance.prototype.setSettings = function(settings) {
-
+    this.win = null;
+    this.isFirst = settings ? false : true;
+    this.settings = {}
     Object.assign(this.settings, settings);
-
-    // This is first initialization of instance.
-    // TO DO: change this to database's PK
-    if(settings.id == "") {
-        this.settings.id = moment().format('YYYYMMDDHHmmss');
-        this.isFirst = true;
-    }
-
-    this.fullpath   = path.resolve(app.getPath('userData'), this.settings.path, this.settings.id);
-    this.statefile  = 'window-state-' + this.settings.id +'.json';
-    console.log(this.fullpath);
-    console.log(this.settings);
+    this.renderWindow(this.isFirst);
 }
 
 // Render window view
 Instance.prototype.renderWindow = function(isFirst) {
 
-    // Get args to pass pad.html
-    try {
-        var content = jetpack.cwd(this.fullpath).read(this.settings.savefile, 'json');
-    } catch(e) { console.log('savefile is not exist.'); }
-
     var args = {
         id: this.settings.id,
         isFirst: isFirst,
-        content: content
+        content: this.settings.revisions[0].content || ''
     }
 
     // Create window
