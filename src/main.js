@@ -11,13 +11,26 @@ db.get('main').then(function (doc) {
     // Set window state and show
     app.MainController.setState(doc.state);
 }).catch(function (err) {
-    // This is first time to load
-    db.put( { "_id": "main", "state": app.MainController.getState()} );
-    return db.get('main')
+    console.log('This is first time to load');
+    var doc = {
+        "_id": "main",
+        "state": app.MainController.getState()
+    }
+    db.put(doc).then(function () {
+        app.MainController.setState(doc.state);
+    })
 })
 
 // Load pad window's state from database
-
+db.allDocs({
+    include_docs: true,
+    attachments: true,
+    startkey: 'pad_'
+}).then(function (result) {
+    app.PadController.init(result.rows);
+}).catch(function (err) {
+    console.log(err);
+})
 
 // Save main window's state to database
 window.onbeforeunload = function() {
@@ -87,8 +100,29 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Add event for creating new pad
     $(document).on('click', '[data-remoteAction="create"]', function() {
-        app.PadController.create();
-        renderSidebar();
+        // Create new pad's table
+
+        var doc = {
+            _id: 'pad_' + new Date().getTime(),
+            name: 'noname',
+            content: {},
+            state: {
+                x: (window.innerWidth - 400) / 2,
+                y: (window.innerHeight - 400) / 2,
+                width: 400,
+                height: 400,
+                frame: false
+            }
+        };
+
+        db.put(doc).then(function () {
+            doc.isFirst = true;
+            app.PadController.create(doc);
+            // renderSidebar();
+        }).catch(function (err) {
+            console.log(err);
+        })
+
     });
 
     // Add event for rename pad

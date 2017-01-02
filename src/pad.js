@@ -1,12 +1,13 @@
 // This is pad.html custom javascript.
-import { remote } from "electron"
+import { remote } from "electron";
+import PouchDB from 'pouchdb';
 
 require('electron-window').parseArgs()
 
-var app = remote.app;
-var win = remote.getCurrentWindow()
-
-var args = window.__args__
+var app = remote.app,
+    win = remote.getCurrentWindow(),
+    args = window.__args__,
+    db = new PouchDB('db')
 
 var toolbarOptions = [
     [{ 'font': [] }, { 'size': [] }],
@@ -15,6 +16,38 @@ var toolbarOptions = [
     [{ 'align': [] }, 'code-block'],
     [ 'link', 'image' ],
 ];
+
+// Save pad window's state to database
+function save() {
+    // Load state
+    db.get(args._id).then(function (doc) {
+        // Update current state
+        return db.put({
+            _id: doc._id,
+            _rev: doc._rev,
+            name: doc.name,
+            content: doc.content,
+            state: app.PadController.getState(args._id)
+        })
+    }).then(function () {
+        // Remove Callback function to quit window
+        window.onbeforeunload = () => { }
+    }).then(function () {
+        app.PadController.destroy(args._id);   // destroy window
+        window.close();                 // close window
+    })
+    .catch(function (err) {
+        console.log(err);
+        console.log('backoff...');
+        setTimeout(function() {
+            save();
+        }, 2000);
+    })
+    // Prevent close window event
+    return false;
+}
+
+window.onbeforeunload = save();
 
 document.addEventListener('DOMContentLoaded', function () {
 
@@ -40,7 +73,18 @@ document.addEventListener('DOMContentLoaded', function () {
     // Add event for creating new pad
     $(document).on('click', '[data-remoteAction="save"]', function() {
         var delta = editor.getContents();
-        app.PadController.save(args['id'], delta);
+
+        db.get(args._id).then(function (doc) {
+            // Update current state
+            return db.put({
+                _id: doc._id,
+                _rev: doc._rev,
+                content: doc.content,
+            })
+        })
+        .catch(function (err) {
+            console.log(err);
+        })
     })
 
     // Add event for closing new pad
@@ -51,7 +95,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Add event for deleting new pad
     $(document).on('click', '[data-remoteAction="remove"]', function() {
-        app.PadController.remove(args['id']);
+        // app.PadController.remove(args['id']);
     })
 
 
