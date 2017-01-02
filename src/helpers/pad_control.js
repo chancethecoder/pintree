@@ -55,7 +55,7 @@ Controller.prototype.remove = function(id) {
     let ins = this.get(id);
     if(!ins.win.isDestroyed())
         ins.win.close();
-    jetpack.remove(ins.fullpath);
+    db.removePad(id);
 
     var idx = this.instances.indexOf(ins);
     if(idx != -1) {
@@ -68,16 +68,11 @@ Controller.prototype.remove = function(id) {
 // Save content
 Controller.prototype.save = function(id, content) {
     let ins = this.get(id);
-    console.log("save:" + ins.settings.id);
-    console.log("fullpath:" + ins.fullpath);
-    console.log("savefile:" + ins.settings.savefile);
-    console.log("content:" + content);
+    ins.settings.revisions.unshift({id, content, dt: new Date()})
 
-    jetpack.cwd(ins.fullpath).write(
-        ins.settings.savefile,
-        content,
-        { atomic: true }
-    );
+    db.savePad(id, content)
+    .then( result => console.log(result) )
+    .catch( err => console.log(err) )
 }
 
 // Update instance
@@ -130,15 +125,11 @@ Instance.prototype.saveState = function() {
     // Update current instance's window position
     Object.assign(this.settings.state, this.getWindowPosition());
 
-    console.log(this.fullpath);
     console.log(this.settings);
 
-    // Write instance's information to JSON file
-    jetpack.cwd(this.fullpath).write(
-        this.statefile,
-        this.settings,
-        { atomic: true }
-    );
+    db.saveWindow(this.settings.id, this.settings.state)
+    .then( result => console.log(result) )
+    .catch( err => console.log(err) )
 }
 
 export default new Controller();
