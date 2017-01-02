@@ -1,8 +1,4 @@
 import { app, BrowserWindow, screen } from 'electron';
-import jetpack from 'fs-jetpack';
-import moment from 'moment';
-import path from 'path';
-import env from '../env';
 
 const window = require('electron-window')
 
@@ -11,6 +7,39 @@ function Controller() {
     this.instances = [];
 }
 
+// Create new instance
+Controller.prototype.create = function(props) {
+    this.instances.push(new Instance(props));
+    console.log(this.instances.length);
+}
+
+// Initialize
+Controller.prototype.init = function(rows) {
+    // console.log(object);
+    for(let row of rows) {
+        console.log(row.doc);
+        this.instances.push(new Instance(row.doc));
+    }
+}
+
+// Destroy window
+Controller.prototype.destroy = function(id) {
+    this.get(id).win = null;
+}
+
+// Getter
+Controller.prototype.get = function(id) {
+    for(let ins of this.instances) {
+        if(ins.props.id == id) return ins;
+    }
+}
+
+Controller.prototype.getState = function(id) {
+    var ins = this.get(id);
+    return ins.getState();
+}
+
+/*
 // Initialize
 Controller.prototype.init = function() {
     var path = app.getPath('userData') + "/" + env.settings.path;
@@ -29,12 +58,6 @@ Controller.prototype.init = function() {
 
         };
     }
-}
-
-// Create new instance
-Controller.prototype.create = function() {
-    this.instances.push(new Instance(env.settings));
-    console.log(this.instances.length);
 }
 
 // Return instance array
@@ -93,17 +116,38 @@ Controller.prototype.update = function(id, settings) {
     let ins = this.get(id);
     ins.setSettings(settings);
 }
+*/
 
 // Pad Instance Class
-function Instance(settings) {
-    this.settings   = {}
-    this.isFirst    = false;
-    this.win        = null;
-    this.fullpath   = null;
-    this.statefile  = null;
-    this.setSettings(settings);
-    this.renderWindow(this.isFirst);
+function Instance(props) {
+    this.props = props;
+    this.win = null;
+    this.init();
 }
+
+// Initialize
+Instance.prototype.init = function() {
+    this.win = window.createWindow(this.props.state);
+    this.win.showURL(__dirname + '/pad.html', this.props, () => {
+        this.win.show()
+    });
+    this.win.on('close', () => { });
+}
+
+// Getter
+Instance.prototype.getState = function() {
+    var position = this.win.getPosition();
+    var size = this.win.getSize();
+    return {
+        x: position[0],
+        y: position[1],
+        width: size[0],
+        height: size[1],
+        frame: false
+    };
+}
+
+/*
 
 // Set instance's settings
 Instance.prototype.setSettings = function(settings) {
@@ -173,5 +217,6 @@ Instance.prototype.saveState = function() {
         { atomic: true }
     );
 }
+*/
 
 export default new Controller();
