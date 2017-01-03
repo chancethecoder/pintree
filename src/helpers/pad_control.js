@@ -28,9 +28,8 @@ Controller.prototype.init = function() {
 Controller.prototype.create = function() {
     db.createPad(this.user, env.settings.name, env.settings.state)
     .then( result => {
-        env.settings.isFisrt = true;
         env.settings.id = result.insertId;
-        this.instances.push(new Instance(env.settings));
+        this.instances.push(new Instance(env.settings, true));
     })
 }
 
@@ -87,12 +86,11 @@ Controller.prototype.update = function(id, settings) {
 }
 
 // Pad Instance Class
-function Instance(settings) {
+function Instance(settings, isFirst = false) {
     this.win = null;
-    this.isFirst = settings ? false : true;
     this.settings = {}
     Object.assign(this.settings, settings);
-    this.renderWindow(this.isFirst);
+    this.renderWindow(isFirst);
 }
 
 // Render window view
