@@ -78,9 +78,13 @@ var renderSidebar = function() {
         var instances = app.PadController.getAll();
         for(let instance of instances) {
             html += '<li data-id="' + instance.settings.id + '">';
-            html += '<a href="#" data-toggle="modal" data-target="#rename-modal">' + instance.settings.name + '</a>';
-            html += '<a href="#" data-remoteAction="focus"><i class="fa fa-eye" area-hidden="true"></i></a>';
-            html += '<a href="#" data-remoteAction="remove"><i class="fa fa-trash-o" area-hidden="true"></i></a>';
+            html += '<div class="name">'
+            html += '<a href="#" class="name" data-toggle="modal" data-target="#rename-modal">' + instance.settings.name + '</a>';
+            html += '</div>'
+            html += '<div class="toolset">'
+            html += '<a href="#" class="tool" data-remoteAction="focus"><i class="fa fa-eye" area-hidden="true"></i></a>';
+            html += '<a href="#" class="tool" data-remoteAction="remove"><i class="fa fa-trash-o" area-hidden="true"></i></a>';
+            html += '</div>'
             html += '</li>';
         }
         return html;
