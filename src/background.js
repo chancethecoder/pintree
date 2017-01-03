@@ -11,6 +11,7 @@ import { fileMenuTemplate } from './menu/file_menu_template';
 import { viewMenuTemplate } from './menu/view_menu_template';
 import MainController from './helpers/main_control';
 import PadController from './helpers/pad_control';
+import db from './helpers/db';
 import env from './env';
 
 // Save userData in separate folders for each environment.
@@ -36,16 +37,18 @@ var setApplicationMenu = function () {
 // 3. create the main renderer process
 app.on('ready', function () {
 
-    // Initialize controller
-    MainController.init();
-    PadController.init();
-
     // Bind controller
     this.MainController = MainController;
     this.PadController = PadController;
+    this.user = 'test';
 
-    // Call initial settins methods
-    setApplicationMenu();
+    db.getUser(this.user)
+    .then( user => {
+        MainController.init(this.user, user.pads);
+        PadController.init(this.user, user.pads);
+        setApplicationMenu();
+    })
+    .catch( err => console.log(err) )
 
 });
 

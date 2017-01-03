@@ -1,20 +1,28 @@
 import { app, BrowserWindow, screen } from 'electron';
 import jetpack from 'fs-jetpack';
 
+const window = require('electron-window')
+
 // Main Instance Class
 function Instance() {
     this.win = null;
+    this.user = null;
 }
 
 // Initialize
-Instance.prototype.init = function () {
+Instance.prototype.init = function (user, pads) {
     this.fullpath = app.getPath('userData');
     this.statefile = 'window-state-main.json';
     this.dir = jetpack.cwd(this.fullpath);
     this.state = this.restore();
 
-    this.win = new BrowserWindow(this.state);
-    this.win.loadURL('file://' + __dirname + '/app.html');
+    var args = pads;
+
+    // Create window
+    this.win = window.createWindow(this.state);
+    this.win.showURL(__dirname + '/app.html', args, () => {
+        this.win.show()
+    });
     this.win.once('ready-to-show', () => { this.win.show() });
     this.win.on('close', () => { this.saveState() });
 }
