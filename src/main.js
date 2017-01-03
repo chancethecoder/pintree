@@ -43,7 +43,7 @@ var renderTimeline = function() {
                 html += '<div class="byline">'
                 html += '<span>revision id: </span><a>' + rev.id + '</a>'
                 html += '</div>'
-                html += '<p class="excerpt">' + JSON.stringify(rev.content) + '</p>'
+                html += '<p class="excerpt">' + rev.content.ops.reduce( (p,n) => p + n.insert.replace(/\n/g, '<br>'), '' ) + '</p>'
                 html += '</div>'
                 html += '</div>'
             }
