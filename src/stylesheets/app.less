@@ -108,7 +108,6 @@ html, body {
         }
         .sidebar-body-list {
             li {
-                // text-indent: 20px;
                 line-height: 40px;
                 border-radius: 5px 5px;
                 display: block;
@@ -118,7 +117,6 @@ html, body {
                 a {
                     margin-left: 10px;
                     padding: 0 5px;
-                    // margin-right: 10px;
                     text-decoration: none;
                     color: #ddd;
                     &:hover {
@@ -145,9 +143,50 @@ html, body {
 }
 
 ul.timeline li {
+    width: 100%;
+    height: auto;
     position: relative;
     border-bottom: 1px solid #e8e8e8;
     clear: both;
+    .preview-layer {
+        position: absolute;
+        float: inherit;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+        display: none;
+        .top {
+            position: absolute;
+            width: 100%;
+            height: auto;
+            top: 10px;
+            right: 10px;
+            display: none;
+        }
+        .bottom {
+            position: absolute;
+            width: 100%;
+            height: auto;
+            bottom: 15px;
+            text-align: center;
+            display: none;
+        }
+        &:hover {
+            background: rgba(200, 200, 200, 0.1);
+            .top, .bottom {
+                display: block;
+            }
+        }
+    }
+    &.preview {
+        height: auto;
+        max-height: 200px;
+        overflow-y: hidden;
+        .preview-layer {
+            z-index: 9999;
+            display: block;
+        }
+    }
 }
 ul.social li {
     border: 0;
@@ -158,6 +197,9 @@ ul.social li {
         border-left: 3px solid #e8e8e8;
         padding: 10px 15px;
         margin-left: 105px;
+        &:hover {
+            background: rgba(245, 241, 222, 0.5);
+        }
     }
     .tags {
         position: absolute;

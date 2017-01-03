@@ -53,16 +53,19 @@ Controller.prototype.focus = function(id) {
 
 // Delete instance
 Controller.prototype.remove = function(id) {
-    let ins = this.get(id);
-    if(!ins.win.isDestroyed())
-        ins.win.close();
-    db.removePad(id);
 
-    var idx = this.instances.indexOf(ins);
-    if(idx != -1) {
-        this.instances.splice(idx, 1);
-        ins = null;
-    }
+    return db.removePad(id)
+    .then(result => {
+        let ins = this.get(id);
+        if(!ins.win.isDestroyed())
+            ins.win.close();
+        var idx = this.instances.indexOf(ins);
+        if(idx != -1) {
+            this.instances.splice(idx, 1);
+            ins = null;
+        }
+    })
+    .catch(err => console.log(err));
 }
 
 // Save content
@@ -70,7 +73,7 @@ Controller.prototype.save = function(id, content) {
     let ins = this.get(id);
 
     ins.settings.revisions.unshift({
-        id,
+        id: ins.settings.revisions.length + 1,
         content,
         dt: new Date().toISOString().replace('T', ' ').replace(/\..*/, '')
     })
