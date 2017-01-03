@@ -95,7 +95,7 @@ var renderSidebar = function() {
             html += '<a href="#" data-remoteAction="focus" data-toggle="tooltip" data-placement="top" title="Focus">'
             html += '<i class="fa fa-eye" area-hidden="true"></i>'
             html += '</a>';
-            html += '<a href="#" data-remoteAction="remove" data-toggle="tooltip" data-placement="top" title="delete">'
+            html += '<a href="#" data-action="remove" data-toggle="tooltip" data-placement="top" title="delete">'
             html += '<i class="fa fa-trash-o" area-hidden="true"></i>'
             html += '</a>';
             html += '</div>'
@@ -139,18 +139,22 @@ document.addEventListener('DOMContentLoaded', function () {
         $('#rename-modal').modal();
     });
 
+    $(document).on('click', '[data-action="remove"]', function() {
+        $('#remove-modal').modal();
+    });
+
     $(document).on('click', '[data-remoteAction="focus"]', function() {
         app.PadController.focus(id);
     });
 
     $(document).on('click', '[data-remoteAction="remove"]', function() {
         app.PadController.remove(id)
-        .then(render())
+        .then(() => render())
     });
 
     $(document).on('click', '[data-remoteAction="create"]', function() {
         app.PadController.create()
-        .then(render())
+        .then(() => render())
     });
 
     // Add event for rename pad
@@ -158,7 +162,7 @@ document.addEventListener('DOMContentLoaded', function () {
         var name = $('#rename-modal').find('#name').val();
         if(name == "") return;
         app.PadController.update(id, name)
-        .then(render())
+        .then(() => render())
     });
 
     args = args.map( _ => ({ settings: _ }) )
