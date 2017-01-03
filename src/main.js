@@ -15,6 +15,13 @@ var renderTimeline = function() {
         for(let instance of instances) {
             var revs = instance.settings.revisions
             html += '<li>'
+            html += '<div class="preview-layer">'
+            html += '<div class="top">'
+            html += '</div>'
+            html += '<div class="bottom">'
+            html += '<a class="btn btn-round btn-default" role="button">see more</a>'
+            html += '</div>'
+            html += '</div>'
             if (!revs.length) {
                 html += '<div class="block">'
                 html += '<div class="tags">'
@@ -53,6 +60,16 @@ var renderTimeline = function() {
         }
         return html;
     })
+
+    $(".page-content ul li").each(function (index) {
+        if($(this).height() > 200) {
+            var $li = $(this);
+            $(this).addClass("preview");
+            $(this).find("a").click(function() {
+                $li.removeClass("preview");
+            })
+        }
+    })
 }
 
 var renderSidebar = function() {
@@ -79,33 +96,38 @@ document.addEventListener('DOMContentLoaded', function () {
         $("#pad-wrapper").toggleClass("toggled");
     });
 
-    // Get id
+    // Mouseover event
     $(document).on('mouseover', '.sidebar-body-list li', function() {
         id = $(this).data('id');
     });
 
-    // Add event for focus pad
+    $(document).on('mouseover', '.page-content ul li.preview', function() {
+        console.log('zzz');
+    });
+
+    // Click event
     $(document).on('click', '[data-action="refresh"]', function() {
         renderSidebar();
         renderTimeline();
     });
 
-    // Add event for focus pad
     $(document).on('click', '[data-remoteAction="focus"]', function() {
         app.PadController.focus(id);
     });
 
-    // Add event for delete pad
     $(document).on('click', '[data-remoteAction="remove"]', function() {
-        app.PadController.remove(id);
-        renderSidebar();
+        app.PadController.remove(id)
+        .then(function() {
+            renderSidebar();
+            renderTimeline();
+        })
     });
 
-    // Add event for creating new pad
     $(document).on('click', '[data-remoteAction="create"]', function() {
         app.PadController.create()
         .then(function () {
             renderSidebar();
+            renderTimeline();
         })
     });
 
@@ -113,8 +135,11 @@ document.addEventListener('DOMContentLoaded', function () {
     $(document).on('click', '[data-remoteAction="rename"]', function() {
         var name = $('#rename-modal').find('#name').val();
         if(name == "") return;
-        app.PadController.update(id, name);
-        renderSidebar();
+        app.PadController.update(id, name)
+        .then(function() {
+            renderSidebar();
+            renderTimeline();
+        })
     });
 
     args = args.map( _ => ({ settings: _ }) )
