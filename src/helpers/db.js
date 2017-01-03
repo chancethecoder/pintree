@@ -15,6 +15,10 @@ const QUERY = {
         FROM PAD
         WHERE USER_ID = ?
     `,
+    ADD_PAD: `
+        INSERT INTO PAD (USER_ID, PAD_NAME, PAD_STATE, PAD_DT)
+        VALUES (?, ?, ?, NOW())
+    `,
     UPDATE_PAD: `
         UPDATE PAD
         SET PAD_STATE = ?
@@ -86,6 +90,24 @@ function getUser( userId ){
 
 
 /**
+ * 패드를 생성한다
+ * @param  {String} user
+ * @param  {String} padName
+ * @param  {String} state
+ * @return {Promise}
+ */
+function createPad( user, padName, state ){
+    let connection = {}
+
+    return mysql.createConnection(DB_CONFIG)
+    .then( conn => {
+        connection = conn
+        return connection.query(QUERY.ADD_PAD, [user, padName, JSON.stringify(state)])
+    })
+}
+
+
+/**
  * 새로운 리비전을 추가한다
  * @param  {String} padId
  * @param  {String} content
@@ -140,5 +162,6 @@ export default {
   getUser,
   savePad,
   saveWindow,
-  removePad
+  removePad,
+  createPad
 }

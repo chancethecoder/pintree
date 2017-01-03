@@ -14,7 +14,8 @@ function Controller() {
 
 // Initialize
 Controller.prototype.init = function() {
-    db.getUser('test')
+    this.user = 'test'
+    db.getUser(this.user)
     .then( user => {
         user.pads.map( pad => {
             this.instances.push(new Instance(pad));
@@ -25,8 +26,12 @@ Controller.prototype.init = function() {
 
 // Create new instance
 Controller.prototype.create = function() {
-    this.instances.push(new Instance(env.settings));
-    console.log(this.instances.length);
+    db.createPad(this.user, env.settings.name, env.settings.state)
+    .then( result => {
+        env.settings.isFisrt = true;
+        env.settings.id = result.insertId;
+        this.instances.push(new Instance(env.settings));
+    })
 }
 
 // Return instance array
@@ -96,7 +101,9 @@ Instance.prototype.renderWindow = function(isFirst) {
     var args = {
         id: this.settings.id,
         isFirst: isFirst,
-        content: this.settings.revisions[0].content || ''
+        content: this.settings.revisions[0]
+          ? this.settings.revisions[0].content
+          : ''
     }
 
     // Create window

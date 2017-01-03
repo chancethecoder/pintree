@@ -6,6 +6,7 @@
     "name": "noname",
     "id": "",
     "savefile": "savefile.json",
+    "revisions": [],
     "state": {
       "width": 400,
       "height": 500,
