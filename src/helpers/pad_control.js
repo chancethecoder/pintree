@@ -88,7 +88,7 @@ Controller.prototype.update = function(id, name) {
     let ins = this.get(id);
     ins.settings.name = name
 
-    db.saveWindow(ins.settings)
+    return db.saveWindow(ins.settings)
     .then( result => console.log(result) )
     .catch( err => console.log(err) )
 }

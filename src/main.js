@@ -119,6 +119,7 @@ document.addEventListener('DOMContentLoaded', function () {
         app.PadController.remove(id)
         .then(function() {
             renderSidebar();
+            renderTimeline();
         })
     });
 
@@ -126,6 +127,7 @@ document.addEventListener('DOMContentLoaded', function () {
         app.PadController.create()
         .then(function () {
             renderSidebar();
+            renderTimeline();
         })
     });
 
@@ -133,8 +135,11 @@ document.addEventListener('DOMContentLoaded', function () {
     $(document).on('click', '[data-remoteAction="rename"]', function() {
         var name = $('#rename-modal').find('#name').val();
         if(name == "") return;
-        app.PadController.update(id, name);
-        renderSidebar();
+        app.PadController.update(id, name)
+        .then(function() {
+            renderSidebar();
+            renderTimeline();
+        })
     });
 
     args = args.map( _ => ({ settings: _ }) )
