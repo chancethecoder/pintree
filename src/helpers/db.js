@@ -23,7 +23,7 @@ const QUERY = {
     `,
     ADD_PAD: `
         INSERT INTO PAD (USER_ID, PAD_NAME, PAD_STATE, PAD_DT)
-        VALUES (?, ?, ?, ?)
+        VALUES (?, ?, ?, datetime('now'))
     `,
     UPDATE_PAD: `
         UPDATE PAD
@@ -43,7 +43,7 @@ const QUERY = {
     `,
     ADD_REVISION: `
         INSERT INTO REVISION (PAD_ID, REVISION_CONTENT, REVISION_DT)
-        VALUES (?, ?, ?)
+        VALUES (?, ?, datetime('now'))
     `,
     CLEAR_REVISIONS: `
         DELETE FROM REVISION
@@ -68,6 +68,7 @@ function getUser( userId ){
     const getPads = function( userId ){
         return new Promise((resolve, reject) => {
             db.all(QUERY.GET_PADS, [userId], (err, pads) => {
+                //console.log(pads)
                 if(err) reject(err)
                 else resolve(pads)
             })
@@ -81,7 +82,7 @@ function getUser( userId ){
         })
         const reqs = pads.map( pad => new Promise((resolve, reject) => {
             db.all(QUERY.GET_REVISIONS, [pad.id], (err, revs) => {
-                console.log(revs);
+                // console.log(revs);
                 if(err) reject(err)
                 else resolve(revs)
             })
@@ -116,7 +117,7 @@ function createPad( user, padName, state ){
     let connection = {}
 
     return new Promise((resolve, reject) => {
-        db.run(QUERY.ADD_PAD, [user, padName, JSON.stringify(state), new Date()], (err, result) => {
+        db.run(QUERY.ADD_PAD, [user, padName, JSON.stringify(state)], (err, result) => {
             if(err) reject(err)
             else {
                 db.get(QUERY.GET_PADS, [userId], (err, rev) => {
@@ -140,7 +141,7 @@ function savePad( padId, content ){
     let connection = {}
 
     return new Promise((resolve, reject) => {
-        db.run(QUERY.ADD_REVISION, [padId, JSON.stringify(content), new Date()], (err, result) => {
+        db.run(QUERY.ADD_REVISION, [padId, JSON.stringify(content)], (err, result) => {
             if(err) reject(err)
             else resolve(result)
         })

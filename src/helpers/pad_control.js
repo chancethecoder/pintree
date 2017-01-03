@@ -32,6 +32,7 @@ Controller.prototype.create = function() {
 
 // Return instance array
 Controller.prototype.getAll = function() {
+    console.log(this.instances);
     return this.instances;
 }
 
