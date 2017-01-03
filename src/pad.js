@@ -45,7 +45,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Add event for closing new pad
     $(document).on('click', '[data-remoteAction="hide"]', function() {
-        $('[data-remoteAction="save"]').trigger('click')
         close();
     })
 

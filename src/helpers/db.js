@@ -1,6 +1,12 @@
 
 import mysql from 'promise-mysql'
 import { DB_CONFIG } from './secret'
+import fs from 'fs'
+
+const sqlite = require('sqlite3').verbose()
+const db = new sqlite.Database('./database_multipad.db')
+
+const userId = 'test'
 
 
 const QUERY = {
@@ -17,7 +23,7 @@ const QUERY = {
     `,
     ADD_PAD: `
         INSERT INTO PAD (USER_ID, PAD_NAME, PAD_STATE, PAD_DT)
-        VALUES (?, ?, ?, NOW())
+        VALUES (?, ?, ?, ?)
     `,
     UPDATE_PAD: `
         UPDATE PAD
@@ -30,14 +36,14 @@ const QUERY = {
     `,
 
     GET_REVISIONS: `
-        SELECT REVISION_ID id, REVISION_CONTENT content, REVISION_DT dt
+        SELECT REVISION_ID id, PAD_ID, REVISION_CONTENT content, REVISION_DT dt
         FROM REVISION
         WHERE PAD_ID = ?
         ORDER BY id DESC
     `,
     ADD_REVISION: `
         INSERT INTO REVISION (PAD_ID, REVISION_CONTENT, REVISION_DT)
-        VALUES (?, ?, NOW())
+        VALUES (?, ?, ?)
     `,
     CLEAR_REVISIONS: `
         DELETE FROM REVISION
@@ -53,28 +59,38 @@ const QUERY = {
  */
 function getUser( userId ){
     const user = {
-        info: {},
+        info: {
+            id: userId
+        },
         pads: []
     }
-    let connection = {}
 
-    return mysql.createConnection(DB_CONFIG)
-    .then( conn => {
-        connection = conn
-        return connection.query(QUERY.GET_USER, [userId])
-    })
-    .then( users => {
-        user.info = users[0]
-        return connection.query(QUERY.GET_PADS, [userId])
-    })
-    .then( pads => {
+    const getPads = function( userId ){
+        return new Promise((resolve, reject) => {
+            db.all(QUERY.GET_PADS, [userId], (err, pads) => {
+                if(err) reject(err)
+                else resolve(pads)
+            })
+        })
+    }
+
+    const getRevisions = function( pads ){
         user.pads = pads.map( pad => {
             pad.state = JSON.parse(pad.state)
             return pad
         })
-        const reqs = pads.map( pad => connection.query(QUERY.GET_REVISIONS, [pad.id]) )
+        const reqs = pads.map( pad => new Promise((resolve, reject) => {
+            db.all(QUERY.GET_REVISIONS, [pad.id], (err, revs) => {
+                console.log(revs);
+                if(err) reject(err)
+                else resolve(revs)
+            })
+        }))
         return Promise.all(reqs)
-    })
+    }
+
+    return getPads( userId )
+    .then( pads => getRevisions(pads) )
     .then( revs => {
         for(let i in revs){
             revs[i] = revs[i].map( rev => {
@@ -99,10 +115,17 @@ function getUser( userId ){
 function createPad( user, padName, state ){
     let connection = {}
 
-    return mysql.createConnection(DB_CONFIG)
-    .then( conn => {
-        connection = conn
-        return connection.query(QUERY.ADD_PAD, [user, padName, JSON.stringify(state)])
+    return new Promise((resolve, reject) => {
+        db.run(QUERY.ADD_PAD, [user, padName, JSON.stringify(state), new Date()], (err, result) => {
+            if(err) reject(err)
+            else {
+                db.get(QUERY.GET_PADS, [userId], (err, rev) => {
+                    resolve({
+                        insertId: rev.id
+                    })
+                })
+            }
+        })
     })
 }
 
@@ -116,10 +139,11 @@ function createPad( user, padName, state ){
 function savePad( padId, content ){
     let connection = {}
 
-    return mysql.createConnection(DB_CONFIG)
-    .then( conn => {
-        connection = conn
-        return connection.query(QUERY.ADD_REVISION, [padId, JSON.stringify(content)])
+    return new Promise((resolve, reject) => {
+        db.run(QUERY.ADD_REVISION, [padId, JSON.stringify(content), new Date()], (err, result) => {
+            if(err) reject(err)
+            else resolve(result)
+        })
     })
 }
 
@@ -133,10 +157,11 @@ function savePad( padId, content ){
 function saveWindow( padId, state ){
     let connection = {}
 
-    return mysql.createConnection(DB_CONFIG)
-    .then( conn => {
-        connection = conn
-        return connection.query(QUERY.UPDATE_PAD, [JSON.stringify(state), padId])
+    return new Promise((resolve, reject) => {
+        db.run(QUERY.UPDATE_PAD, [JSON.stringify(state), padId], (err, result) => {
+            if(err) reject(err)
+            else resolve(result)
+        })
     })
 }
 
@@ -149,12 +174,22 @@ function saveWindow( padId, state ){
 function removePad( padId, state ){
     let connection = {}
 
-    return mysql.createConnection(DB_CONFIG)
-    .then( conn => {
-        connection = conn
-        return connection.query(QUERY.CLEAR_REVISIONS, [padId])
+    const clearRevisions = function( padId ){
+        return new Promise((resolve, reject) => {
+            db.run(QUERY.CLEAR_REVISIONS, [padId], (err, result) => {
+                if(err) reject(err)
+                else resolve(result)
+            })
+        })
+    }
+
+    return clearRevisions(padId)
+    .then(()=>{
+        db.run(QUERY.DELETE_PAD, [padId], (err, result) => {
+            if(err) Promise.reject(err)
+            else Promise.resolve(result)
+        })
     })
-    .then( result => connection.query(QUERY.DELETE_PAD, [padId]) )
 }
 
 
