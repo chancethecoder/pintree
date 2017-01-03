@@ -18,7 +18,7 @@ var renderTimeline = function() {
             if (!revs.length) {
                 html += '<div class="block">'
                 html += '<div class="tags">'
-                html += '<a href="" class="tag">'
+                html += '<a href="#" class="tag">'
                 html += '<span>' + instance.settings.name + '</span>'
                 html += '</a>'
                 html += '</div>'
@@ -34,7 +34,7 @@ var renderTimeline = function() {
             for(let rev of revs) {
                 html += '<div class="block">'
                 html += '<div class="tags">'
-                html += '<a href="" class="tag">'
+                html += '<a href="#" class="tag">'
                 html += '<span>' + instance.settings.name + '</span>'
                 html += '</a>'
                 html += '</div>'
