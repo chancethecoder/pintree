@@ -16,6 +16,3 @@ Thumbs.db
 /dist
 
 /coverage
-
-# ignore db config
-secret.js
