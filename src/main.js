@@ -21,6 +21,8 @@ var renderSidebar = function() {
     });
 }
 
+setInterval(renderSidebar, 1000);
+
 document.addEventListener('DOMContentLoaded', function () {
 
     // Init sidenav toggle
