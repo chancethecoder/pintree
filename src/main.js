@@ -4,7 +4,56 @@ import { remote } from 'electron';
 
 var app = remote.app;
 
+var args = window.__args__;
+
 var id = null;
+
+var renderTimeline = function() {
+    $(".page-content ul").empty().append(() => {
+        var html = "";
+        var instances = app.PadController.getAll();
+        for(let instance of instances) {
+            var revs = instance.settings.revisions
+            html += '<li>'
+            if (!revs.length) {
+                html += '<div class="block">'
+                html += '<div class="tags">'
+                html += '<a href="" class="tag">'
+                html += '<span>' + instance.settings.name + '</span>'
+                html += '</a>'
+                html += '</div>'
+                html += '<div class="block_content">'
+                html += '<h2 class="title"><a>Empty Revision..</a></h2>'
+                html += '<div class="byline">'
+                html += '<span>no revision</span>'
+                html += '</div>'
+                html += '<p class="excerpt">any content is written yet.</p>'
+                html += '</div>'
+                html += '</div>'
+            }
+            for(let rev of revs) {
+                html += '<div class="block">'
+                html += '<div class="tags">'
+                html += '<a href="" class="tag">'
+                html += '<span>' + instance.settings.name + '</span>'
+                html += '</a>'
+                html += '</div>'
+                html += '<div class="block_content">'
+                html += '<h2 class="title">'
+                html += '<a>' + rev.dt + '</a>'
+                html += '</h2>'
+                html += '<div class="byline">'
+                html += '<span>revision id: </span><a>' + rev.id + '</a>'
+                html += '</div>'
+                html += '<p class="excerpt">' + rev.content.ops.reduce( (p,n) => p + n.insert.replace(/\n/g, '<br>'), '' ) + '</p>'
+                html += '</div>'
+                html += '</div>'
+            }
+            html += '</li>'
+        }
+        return html;
+    })
+}
 
 var renderSidebar = function() {
     $(".sidebar-body-list").empty().append(() => {
@@ -21,8 +70,6 @@ var renderSidebar = function() {
     });
 }
 
-setInterval(renderSidebar, 1000);
-
 document.addEventListener('DOMContentLoaded', function () {
 
     // Init sidenav toggle
@@ -38,6 +85,12 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     // Add event for focus pad
+    $(document).on('click', '[data-action="refresh"]', function() {
+        renderSidebar();
+        renderTimeline();
+    });
+
+    // Add event for focus pad
     $(document).on('click', '[data-remoteAction="focus"]', function() {
         app.PadController.focus(id);
     });
@@ -50,8 +103,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Add event for creating new pad
     $(document).on('click', '[data-remoteAction="create"]', function() {
-        app.PadController.create();
-        renderSidebar();
+        app.PadController.create()
+        .then(function () {
+            renderSidebar();
+        })
     });
 
     // Add event for rename pad
@@ -62,6 +117,10 @@ document.addEventListener('DOMContentLoaded', function () {
         renderSidebar();
     });
 
+    args = args.map( _ => ({ settings: _ }) )
+    console.log(args);
+
     // Render sidebar
     renderSidebar();
+    renderTimeline();
 });
