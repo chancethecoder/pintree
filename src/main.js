@@ -85,6 +85,12 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     // Add event for focus pad
+    $(document).on('click', '[data-action="refresh"]', function() {
+        renderSidebar();
+        renderTimeline();
+    });
+
+    // Add event for focus pad
     $(document).on('click', '[data-remoteAction="focus"]', function() {
         app.PadController.focus(id);
     });
