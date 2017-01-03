@@ -58,13 +58,12 @@ html, body {
 }
 
 #page-content-wrapper {
-    width: 100%;
-    position: absolute;
+    position: relative;
     padding: 15px;
 }
 
 #wrapper.toggled #page-content-wrapper {
-    position: absolute;
+    position: relative;
     margin-right: -250px;
 }
 
@@ -130,7 +129,21 @@ html, body {
     }
 }
 
-/* Timeline Styles */
+/* Page Content Styles */
+.page-content {
+    width: 100%;
+    height: auto;
+    ul {
+        // overflow-y: auto;
+        li {
+            max-height: 200px;
+            overflow-y: hidden;
+            &:hover {
+                overflow-y: auto;
+            }
+        }
+    }
+}
 
 ul.timeline li {
     position: relative;
@@ -144,7 +157,6 @@ ul.social li {
     .block {
         margin: 0;
         border-left: 3px solid #e8e8e8;
-        overflow: visible;
         padding: 10px 15px;
         margin-left: 105px;
     }
@@ -223,7 +235,11 @@ ul.social li {
 
 /* Footer Styles */
 .footer {
-    padding-top: 19px;
+    position: absolute;
+    bottom: 0;
+    height: 60px;
+    width: 100%;
+    padding: 0 15px;
     color: #777;
 }
 
