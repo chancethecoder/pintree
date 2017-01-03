@@ -6,13 +6,6 @@ import fs from 'fs'
 const sqlite = require('sqlite3').verbose()
 const db = new sqlite.Database('./database_multipad.db')
 
-db.serialize(function() {
-    const initSql = fs.readFileSync('./initial-schema.sql').toString()
-    const dataSql = fs.readFileSync('./initial-data.sql').toString()
-    //db.exec( initSql )
-    //db.exec( dataSql )
-})
-
 const userId = 'test'
 
 
@@ -30,7 +23,7 @@ const QUERY = {
     `,
     ADD_PAD: `
         INSERT INTO PAD (USER_ID, PAD_NAME, PAD_STATE, PAD_DT)
-        VALUES (?, ?, ?, date('now'))
+        VALUES (?, ?, ?, ?)
     `,
     UPDATE_PAD: `
         UPDATE PAD
@@ -43,14 +36,14 @@ const QUERY = {
     `,
 
     GET_REVISIONS: `
-        SELECT REVISION_ID id, REVISION_CONTENT content, REVISION_DT dt
+        SELECT REVISION_ID id, PAD_ID, REVISION_CONTENT content, REVISION_DT dt
         FROM REVISION
         WHERE PAD_ID = ?
         ORDER BY id DESC
     `,
     ADD_REVISION: `
         INSERT INTO REVISION (PAD_ID, REVISION_CONTENT, REVISION_DT)
-        VALUES (?, ?, date('now'))
+        VALUES (?, ?, ?)
     `,
     CLEAR_REVISIONS: `
         DELETE FROM REVISION
@@ -88,6 +81,7 @@ function getUser( userId ){
         })
         const reqs = pads.map( pad => new Promise((resolve, reject) => {
             db.all(QUERY.GET_REVISIONS, [pad.id], (err, revs) => {
+                console.log(revs);
                 if(err) reject(err)
                 else resolve(revs)
             })
@@ -122,9 +116,15 @@ function createPad( user, padName, state ){
     let connection = {}
 
     return new Promise((resolve, reject) => {
-        db.run(QUERY.ADD_PAD, [user, padName, JSON.stringify(state)], (err, result) => {
+        db.run(QUERY.ADD_PAD, [user, padName, JSON.stringify(state), new Date()], (err, result) => {
             if(err) reject(err)
-            else resolve(result)
+            else {
+                db.get(QUERY.GET_PADS, [userId], (err, rev) => {
+                    resolve({
+                        insertId: rev.id
+                    })
+                })
+            }
         })
     })
 }
@@ -140,15 +140,9 @@ function savePad( padId, content ){
     let connection = {}
 
     return new Promise((resolve, reject) => {
-        db.run(QUERY.ADD_REVISION, [userId], (err, result) => {
+        db.run(QUERY.ADD_REVISION, [padId, JSON.stringify(content), new Date()], (err, result) => {
             if(err) reject(err)
-            else {
-                db.get(QUERY.GET_REVISIONS, [userId], (err, rev) => {
-                    resolve({
-                        insertId: rev.id
-                    })
-                })
-            }
+            else resolve(result)
         })
     })
 }

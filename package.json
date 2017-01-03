@@ -23,7 +23,7 @@
     ]
   },
   "scripts": {
-    "postinstall": "install-app-deps",
+    "postinstall": "install-app-deps; node initialDB.js",
     "build": "gulp build",
     "prerelease": "gulp build --env=production",
     "release": "build",
