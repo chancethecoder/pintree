@@ -4,6 +4,8 @@ import { remote } from 'electron';
 
 var app = remote.app;
 
+var args = window.__args__;
+
 var id = null;
 
 var renderTimeline = function() {
@@ -68,11 +70,6 @@ var renderSidebar = function() {
     });
 }
 
-setInterval(()=>{
-    renderSidebar()
-    renderTimeline()
-}, 1000);
-
 document.addEventListener('DOMContentLoaded', function () {
 
     // Init sidenav toggle
@@ -100,8 +97,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Add event for creating new pad
     $(document).on('click', '[data-remoteAction="create"]', function() {
-        app.PadController.create();
-        renderSidebar();
+        app.PadController.create()
+        .then(function () {
+            renderSidebar();
+        })
     });
 
     // Add event for rename pad
@@ -111,6 +110,9 @@ document.addEventListener('DOMContentLoaded', function () {
         app.PadController.update(id, { name: name });
         renderSidebar();
     });
+
+    args = args.map( _ => ({ settings: _ }) )
+    console.log(args);
 
     // Render sidebar
     renderSidebar();

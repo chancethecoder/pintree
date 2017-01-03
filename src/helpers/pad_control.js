@@ -10,23 +10,20 @@ const window = require('electron-window')
 // Controller Class
 function Controller() {
     this.instances = [];
+    this.user = null;
 }
 
 // Initialize
-Controller.prototype.init = function() {
-    this.user = 'test'
-    db.getUser(this.user)
-    .then( user => {
-        user.pads.map( pad => {
-            this.instances.push(new Instance(pad));
-        })
+Controller.prototype.init = function(user, pads) {
+    this.user = user
+    pads.forEach( pad => {
+        this.instances.push(new Instance(pad));
     })
-    .catch( err => console.log(err) )
 }
 
 // Create new instance
 Controller.prototype.create = function() {
-    db.createPad(this.user, env.settings.name, env.settings.state)
+    return db.createPad(this.user, env.settings.name, env.settings.state)
     .then( result => {
         env.settings.id = result.insertId;
         this.instances.push(new Instance(env.settings, true));
