@@ -32,7 +32,6 @@ Controller.prototype.create = function() {
 
 // Return instance array
 Controller.prototype.getAll = function() {
-    console.log(this.instances);
     return this.instances;
 }
 
@@ -63,13 +62,13 @@ Controller.prototype.remove = function(id) {
     if(idx != -1) {
         this.instances.splice(idx, 1);
         ins = null;
-        console.log(this.instances.length);
     }
 }
 
 // Save content
 Controller.prototype.save = function(id, content) {
     let ins = this.get(id);
+
     ins.settings.revisions.unshift({
         id,
         content,

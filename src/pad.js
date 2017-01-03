@@ -48,11 +48,6 @@ document.addEventListener('DOMContentLoaded', function () {
         close();
     })
 
-    // Add event for deleting new pad
-    $(document).on('click', '[data-remoteAction="remove"]', function() {
-        app.PadController.remove(args['id']);
-    })
-
 
     // init
     var $toolbar = $('.ql-toolbar')
