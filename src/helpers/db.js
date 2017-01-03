@@ -20,6 +20,7 @@ const QUERY = {
         SELECT PAD_ID id, PAD_NAME name, PAD_STATE state, PAD_DT dt
         FROM PAD
         WHERE USER_ID = ?
+        ORDER BY id DESC
     `,
     ADD_PAD: `
         INSERT INTO PAD (USER_ID, PAD_NAME, PAD_STATE, PAD_DT)

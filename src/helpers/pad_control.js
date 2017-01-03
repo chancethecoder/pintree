@@ -26,7 +26,7 @@ Controller.prototype.create = function() {
     return db.createPad(this.user, env.settings.name, env.settings.state)
     .then( result => {
         env.settings.id = result.insertId;
-        this.instances.push(new Instance(env.settings, true));
+        this.instances.unshift(new Instance(env.settings, true));
     })
 }
 
@@ -70,7 +70,11 @@ Controller.prototype.remove = function(id) {
 // Save content
 Controller.prototype.save = function(id, content) {
     let ins = this.get(id);
-    ins.settings.revisions.unshift({id, content, dt: new Date()})
+    ins.settings.revisions.unshift({
+        id,
+        content,
+        dt: new Date().toISOString().replace('T', ' ').replace(/\..*/, '')
+    })
 
     db.savePad(id, content)
     .then( result => console.log(result) )
