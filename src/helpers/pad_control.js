@@ -81,9 +81,13 @@ Controller.prototype.save = function(id, content) {
 }
 
 // Update instance
-Controller.prototype.update = function(id, settings) {
+Controller.prototype.update = function(id, name) {
     let ins = this.get(id);
-    ins.setSettings(settings);
+    ins.settings.name = name
+
+    db.saveWindow(ins.settings)
+    .then( result => console.log(result) )
+    .catch( err => console.log(err) )
 }
 
 // Pad Instance Class
@@ -133,7 +137,7 @@ Instance.prototype.saveState = function() {
 
     console.log(this.settings);
 
-    db.saveWindow(this.settings.id, this.settings.state)
+    db.saveWindow(this.settings)
     .then( result => console.log(result) )
     .catch( err => console.log(err) )
 }

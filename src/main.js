@@ -113,7 +113,7 @@ document.addEventListener('DOMContentLoaded', function () {
     $(document).on('click', '[data-remoteAction="rename"]', function() {
         var name = $('#rename-modal').find('#name').val();
         if(name == "") return;
-        app.PadController.update(id, { name: name });
+        app.PadController.update(id, name);
         renderSidebar();
     });
 

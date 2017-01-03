@@ -1,5 +1,4 @@
 
-import mysql from 'promise-mysql'
 import { DB_CONFIG } from './secret'
 import fs from 'fs'
 
@@ -28,7 +27,7 @@ const QUERY = {
     `,
     UPDATE_PAD: `
         UPDATE PAD
-        SET PAD_STATE = ?
+        SET PAD_STATE = ?, PAD_NAME = ?
         WHERE PAD_ID = ?
     `,
     DELETE_PAD: `
@@ -156,11 +155,11 @@ function savePad( padId, content ){
  * @param  {String} state
  * @return {Promise}
  */
-function saveWindow( padId, state ){
+function saveWindow( {id: padId, name, state} ){
     let connection = {}
 
     return new Promise((resolve, reject) => {
-        db.run(QUERY.UPDATE_PAD, [JSON.stringify(state), padId], (err, result) => {
+        db.run(QUERY.UPDATE_PAD, [JSON.stringify(state), name, padId], (err, result) => {
             if(err) reject(err)
             else resolve(result)
         })
