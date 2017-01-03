@@ -15,13 +15,25 @@ var renderTimeline = function() {
         for(let instance of instances) {
             var revs = instance.settings.revisions
             html += '<li>'
+            /* preview div */
             html += '<div class="preview-layer">'
             html += '<div class="top">'
             html += '</div>'
             html += '<div class="bottom">'
-            html += '<a class="btn btn-round btn-default" role="button">see more</a>'
+            html += '<a class="toggle btn btn-round btn-default" role="button">see more</a>'
             html += '</div>'
             html += '</div>'
+            /* /preview div */
+            /* toolbar div */
+            html += '<div class="toolbar-layer">'
+            html += '<div class="btn-group">'
+            html += '<a class="toggle btn btn-default" role="button" data-toggle="tooltip" data-placement="bottom" title="Collapse">'
+            html += '<i class="fa fa-compress"></i>'
+            html += '</a>'
+            html += '<a class="btn btn-default" role="button"><i class="fa fa-ellipsis-v"></i></a>'
+            html += '</div>'
+            html += '</div>'
+            /* /toolbar div */
             if (!revs.length) {
                 html += '<div class="block">'
                 html += '<div class="tags">'
@@ -63,11 +75,9 @@ var renderTimeline = function() {
 
     $(".page-content ul li").each(function (index) {
         if($(this).height() > 200) {
-            var $li = $(this);
-            $(this).addClass("preview");
-            $(this).find("a").click(function() {
-                $li.removeClass("preview");
-            })
+            $(this).toggleClass("preview");
+        } else {
+            $(this).toggleClass("non-preview");
         }
     })
 }
@@ -79,11 +89,15 @@ var renderSidebar = function() {
         for(let instance of instances) {
             html += '<li data-id="' + instance.settings.id + '">';
             html += '<div class="name">'
-            html += '<a href="#" class="name" data-toggle="modal" data-target="#rename-modal">' + instance.settings.name + '</a>';
+            html += '<a href="#" data-action="rename" data-toggle="tooltip" data-placement="top" title="Rename">' + instance.settings.name + '</a>';
             html += '</div>'
             html += '<div class="toolset">'
-            html += '<a href="#" class="tool" data-remoteAction="focus"><i class="fa fa-eye" area-hidden="true"></i></a>';
-            html += '<a href="#" class="tool" data-remoteAction="remove"><i class="fa fa-trash-o" area-hidden="true"></i></a>';
+            html += '<a href="#" data-remoteAction="focus" data-toggle="tooltip" data-placement="top" title="Focus">'
+            html += '<i class="fa fa-eye" area-hidden="true"></i>'
+            html += '</a>';
+            html += '<a href="#" data-remoteAction="remove" data-toggle="tooltip" data-placement="top" title="delete">'
+            html += '<i class="fa fa-trash-o" area-hidden="true"></i>'
+            html += '</a>';
             html += '</div>'
             html += '</li>';
         }
@@ -91,28 +105,38 @@ var renderSidebar = function() {
     });
 }
 
+var render = function() {
+    renderSidebar();
+    renderTimeline();
+    $('[data-toggle="tooltip"]').tooltip();
+}
+
 document.addEventListener('DOMContentLoaded', function () {
 
-    // Init sidenav toggle
+    // Toggle event
     $("#menu-toggle").click(function(e) {
         e.preventDefault();
         $("#wrapper").toggleClass("toggled");
         $("#pad-wrapper").toggleClass("toggled");
     });
 
+    $(document).on('click', ".page-content ul li a.toggle", function (index) {
+        var $li = $(this).closest('li');
+        $li.toggleClass('preview');
+    })
+
     // Mouseover event
     $(document).on('mouseover', '.sidebar-body-list li', function() {
         id = $(this).data('id');
     });
 
-    $(document).on('mouseover', '.page-content ul li.preview', function() {
-        console.log('zzz');
-    });
-
     // Click event
     $(document).on('click', '[data-action="refresh"]', function() {
-        renderSidebar();
-        renderTimeline();
+        render();
+    });
+
+    $(document).on('click', '[data-action="rename"]', function() {
+        $('#rename-modal').modal();
     });
 
     $(document).on('click', '[data-remoteAction="focus"]', function() {
@@ -121,18 +145,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
     $(document).on('click', '[data-remoteAction="remove"]', function() {
         app.PadController.remove(id)
-        .then(function() {
-            renderSidebar();
-            renderTimeline();
-        })
+        .then(render())
     });
 
     $(document).on('click', '[data-remoteAction="create"]', function() {
         app.PadController.create()
-        .then(function () {
-            renderSidebar();
-            renderTimeline();
-        })
+        .then(render())
     });
 
     // Add event for rename pad
@@ -140,16 +158,11 @@ document.addEventListener('DOMContentLoaded', function () {
         var name = $('#rename-modal').find('#name').val();
         if(name == "") return;
         app.PadController.update(id, name)
-        .then(function() {
-            renderSidebar();
-            renderTimeline();
-        })
+        .then(render())
     });
 
     args = args.map( _ => ({ settings: _ }) )
     console.log(args);
 
-    // Render sidebar
-    renderSidebar();
-    renderTimeline();
+    render();
 });

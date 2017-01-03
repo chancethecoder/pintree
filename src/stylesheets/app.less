@@ -108,10 +108,6 @@ html, body {
         &:hover {
             overflow: auto;
         }
-        .tag-name {
-            width: 100%;
-            color: #ddd;
-        }
         .sidebar-body-list {
             width: 100%;
             li {
@@ -122,8 +118,6 @@ html, body {
                     background: rgba(0, 0, 0, 0.1);
                 }
                 a {
-                    margin-left: 10px;
-                    padding: 0 5px;
                     text-decoration: none;
                     color: #ddd;
                     &:hover {
@@ -137,14 +131,21 @@ html, body {
                 .name {
                     width: 60%;
                     float: left;
+                    display: block;
                     overflow: hidden;
                     white-space: nowrap;
                     text-overflow: ellipsis;
-                    a { width: 90% }
+                    a {
+                        padding: 0 5px;
+                    }
                 }
                 .toolset {
                     width: 40%;
                     float: right;
+                    a {
+                        margin-left: 10px;
+                        padding: 0 5px;
+                    }
                 }
             }
         }
@@ -197,12 +198,51 @@ ul.timeline li {
             }
         }
     }
+    .toolbar-layer {
+        position: absolute;
+        width: 100%;
+        height: auto;
+        display: none;
+        z-index: 1;
+        .btn-group {
+            float: right;
+            margin-top: 10px;
+            margin-right: 20px;
+            a {
+                width: 35px;
+            }
+        }
+    }
     &.preview {
         height: auto;
         max-height: 200px;
         overflow-y: hidden;
-        .preview-layer {
-            z-index: 1;
+        &:hover {
+            .preview-layer {
+                z-index: 2;
+                display: block;
+            }
+            .toolbar-layer {
+                z-index: -1;
+                display: none;
+            }
+        }
+    }
+    &.non-preview {
+        height: auto;
+        &:hover {
+            .preview-layer {
+                z-index: -1;
+                display: none;
+            }
+            .toolbar-layer {
+                z-index: -1;
+                display: none;
+            }
+        }
+    }
+    &:hover {
+        .toolbar-layer {
             display: block;
         }
     }
