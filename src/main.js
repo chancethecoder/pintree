@@ -20,7 +20,7 @@ var renderTimeline = function() {
             html += '<div class="top">'
             html += '</div>'
             html += '<div class="bottom">'
-            html += '<a class="toggle btn btn-round btn-default" role="button">see more</a>'
+            html += '<a class="toggle btn btn-round btn-default" role="button">see more details</a>'
             html += '</div>'
             html += '</div>'
             /* /preview div */

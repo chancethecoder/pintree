@@ -58,6 +58,27 @@ html, body {
     width: 250px;
 }
 
+#static-top-wrapper {
+    position: relative;
+    width: 100%;
+    nav {
+        width: 100%;
+        padding: 0 10px;
+        .left {
+            // position: absolute;
+            // left: 0;
+            position: relative;
+            float: left;
+        }
+        .right {
+            // position: absolute;
+            // right: 0;
+            position: relative;
+            float: right;
+        }
+    }
+}
+
 #page-content-wrapper {
     height: 100%;
     position: relative;
@@ -175,21 +196,28 @@ ul.timeline li {
         height: 100%;
         z-index: -1;
         display: none;
-        .top {
+        div {
             position: absolute;
             width: 100%;
             height: auto;
-            top: 10px;
-            right: 10px;
             display: none;
-        }
-        .bottom {
-            position: absolute;
-            width: 100%;
-            height: auto;
-            bottom: 15px;
-            text-align: center;
-            display: none;
+            &.top {
+                top: 10px;
+                right: 10px;
+            }
+            &.bottom {
+                bottom: 15px;
+                text-align: center;
+                a {
+                    text-decoration: none;
+                    &:hover {
+                        color: rgba(8, 157, 227, 1);
+                        background: #fff;
+                        border: 1px solid transparent;
+                        border-color: #ccc;
+                    }
+                }
+            }
         }
         &:hover {
             background: rgba(200, 200, 200, 0.1);
@@ -203,13 +231,22 @@ ul.timeline li {
         width: 100%;
         height: auto;
         display: none;
-        z-index: 1;
         .btn-group {
+            position: relative;
+            z-index: 1;
             float: right;
             margin-top: 10px;
             margin-right: 20px;
             a {
-                width: 35px;
+                text-decoration: none;
+                font-size: 12px;
+                width: 30px;
+                &:hover {
+                    color: rgba(8, 157, 227, 1);
+                    background: #fff;
+                    border: 1px solid transparent;
+                    border-color: #ccc;
+                }
             }
         }
     }
@@ -222,7 +259,7 @@ ul.timeline li {
                 z-index: 2;
                 display: block;
             }
-            .toolbar-layer {
+            .toolbar-layer .btn-group {
                 z-index: -1;
                 display: none;
             }
@@ -235,7 +272,7 @@ ul.timeline li {
                 z-index: -1;
                 display: none;
             }
-            .toolbar-layer {
+            .toolbar-layer .btn-group {
                 z-index: -1;
                 display: none;
             }
