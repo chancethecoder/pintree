@@ -17,11 +17,12 @@ npm start
 
 Download latest release from [here](https://github.com/chancethecoder/pintree/releases/latest). if you have any problems, try Quick start or followings.
 
-**Installing manually**
-1. download latest Source code from releases
-2. unpack and move to directory
-3. `npm run release` (your machine has to be installed [npm](https://www.npmjs.com/))
-4. now you have `dist` directory. this is what you needed.
+### Installing manually
+
+1. download latest Source code from releases  
+2. unpack and move to directory  
+3. `npm run release` (your machine has to be installed [npm](https://www.npmjs.com/))  
+4. now you have `dist` directory. this is what you needed  
 
 # Library
 
