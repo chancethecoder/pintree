@@ -1,6 +1,6 @@
 {
-  "name": "multipad",
-  "productName": "Multipad",
+  "name": "pintree",
+  "productName": "pintree",
   "description": "Simple memo app created by electron",
   "version": "0.0.0",
   "author": {
@@ -9,13 +9,13 @@
     "url": "https://github.com/chancethecoder"
   },
   "bugs": {
-    "url": "https://github.com/chancethecoder/multipad/issues"
+    "url": "https://github.com/chancethecoder/pintree/issues"
   },
-  "homepage": "https://github.com/chancethecoder/multipad",
+  "homepage": "https://github.com/chancethecoder/pintree",
   "license": "MIT",
   "main": "app/background.js",
   "build": {
-    "appId": "com.electron.multipad",
+    "appId": "com.electron.pintree",
     "files": [
       "app/**/*",
       "node_modules/**/*",
