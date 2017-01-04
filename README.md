@@ -1,4 +1,4 @@
-# pintree [![Build Status](https://travis-ci.org/chancethecoder/multipad.svg?branch=master)](https://travis-ci.org/chancethecoder/multipad) [![Build status](https://ci.appveyor.com/api/projects/status/512ddqqps205b707?svg=true)](https://ci.appveyor.com/project/chancethecoder/multipad)
+# pintree [![Build Status](https://travis-ci.org/chancethecoder/pintree.svg?branch=master)](https://travis-ci.org/chancethecoder/pintree) [![Build status](https://ci.appveyor.com/api/projects/status/5ho4817ql2qalvgn?svg=true)](https://ci.appveyor.com/project/chancethecoder/pintree)
 
 A simple memo application created by [Electron](http://electron.atom.io). Tested on OSX, Windows and Linux.  
 
