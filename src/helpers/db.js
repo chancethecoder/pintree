@@ -1,9 +1,10 @@
-
+import { app } from 'electron'
 import { DB_CONFIG } from './secret'
 import jetpack from 'fs-jetpack'
 
 const sqlite = require('sqlite3').verbose()
-const db = new sqlite.Database('./database.db')
+const userDataPath = app.getPath('userData');
+const db = new sqlite.Database(userDataPath + '/database.db')
 
 const userId = 'test'
 
