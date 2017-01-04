@@ -20,7 +20,7 @@ var renderTimeline = function() {
             html += '<div class="top">'
             html += '</div>'
             html += '<div class="bottom">'
-            html += '<a class="toggle btn btn-round btn-default" role="button">see more</a>'
+            html += '<a class="toggle btn btn-round btn-default" role="button">see more details</a>'
             html += '</div>'
             html += '</div>'
             /* /preview div */
@@ -164,6 +164,29 @@ document.addEventListener('DOMContentLoaded', function () {
         app.PadController.update(id, name)
         .then(() => render())
     });
+
+    // Add contextmenu
+    const { Menu, MenuItem } = remote
+    const menu = new Menu()
+
+    menu.append(new MenuItem({
+        label: 'New pad',
+        click() {
+            app.PadController.create()
+            .then(() => render())
+        }
+    }))
+    menu.append(new MenuItem({
+        label: 'Hide home',
+        click() {
+            app.MainController.toggle()
+        }
+    }))
+
+    window.addEventListener('contextmenu', (e) => {
+        e.preventDefault()
+        menu.popup(remote.getCurrentWindow())
+    }, false)
 
     args = args.map( _ => ({ settings: _ }) )
     console.log(args);

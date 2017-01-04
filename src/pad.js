@@ -48,6 +48,24 @@ document.addEventListener('DOMContentLoaded', function () {
         close();
     })
 
+    // Add contextmenu
+    const { Menu, MenuItem } = remote
+    const menu = new Menu()
+
+    menu.append(new MenuItem({
+        label: 'Toggle Home',
+        click() { app.MainController.toggle() }
+    }))
+    menu.append(new MenuItem({
+        label: 'Hide',
+        click() { close() }
+    }))
+
+    window.addEventListener('contextmenu', (e) => {
+        e.preventDefault()
+        menu.popup(remote.getCurrentWindow())
+    }, false)
+
 
     // init
     var $toolbar = $('.ql-toolbar')
