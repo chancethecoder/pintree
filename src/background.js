@@ -31,11 +31,8 @@ app.on('ready', function () {
     this.PadController = PadController;
     this.user = 'test';
 
-    console.log('initialize db...');
     db.init()
     .then((result) => {
-        console.log('initialize success.');
-
         db.getUser(this.user)
         .then( user => {
             this.MainController.init(this.user, user.pads);
@@ -54,7 +51,6 @@ app.on('ready', function () {
         })
         .catch( err => console.log(err) )
     })
-
 });
 
 app.on('window-all-closed', function () {

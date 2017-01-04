@@ -138,8 +138,6 @@ Instance.prototype.saveState = function() {
     // Update current instance's window position
     Object.assign(this.settings.state, this.getWindowPosition());
 
-    console.log(this.settings);
-
     db.saveWindow(this.settings)
     .then( result => console.log(result) )
     .catch( err => console.log(err) )
