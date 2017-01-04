@@ -15,7 +15,7 @@
   "license": "MIT",
   "main": "app/background.js",
   "build": {
-    "appId": "com.example.electron-boilerplate",
+    "appId": "com.electron.multipad",
     "files": [
       "app/**/*",
       "node_modules/**/*",
@@ -23,7 +23,7 @@
     ]
   },
   "scripts": {
-    "postinstall": "install-app-deps; node initialDB.js",
+    "postinstall": "install-app-deps",
     "build": "gulp build",
     "prerelease": "gulp build --env=production",
     "release": "build",

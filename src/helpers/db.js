@@ -1,20 +1,42 @@
 
 import { DB_CONFIG } from './secret'
-import fs from 'fs'
+import jetpack from 'fs-jetpack'
 
 const sqlite = require('sqlite3').verbose()
-const db = new sqlite.Database('./database_multipad.db')
+const db = new sqlite.Database('./database.db')
 
 const userId = 'test'
 
-
 const QUERY = {
+    INIT_USER: `
+        CREATE TABLE USER (
+            USER_ID varchar(40) NOT NULL DEFAULT '',
+            USER_NAME varchar(40) DEFAULT NULL,
+            USER_TOKKEN varchar(255) DEFAULT NULL,
+            USER_DT datetime DEFAULT NULL,
+            PRIMARY KEY (USER_ID)
+        )
+    `,
+    CREATE_USER: `
+        INSERT INTO USER (USER_ID, USER_NAME, USER_TOKKEN, USER_DT)
+        VALUES (?, ?, ?, datetime('now'))
+    `,
     GET_USER: `
         SELECT USER_ID id, USER_NAME name, USER_TOKKEN tokken, USER_DT dt
         FROM USER
         WHERE USER_ID = ?
     `,
 
+    INIT_PADS: `
+        CREATE TABLE PAD (
+          PAD_ID INTEGER NOT NULL DEFAULT 0,
+          USER_ID varchar(40) DEFAULT NULL,
+          PAD_NAME varchar(40) DEFAULT NULL,
+          PAD_STATE varchar(150) DEFAULT NULL,
+          PAD_DT datetime DEFAULT NULL,
+          PRIMARY KEY (PAD_ID)
+        )
+    `,
     GET_PADS: `
         SELECT PAD_ID id, PAD_NAME name, PAD_STATE state, PAD_DT dt
         FROM PAD
@@ -35,6 +57,15 @@ const QUERY = {
         WHERE PAD_ID = ?
     `,
 
+    INIT_REVISIONS: `
+        CREATE TABLE REVISION (
+          REVISION_ID INTEGER NOT NULL DEFAULT 0,
+          PAD_ID INTEGER DEFAULT NULL,
+          REVISION_CONTENT text,
+          REVISION_DT datetime DEFAULT NULL,
+          PRIMARY KEY (REVISION_ID)
+        )
+    `,
     GET_REVISIONS: `
         SELECT REVISION_ID id, PAD_ID, REVISION_CONTENT content, REVISION_DT dt
         FROM REVISION
@@ -51,6 +82,79 @@ const QUERY = {
     `,
 }
 
+
+/**
+ * 데이터베이스 초기화
+ */
+function init(){
+
+    const initUser = function() {
+        return new Promise((resolve, reject) => {
+            db.run(QUERY.INIT_USER, (err, result) => {
+                if(err) reject(err)
+                else resolve(result)
+            })
+        })
+    }
+
+    const initPads = function() {
+        return new Promise((resolve, reject) => {
+            db.run(QUERY.INIT_PADS, (err, result) => {
+                if(err) reject(err)
+                else resolve(result)
+            })
+        })
+    }
+
+    const initRevisions = function() {
+        return new Promise((resolve, reject) => {
+            db.run(QUERY.INIT_REVISIONS, (err, result) => {
+                if(err) reject(err)
+                else resolve(result)
+            })
+        })
+    }
+
+    return initUser()
+    .then((result) => initPads())
+    .then((result) => initRevisions())
+    .then((result) => createUser('test', '테스트', ''))
+    .then((result) => createPad(
+        'test',
+        'noname',
+        {
+            width: 400,
+            height: 321,
+            frame: false,
+            backgroundColor: '#fff',
+            x: 1471,
+            y: 247
+        }
+    ))
+    .then((result) => savePad(
+        1,
+        {
+            ops:[{
+                insert: "hello world"
+            }]
+        }
+    ))
+}
+
+/**
+ * 유저를 생성한다
+ * @param  {String} userId
+ * @return {Promise} user
+ */
+const createUser = function(userId, userName, token) {
+    return new Promise((resolve, reject) => {
+        console.log('create user');
+        db.run(QUERY.CREATE_USER, [userId, userName, token], (err, result) => {
+            if(err) reject(err)
+            else resolve(result)
+        })
+    })
+}
 
 /**
  * 유저의 모든 정보를 읽어온다
@@ -117,6 +221,7 @@ function createPad( user, padName, state ){
     let connection = {}
 
     return new Promise((resolve, reject) => {
+        console.log('create pad');
         db.run(QUERY.ADD_PAD, [user, padName, JSON.stringify(state)], (err, result) => {
             if(err) reject(err)
             else {
@@ -159,6 +264,7 @@ function saveWindow( {id: padId, name, state} ){
     let connection = {}
 
     return new Promise((resolve, reject) => {
+        console.log('create rev');
         db.run(QUERY.UPDATE_PAD, [JSON.stringify(state), name, padId], (err, result) => {
             if(err) reject(err)
             else resolve(result)
@@ -195,9 +301,10 @@ function removePad( padId, state ){
 
 
 export default {
-  getUser,
-  savePad,
-  saveWindow,
-  removePad,
-  createPad
+    init,
+    getUser,
+    savePad,
+    saveWindow,
+    removePad,
+    createPad
 }
