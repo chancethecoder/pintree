@@ -4,8 +4,7 @@ A simple memo application created by [Electron](http://electron.atom.io). Tested
 
 # Quick start
 
-The only development dependency of this project is [Node.js](https://nodejs.org), so just make sure you have it installed.
-Then type few commands known to every Node developer...
+The only dependency of this project is [Node.js](https://nodejs.org), so just make sure you have it installed.
 ```
 git clone https://github.com/chancethecoder/pintree.git
 cd multipad
@@ -21,8 +20,9 @@ Download latest release from [here](https://github.com/chancethecoder/pintree/re
 
 1. download latest Source code from releases  
 2. unpack and move to directory  
-3. `npm run release` (your machine has to be installed [npm](https://www.npmjs.com/))  
-4. now you have `dist` directory. this is what you needed  
+3. `npm install` (your machine has to be installed [npm](https://www.npmjs.com/))  
+4. `npm run release`  
+5. now you have `dist` directory. this is what you needed  
 
 # Library
 
