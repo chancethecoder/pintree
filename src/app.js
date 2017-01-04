@@ -7,17 +7,5 @@ var app = remote.app;
 
 document.addEventListener('DOMContentLoaded', function () {
 
-    // Do something on loaded
-    const { Menu, MenuItem } = remote
-    const menu = new Menu()
-
-    menu.append(new MenuItem({label: 'New pad', click() { app.newPad() }}))
-    menu.append(new MenuItem({label: 'Hide home', click() { app.toggleHome() }}))
-
-    window.addEventListener('contextmenu', (e) => {
-        e.preventDefault()
-        menu.popup(remote.getCurrentWindow())
-    }, false)
-
     $('[data-toggle="tooltip"]').tooltip();
 });
