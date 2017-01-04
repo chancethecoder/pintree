@@ -2,7 +2,7 @@
   "name": "pintree",
   "productName": "pintree",
   "description": "Simple memo app created by electron",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "author": {
     "name": "Youngkyun Kim",
     "email": "chancethecoder@gmail.com",
