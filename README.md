@@ -2,6 +2,11 @@
 
 A simple memo application created by [Electron](http://electron.atom.io). Tested on OSX, Windows and Linux.  
 
+# Demo
+
+[![Alt text](https://i.ytimg.com/vi/ByvwDRtyv-g/0.jpg)](https://youtu.be/ByvwDRtyv-g)
+
+
 # Quick start
 
 The only dependency of this project is [Node.js](https://nodejs.org), so just make sure you have it installed.

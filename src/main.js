@@ -51,6 +51,10 @@ var renderTimeline = function() {
                 html += '</div>'
             }
             for(let rev of revs) {
+                var content = ''
+                try {
+                    content = rev.content.ops.reduce( (p,n) => p + n.insert.replace(/\n/g, '<br>'), '' )
+                } catch (e) {}
                 html += '<div class="block">'
                 html += '<div class="tags">'
                 html += '<a href="#" class="tag">'
@@ -64,7 +68,7 @@ var renderTimeline = function() {
                 html += '<div class="byline">'
                 html += '<span>revision id: </span><a>' + rev.id + '</a>'
                 html += '</div>'
-                html += '<p class="excerpt">' + rev.content.ops.reduce( (p,n) => p + n.insert.replace(/\n/g, '<br>'), '' ) + '</p>'
+                html += '<p class="excerpt">' + content + '</p>'
                 html += '</div>'
                 html += '</div>'
             }
