@@ -40,7 +40,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // Add event for creating new pad
     $(document).on('click', '[data-remoteAction="save"]', function() {
         var delta = editor.getContents();
-        app.PadController.save(args['id'], delta);
+        app.padController.save(args['id'], delta);
     })
 
     // Add event for closing new pad
@@ -52,13 +52,28 @@ document.addEventListener('DOMContentLoaded', function () {
     const { Menu, MenuItem } = remote
     const menu = new Menu()
 
-    menu.append(new MenuItem({
-        label: 'Toggle Home',
-        click() { app.MainController.toggle() }
-    }))
+
     menu.append(new MenuItem({
         label: 'Hide',
         click() { close() }
+    }))
+    menu.append(new MenuItem({
+        label: 'Delete Pad',
+        click() {
+            /*
+             * TODO: show warning dialog
+             */
+            app.padController.remove(args['id'])
+        }
+    }))
+    menu.append(new MenuItem({
+        label: 'Quit App',
+        click() {
+            /*
+             * TODO: show warning dialog
+             */
+            app.quit()
+        }
     }))
 
     window.addEventListener('contextmenu', (e) => {

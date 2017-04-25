@@ -19,9 +19,5 @@ export var viewMenuTemplate = {
         label: "Toggle This window's Visibility",
         accelerator: "CmdOrCtrl+Shift+T",
         click: function () { BrowserWindow.getFocusedWindow().hide() }
-    },{
-        label: "Toggle Home Visibility",
-        accelerator: "CmdOrCtrl+Shift+H",
-        click: function () { app.MainController.toggle() }
     }]
 };
