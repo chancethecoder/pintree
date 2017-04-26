@@ -1,29 +1,33 @@
 import { app, BrowserWindow, screen } from 'electron';
-import jetpack from 'fs-jetpack';
-import moment from 'moment';
-import path from 'path';
 import env from '../env';
-import db from './db'
+import db from './db';
 
-const window = require('electron-window')
+const window = require('electron-window');
 
-// Controller Class
+/**
+ * Pad controller
+ * @constructor
+ */
 function Controller() {
     this.instances = [];
-    this.user = null;
 }
 
-// Initialize
-Controller.prototype.init = function(user, pads) {
-    this.user = user
+
+/**
+ * Initialize controller
+ * @param {Object} pads
+ */
+Controller.prototype.init = function(pads) {
     pads.forEach( pad => {
         this.instances.push(new Instance(pad));
     })
 }
 
-// Create new instance
+/**
+ * Create new instance
+ */
 Controller.prototype.create = function() {
-    return db.createPad(this.user, env.settings.name, env.settings.state)
+    return db.createPad(app.userInfo.id)
     .then( result => {
         env.settings.id = result.insertId;
         this.instances.unshift(new Instance(env.settings, true));

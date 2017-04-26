@@ -58,6 +58,12 @@ document.addEventListener('DOMContentLoaded', function () {
         click() { close() }
     }))
     menu.append(new MenuItem({
+        label: 'Create Pad',
+        click() {
+            app.padController.create()
+        }
+    }))
+    menu.append(new MenuItem({
         label: 'Delete Pad',
         click() {
             /*

@@ -1,13 +1,16 @@
-import { app } from 'electron'
-import { DB_CONFIG } from './secret'
-import jetpack from 'fs-jetpack'
+import { app } from 'electron';
+import { DB_CONFIG } from './secret';
+import jetpack from 'fs-jetpack';
+import env from '../env';
 
-const sqlite = require('sqlite3').verbose()
+const sqlite = require('sqlite3').verbose();
 const userDataPath = app.getPath('userData');
-const db = new sqlite.Database(userDataPath + '/database.db')
+const db = new sqlite.Database(userDataPath + '/database.db');
 
-const userId = 'test'
-
+/**
+ * @const {Object}
+ * Sqlite database query string object.
+ */
 const QUERY = {
     INIT_USER: `
         CREATE TABLE USER (
@@ -27,7 +30,6 @@ const QUERY = {
         FROM USER
         WHERE USER_ID = ?
     `,
-
     INIT_PADS: `
         CREATE TABLE PAD (
           PAD_ID INTEGER NOT NULL DEFAULT 0,
@@ -57,7 +59,6 @@ const QUERY = {
         DELETE FROM PAD
         WHERE PAD_ID = ?
     `,
-
     INIT_REVISIONS: `
         CREATE TABLE REVISION (
           REVISION_ID INTEGER NOT NULL DEFAULT 0,
@@ -81,37 +82,33 @@ const QUERY = {
         DELETE FROM REVISION
         WHERE PAD_ID = ?
     `,
-}
+};
 
 
 /**
  * 데이터베이스 초기화
+ * @return {Promise}
  */
 function init(){
 
-    const initUser = function() {
+    const initUser = function () {
         return new Promise((resolve, reject) => {
             db.run(QUERY.INIT_USER, (err, result) => {
-                if(err) reject(err)
-                else resolve(result)
+                resolve(result)
             })
         })
     }
-
-    const initPads = function() {
+    const initPads = function () {
         return new Promise((resolve, reject) => {
             db.run(QUERY.INIT_PADS, (err, result) => {
-                if(err) reject(err)
-                else resolve(result)
+                resolve(result)
             })
         })
     }
-
-    const initRevisions = function() {
+    const initRevisions = function () {
         return new Promise((resolve, reject) => {
             db.run(QUERY.INIT_REVISIONS, (err, result) => {
-                if(err) reject(err)
-                else resolve(result)
+                resolve(result)
             })
         })
     }
@@ -119,19 +116,23 @@ function init(){
     return initUser()
     .then((result) => initPads())
     .then((result) => initRevisions())
-    .then((result) => createUser('test', '테스트', ''))
-    .then((result) => createPad(
-        'test',
-        'noname',
-        {
-            width: 400,
-            height: 321,
-            frame: false,
-            backgroundColor: '#fff',
-            x: 1471,
-            y: 247
-        }
-    ))
+}
+
+/**
+ * 유저를 생성한다
+ * @param  {Object} userInfo
+ * @param  {String} token
+ * @return {Promise}
+ */
+function createUser(userInfo, token) {
+
+    return new Promise((resolve, reject) => {
+        db.run(QUERY.CREATE_USER, [userInfo.id, userInfo.name, token], (err, result) => {
+            if(err) reject(err)
+            else resolve(result)
+        })
+    })
+    .then((result) => createPad(userInfo.id))
     .then((result) => savePad(
         1,
         {
@@ -143,51 +144,31 @@ function init(){
 }
 
 /**
- * 유저를 생성한다
- * @param  {String} userId
- * @return {Promise} user
+ * 해당 유저의 모든 패드 정보를 읽어온다
+ * @param  {Object} userInfo
+ * @return {Promise}
  */
-const createUser = function(userId, userName, token) {
-    return new Promise((resolve, reject) => {
-        console.log('create user');
-        db.run(QUERY.CREATE_USER, [userId, userName, token], (err, result) => {
-            if(err) reject(err)
-            else resolve(result)
-        })
-    })
-}
+function getUser(userInfo){
 
-/**
- * 유저의 모든 정보를 읽어온다
- * @param  {String} userId
- * @return {Promise} user
- */
-function getUser( userId ){
     const user = {
-        info: {
-            id: userId
-        },
+        info: userInfo,
         pads: []
     }
-
-    const getPads = function( userId ){
+    const getPads = function (userId) {
         return new Promise((resolve, reject) => {
             db.all(QUERY.GET_PADS, [userId], (err, pads) => {
-                //console.log(pads)
                 if(err) reject(err)
                 else resolve(pads)
             })
         })
     }
-
-    const getRevisions = function( pads ){
+    const getRevisions = function (pads) {
         user.pads = pads.map( pad => {
             pad.state = JSON.parse(pad.state)
             return pad
         })
         const reqs = pads.map( pad => new Promise((resolve, reject) => {
             db.all(QUERY.GET_REVISIONS, [pad.id], (err, revs) => {
-                // console.log(revs);
                 if(err) reject(err)
                 else resolve(revs)
             })
@@ -195,9 +176,9 @@ function getUser( userId ){
         return Promise.all(reqs)
     }
 
-    return getPads( userId )
-    .then( pads => getRevisions(pads) )
-    .then( revs => {
+    return getPads(user.info.id)
+    .then((pads) => getRevisions(pads))
+    .then((revs) => {
         for(let i in revs){
             revs[i] = revs[i].map( rev => {
                 // fix json format
@@ -213,17 +194,16 @@ function getUser( userId ){
 
 /**
  * 패드를 생성한다
- * @param  {String} user
+ * @param  {String} userId
  * @param  {String} padName
  * @param  {String} state
  * @return {Promise}
  */
-function createPad( user, padName, state ){
+function createPad(userId, padName = env.settings.name, state = env.settings.state){
     let connection = {}
 
     return new Promise((resolve, reject) => {
-        console.log('create pad');
-        db.run(QUERY.ADD_PAD, [user, padName, JSON.stringify(state)], (err, result) => {
+        db.run(QUERY.ADD_PAD, [userId, padName, JSON.stringify(state)], (err, result) => {
             if(err) reject(err)
             else {
                 db.get(QUERY.GET_PADS, [userId], (err, rev) => {
@@ -303,9 +283,10 @@ function removePad( padId, state ){
 
 export default {
     init,
+    createUser,
     getUser,
+    createPad,
     savePad,
     saveWindow,
-    removePad,
-    createPad
+    removePad
 }

@@ -2,16 +2,14 @@
   "name": "production",
   "description": "environment settings",
   "settings": {
-    "path": "pad",
     "name": "noname",
     "id": "",
-    "savefile": "savefile.json",
     "revisions": [],
     "state": {
       "width": 400,
       "height": 400,
       "frame": false,
-      "backgroundColor": "#fff"
+      "backgroundColor": "#fff",
     }
   }
 }

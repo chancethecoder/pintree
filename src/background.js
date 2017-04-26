@@ -7,33 +7,18 @@ import padController from './helpers/pad_control';
 import db from './helpers/db';
 import env from './env';
 
-/*
- * User information
- */
-let userInfo = {
-    id: 'test',
-    pw: 'secret',
-}
 
-
-/*
- * Save userData in separate folders for each environment.
- */
+// Save userData in separate folders for each environment.
 if (env.name !== 'production') {
     var userDataPath = app.getPath('userData');
     app.setPath('userData', userDataPath + '(' + env.name + ')');
 }
 
-
-/*
- * Start rendering
- */
-var startRender = function () {
-    db.getUser(userInfo.id)
+// Start rendering
+var startRender = function (userInfo = app.userInfo) {
+    db.getUser(userInfo)
     .then((user) => {
-        padController.init(userInfo.id, user.pads); // Initialize controller
-
-        // Build menus
+        padController.init(user.pads);
         var menus = [fileMenuTemplate, editMenuTemplate, viewMenuTemplate];
         if (env.name !== 'production') {
             menus.push(devMenuTemplate);
@@ -43,33 +28,35 @@ var startRender = function () {
     .catch( err => console.log(err) )
 }
 
-
-/*
- * Application start point.
- */
+// Application start point.
 app.on('ready', function () {
 
     /**
      * TODO(chancethecoder@gmail.com): login feature as below
-     * 1. get user's id/pw
-     * 2. access db server (go to 1 if fails)
-     * 3. get application state
-     * 4. save application state
+     * - Implement login form to receive user information
      */
-    userInfo.id = 'test';
-    userInfo.pw = 'secret';
+    var userInfo = {
+        id: 'localhost',
+        pw: 'secret',
+        name: 'test',
+    };
 
-    this.padController = padController; // Bind controller
+    this.userInfo = userInfo;
+    this.padController = padController;
 
-    db.init() // Initialize local database
-    .then((result) => { startRender() }) // This is first time user opened app.
+    /**
+     * Connection process description.
+     * 1. initialize local db's table with NO rejection
+     * 2. then create user with rejection (prevent pad creation)
+     * 3. then/catch start render process
+     */
+    db.init()
+    .then((result) => db.createUser(this.userInfo, ''))
+    .then((result) => { startRender() })
     .catch((err) => { startRender() })
 });
 
-
-/*
- * Close application if all window closed.
- */
+// Close application if all window closed.
 app.on('window-all-closed', function () {
     app.quit();
 });

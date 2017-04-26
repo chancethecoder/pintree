@@ -2,10 +2,8 @@
   "name": "test",
   "description": "environment settings",
   "settings": {
-    "path": "pad",
     "name": "noname",
     "id": "",
-    "savefile": "savefile.json",
     "revisions": [],
     "state": {
       "width": 400,
