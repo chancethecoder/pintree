@@ -1,91 +1,97 @@
-// This is pad.html custom javascript.
+/**
+ * Script applied to pad.html.
+ */
 import { remote } from "electron"
-
-require('electron-window').parseArgs()
 
 var app = remote.app;
 var win = remote.getCurrentWindow()
 
+// Parse args passed from main process
+require('electron-window').parseArgs()
 var args = window.__args__
 
-var toolbarOptions = [
-    [{ 'font': [] }, { 'size': [] }],
-    [{ 'color': [] }, { 'background': [] }],
-    [ 'bold', 'italic', 'underline', 'strike' ],
-    [{ 'align': [] }, 'code-block'],
-    [ 'link', 'image' ],
-];
+// Add contextmenu
+const { Menu, MenuItem } = remote
+const menu = new Menu()
 
+menu.append(new MenuItem({ label: 'Hide', click() { close() } }))
+menu.append(new MenuItem({ label: 'New pad', click() { app.padController.create() } }))
+menu.append(new MenuItem({
+    label: 'Delete Pad',
+    click() {
+        /** TODO: show warning dialog */
+        app.padController.remove(args['id'])
+    }
+}))
+menu.append(new MenuItem({
+    label: 'Quit App',
+    click() {
+        /** TODO: show warning dialog */
+        app.quit()
+    }
+}))
+window.addEventListener('contextmenu', (e) => {
+    e.preventDefault()
+    menu.popup(remote.getCurrentWindow())
+}, false)
+
+// Process to do once after DOM loaded.
 document.addEventListener('DOMContentLoaded', function () {
 
-    // Create quill editor
+    /**
+     * TODO : A page switching in pad root.
+     * default page is editor page.
+     * Todo list
+     * - option settings
+     * - revision history
+     */
+
+
+    /** Editor page */
+
+    /**
+     * This is settings for Quill editor.
+     * Create editor in #editor tag, wrapped in pad root.
+     * api-doc: https://quilljs.com/docs/quickstart
+     */
     var editor = new Quill('#editor', {
         modules: {
-            toolbar: toolbarOptions,
+            toolbar: [
+                [{ 'font': [] }, { 'size': [] }],
+                [{ 'color': [] }, { 'background': [] }],
+                [ 'bold', 'italic', 'underline', 'strike' ],
+                [{ 'align': [] }, 'code-block'],
+                [ 'link', 'image' ],
+            ],
             history: {
                 delay: 2000,
                 maxStack: 500,
                 userOnly: true
             }
         },
-        theme: 'snow'
+        theme: 'snow',
     })
 
-    editor.setContents(args['content']);
+    editor.setContents(args['content'])
 
-    // Add event for editor actions
+    // Add event listeners to data-* tags.
     $(document).on('click', '[data-action="backward"]', () => { editor.history.undo() })
     $(document).on('click', '[data-action="forward"]', () => { editor.history.redo() })
+    $(document).on('click', '[data-remoteAction="hide"]', () => { close() })
+    $(document).on('click', '[data-remoteAction="save"]', () => {
 
-    // Add event for creating new pad
-    $(document).on('click', '[data-remoteAction="save"]', function() {
-        var delta = editor.getContents();
-        app.padController.save(args['id'], delta);
-    })
-
-    // Add event for closing new pad
-    $(document).on('click', '[data-remoteAction="hide"]', function() {
-        close();
-    })
-
-    // Add contextmenu
-    const { Menu, MenuItem } = remote
-    const menu = new Menu()
-
-
-    menu.append(new MenuItem({
-        label: 'Hide',
-        click() { close() }
-    }))
-    menu.append(new MenuItem({
-        label: 'Create Pad',
-        click() {
-            app.padController.create()
-        }
-    }))
-    menu.append(new MenuItem({
-        label: 'Delete Pad',
-        click() {
-            /*
-             * TODO: show warning dialog
+        // Pass delta object to main process with id.
+        app.padController.save(args['id'], editor.getContents())
+        .then( result => {
+            /**
+             * TODO : Add Growl / Notify to show dialogs
              */
-            app.padController.remove(args['id'])
-        }
-    }))
-    menu.append(new MenuItem({
-        label: 'Quit App',
-        click() {
-            /*
-             * TODO: show warning dialog
-             */
-            app.quit()
-        }
-    }))
-
-    window.addEventListener('contextmenu', (e) => {
-        e.preventDefault()
-        menu.popup(remote.getCurrentWindow())
-    }, false)
+            console.log(result)
+        })
+        .catch( err => {
+            console.log(err)
+        })
+    })
 
 
     // init
@@ -101,47 +107,34 @@ document.addEventListener('DOMContentLoaded', function () {
     })
 
     // Press collapse button
-    var resize = function( type ){
-        var [ width, height ] = win.getSize()
-        var dh = (type == 'show') ? 100 : -100
-        win.setSize(width, height + dh)
-        /*
-        var easing = (type == 'show') ? t*t : -(t*t)
-        win.setSize(width, Math.round(win.getSize()[1] + easing*15))
-        if( t > 0 ) setTimeout(() => resize(type, t-0.05), 30)
-        */
+    var resize = function( type ) {
+        let h = $editor.height() + (type == 'show' ? 100 : -100)
+        $editor.height(h)
     }
     var editMode = function(){
         $icon.removeClass('fa-pencil-square')
           .addClass('fa-floppy-o')
           .attr('data-remoteAction', 'save')
         editor.enable()
-        //$moveLayer.hide()
+        resize('hide')
     }
     var moveMode = function(){
         $icon.removeClass('fa-floppy-o')
           .addClass('fa-pencil-square')
           .attr('data-remoteAction', null)
         editor.disable()
-        $moveLayer.show()
+        resize('show')
     }
 
-    $toolbar.first().on('hide.bs.collapse', function () {
-        moveMode()
-        resize('hide')
-    })
-    .on('show.bs.collapse', function () {
-        editMode()
-        resize('show')
-    })
+    $toolbar.first()
+    .on('hide.bs.collapse', () => { moveMode() })
+    .on('show.bs.collapse', () => { editMode() })
 
     // Set editor mode
     if( args['isFirst'] ){
-        $toolbar.addClass('collapse in')
         editMode()
     }
     else{
-        $toolbar.addClass('collapse')
         moveMode()
     }
 

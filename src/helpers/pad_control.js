@@ -74,17 +74,16 @@ Controller.prototype.remove = function(id) {
 
 // Save content
 Controller.prototype.save = function(id, content) {
-    let ins = this.get(id);
 
-    ins.settings.revisions.unshift({
-        id: ins.settings.revisions.length + 1,
-        content,
-        dt: new Date().toISOString().replace('T', ' ').replace(/\..*/, '')
+    return db.savePad(id, content)
+    .then( result => {
+        let ins = this.get(id)
+        ins.settings.revisions.unshift({
+            id: ins.settings.revisions.length + 1,
+            content,
+            dt: new Date().toISOString().replace('T', ' ').replace(/\..*/, '')
+        })
     })
-
-    db.savePad(id, content)
-    .then( result => console.log(result) )
-    .catch( err => console.log(err) )
 }
 
 // Update instance
