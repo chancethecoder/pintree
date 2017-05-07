@@ -22,7 +22,7 @@ gulp.task('bundle', function () {
 });
 
 gulp.task('less', function () {
-    return gulp.src(srcDir.path('stylesheets/app.less'))
+    return gulp.src(srcDir.path('stylesheets/*.less'))
         .pipe(plumber())
         .pipe(less())
         .pipe(gulp.dest(destDir.path('stylesheets')));

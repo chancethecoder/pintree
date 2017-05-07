@@ -1,95 +1,109 @@
-// This is overall custom css styles.
-// apply to all of html pages
+/**
+ * Custom css styles applied to overall html.
+ */
 
+@import 'variables';
+@import 'mixins';
+
+// Global
+*,
+*:before,
+*:after {
+    .transition;
+    .box-sizing;
+}
 html, body {
     overflow-x: hidden;
     overflow-y: hidden;
-    height: 100%;
-    -webkit-app-region: drag;
 }
-
 ::-webkit-scrollbar {
-    width: 7px;
-}
-::-webkit-scrollbar-track {
-    background-color: #eaeaea;
-    border-left: 1px solid #ccc;
-    border-radius: 8px;
+    width: 9px;
 }
 ::-webkit-scrollbar-thumb {
-    background-color: #ccc;
-    border-radius: 8px;
-}
-::-webkit-scrollbar-thumb:hover {
-    background-color: #aaa;
+    background-color: @scrollbar;
 }
 
-/* Pad navbar */
+// Pad styles
+#pad-root {
+    width: 100%;
+    height: 100%;
+    background-color: @background-pad;
+    -webkit-app-region: drag;
 
-.collapse-button-wrapper{
-    position: absolute;
-    right: 0px;
-    z-index: 999;
-    -webkit-app-region: no-drag;
+    .collapse-button-wrapper{
+        position: absolute;
+        right: 0px;
+        z-index: 999;
+        -webkit-app-region: no-drag;
 
-    .navbar-toggle {
-        display: block;
-        margin: 0px 20px;
-        padding: 5px;
+        .navbar-toggle {
+            display: block;
+            margin: 0px 20px;
+            padding: 5px;
 
-        i {
-            transition: opacity 0.3s;
-            opacity: 0.1;
+            i {
+                transition: opacity 0.3s;
+                opacity: 0.1;
+            }
+            i.fa-floppy-o {
+                opacity: 0.7;
+            }
+            &:hover > i {
+                opacity: 1;
+            }
         }
-        i.fa-floppy-o {
-            opacity: 0.7;
+    }
+
+    #navbar {
+        // Overiding bootstrap
+        .navbar-nav {
+            margin: 7.5px 0px;
         }
-        &:hover > i {
-            opacity: 1;
+        .nav > li {
+            display: inline;
+        }
+        .nav > li > a {
+            color: @dark-gray;
+            display: inline;
+            padding: 10px 15px;
+            &:hover {
+                color: darken(@dark-gray, 10%);
+            }
         }
     }
-}
 
-#navbar {
-    // Overiding bootstrap
-    .navbar-nav {
-        margin: 7.5px 0px;
+    #editor {
+        border: 0;
+        padding: 0;
+        margin: 0;
+        height: auto;
+        overflow-y: hidden;
+        -webkit-app-region: no-drag;
+
+        .ql-disabled {
+            cursor: default;
+        }
     }
-    .nav > li {
-        display: inline;
+
+    .ql-toolbar {
+        border: 0;
+        li, span {
+            -webkit-app-region: no-drag;
+        }
     }
-    .nav > li > a {
-        color: #333;
-        display: inline;
-        padding: 10px 15px;
-    }
-}
 
-.ql-toolbar {
-  li, span {
-    -webkit-app-region: no-drag;
-  }
-}
-
-#editor {
-    height: auto;
-    overflow-y: hidden;
-    -webkit-app-region: no-drag;
-
-    .ql-disabled {
+    .ql-editor .ql-disabled {
         cursor: default;
     }
-}
-.ql-editor .ql-disabled {
-    cursor: default;
-}
 
-.move-layer{
-    position: fixed;
-    bottom: 10px;
-    right: 10px;
-    opacity: 0.1;
+    .move-layer{
+        position: fixed;
+        bottom: 10px;
+        right: 10px;
+        opacity: 0.1;
 
-    cursor: move;
-    -webkit-app-region: drag;
+        cursor: move;
+        -webkit-app-region: drag;
+    }
+
 }
