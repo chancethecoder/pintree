@@ -35,6 +35,7 @@ window.addEventListener('contextmenu', (e) => {
     menu.popup(remote.getCurrentWindow())
 }, false)
 
+
 // Process to do once after DOM loaded.
 document.addEventListener('DOMContentLoaded', function () {
 
@@ -74,11 +75,33 @@ document.addEventListener('DOMContentLoaded', function () {
 
     editor.setContents(args['content'])
 
+    // Text change event handling
+    // The only case is not saved state.
+    editor.on('text-change', function(delta, oldDelta, source){
+        if (source == 'api') {
+            console.log("An API call triggered this change.");
+        } else if (source == 'user') {
+            console.log("A user action triggered this change.");
+        }
+
+        let $state = $('#editor-state')
+        $state.find('span')
+            .removeClass('saved')
+            .addClass('modified')
+        $state.find('label').text('modified')
+    })
+
     // Add event listeners to data-* tags.
     $(document).on('click', '[data-action="backward"]', () => { editor.history.undo() })
     $(document).on('click', '[data-action="forward"]', () => { editor.history.redo() })
     $(document).on('click', '[data-remoteAction="hide"]', () => { close() })
     $(document).on('click', '[data-remoteAction="save"]', () => {
+
+        let $state = $('#editor-state')
+        $state.find('span')
+            .removeClass('modified')
+            .addClass('onSave')
+        $state.find('label').text('saving...')
 
         // Pass delta object to main process with id.
         app.padController.save(args['id'], editor.getContents())
@@ -87,6 +110,12 @@ document.addEventListener('DOMContentLoaded', function () {
              * TODO : Add Growl / Notify to show dialogs
              */
             console.log(result)
+
+            let $state = $('#editor-state')
+            $state.find('span')
+                .removeClass('onSave')
+                .addClass('saved')
+            $state.find('label').text('saved')
         })
         .catch( err => {
             console.log(err)
@@ -94,48 +123,31 @@ document.addEventListener('DOMContentLoaded', function () {
     })
 
 
-    // init
+    /**
+     * At first, editor should be opened with saved option.
+     * Each functions will trigger modification of options.
+     */
+
     var $toolbar = $('.ql-toolbar')
     var $editor = $('#editor')
     var $icon = $('.collapse-button-wrapper i')
     var $moveLayer = $('.move-layer')
 
-    // Resize event handler
-    $editor.css('height', win.getSize()[1])
-    $(window).on('resize', function() {
-        $editor.css('height', win.getSize()[1])
-    })
-
-    // Press collapse button
-    var resize = function( type ) {
-        let h = $editor.height() + (type == 'show' ? 100 : -100)
-        $editor.height(h)
-    }
-    var editMode = function(){
+    var editMode = function() {
         $icon.removeClass('fa-pencil-square')
           .addClass('fa-floppy-o')
           .attr('data-remoteAction', 'save')
         editor.enable()
-        resize('hide')
     }
-    var moveMode = function(){
+    var moveMode = function() {
         $icon.removeClass('fa-floppy-o')
           .addClass('fa-pencil-square')
           .attr('data-remoteAction', null)
         editor.disable()
-        resize('show')
     }
 
     $toolbar.first()
     .on('hide.bs.collapse', () => { moveMode() })
     .on('show.bs.collapse', () => { editMode() })
-
-    // Set editor mode
-    if( args['isFirst'] ){
-        editMode()
-    }
-    else{
-        moveMode()
-    }
 
 })

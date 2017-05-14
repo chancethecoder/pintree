@@ -32,23 +32,21 @@ html, body {
     background-color: @background-pad;
     -webkit-app-region: drag;
 
-    .collapse-button-wrapper{
+    .collapse-button-wrapper {
         position: absolute;
         right: 0px;
         z-index: 999;
         -webkit-app-region: no-drag;
-
         .navbar-toggle {
             display: block;
             margin: 0px 20px;
             padding: 5px;
-
             i {
                 transition: opacity 0.3s;
                 opacity: 0.1;
-            }
-            i.fa-floppy-o {
-                opacity: 0.7;
+                &.fa-floppy-o {
+                    opacity: 0.7;
+                }
             }
             &:hover > i {
                 opacity: 1;
@@ -60,15 +58,17 @@ html, body {
         .navbar-nav {
             margin: 7.5px 0px;
         }
-        .nav > li {
-            display: inline;
-        }
-        .nav > li > a {
-            color: @dark-gray;
-            display: inline;
-            padding: 10px 15px;
-            &:hover {
-                color: darken(@dark-gray, 10%);
+        .nav {
+            li {
+                display: inline;
+                a {
+                    color: @dark-gray;
+                    display: inline;
+                    padding: 10px 15px;
+                    &:hover {
+                        color: darken(@dark-gray, 10%);
+                    }
+                }
             }
         }
     }
@@ -77,31 +77,50 @@ html, body {
         border: 0;
         height: auto;
         -webkit-app-region: no-drag;
+    }
 
-        .ql-disabled {
+    .ql-editor {
+        overflow-y: scroll;
+        &.disabled {
             cursor: default;
         }
     }
 
     .ql-toolbar {
-        border: 0;
+        border-width: 0 0 1px 0;
         li, span {
             -webkit-app-region: no-drag;
         }
     }
 
-    .ql-editor .ql-disabled {
-        cursor: default;
-    }
-
-    .move-layer{
+    #move-layer {
         position: fixed;
         bottom: 10px;
         right: 10px;
         opacity: 0.1;
-
         cursor: move;
         -webkit-app-region: drag;
     }
 
+    #editor-state {
+        position: fixed;
+        bottom: 10px;
+        left: 10px;
+        white-space: nowrap;
+        color: @light-gray;
+        span {
+            &.saved {
+                color: lighten(green, 60%);
+            }
+            &.onSave {
+                color: @blue;
+            }
+            &.modified {
+                color: lighten(red, 20%);
+            }
+        }
+        label {
+            margin: 0;
+        }
+    }
 }

@@ -25,12 +25,13 @@ Controller.prototype.init = function(pads) {
 
 /**
  * Create new instance
+ * TODO : Get default settings from DB and remove env file
  */
 Controller.prototype.create = function() {
     return db.createPad(app.userInfo.id)
     .then( result => {
         env.settings.id = result.insertId;
-        this.instances.unshift(new Instance(env.settings, true));
+        this.instances.unshift(new Instance(env.settings));
     })
 }
 
@@ -97,19 +98,18 @@ Controller.prototype.update = function(id, name) {
 }
 
 // Pad Instance Class
-function Instance(settings, isFirst = false) {
+function Instance(settings) {
     this.win = null;
     this.settings = {}
     Object.assign(this.settings, settings);
-    this.renderWindow(isFirst);
+    this.renderWindow();
 }
 
 // Render window view
-Instance.prototype.renderWindow = function(isFirst) {
+Instance.prototype.renderWindow = function() {
 
-    var args = {
+    let args = {
         id: this.settings.id,
-        isFirst: isFirst,
         content: this.settings.revisions[0]
           ? this.settings.revisions[0].content
           : ''
