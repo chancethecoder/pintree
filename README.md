@@ -49,6 +49,10 @@ You can contribute your code to this project.
 
 if you need to contact, please email to chancethecoder@gmail.com
 
+# Todo
+
+* splitter
+
 # License
 
 Released under the [MIT](https://github.com/chancethecoder/pintree/blob/master/LICENSE) license.
